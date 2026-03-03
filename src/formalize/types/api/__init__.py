@@ -1,0 +1,49 @@
+# File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+
+from __future__ import annotations
+
+from .docx_change import DocxChange as DocxChange
+from .model_section import ModelSection as ModelSection
+from .contract_document import ContractDocument as ContractDocument
+from .contract_list_params import ContractListParams as ContractListParams
+from .contract_list_response import ContractListResponse as ContractListResponse
+from .contract_upload_params import ContractUploadParams as ContractUploadParams
+from .contract_optimize_params import ContractOptimizeParams as ContractOptimizeParams
+from .contract_diff_docx_params import ContractDiffDocxParams as ContractDiffDocxParams
+from .contract_diff_docx_response import ContractDiffDocxResponse as ContractDiffDocxResponse
+from .contract_edit_catala_params import ContractEditCatalaParams as ContractEditCatalaParams
+from .contract_save_catala_params import ContractSaveCatalaParams as ContractSaveCatalaParams
+from .contract_evaluate_row_params import ContractEvaluateRowParams as ContractEvaluateRowParams
+from .contract_working_copy_params import ContractWorkingCopyParams as ContractWorkingCopyParams
+from .contract_edit_catala_response import ContractEditCatalaResponse as ContractEditCatalaResponse
+from .contract_save_catala_response import ContractSaveCatalaResponse as ContractSaveCatalaResponse
+from .contract_edit_from_docx_params import ContractEditFromDocxParams as ContractEditFromDocxParams
+from .contract_edit_from_text_params import ContractEditFromTextParams as ContractEditFromTextParams
+from .contract_working_copy_response import ContractWorkingCopyResponse as ContractWorkingCopyResponse
+from .contract_validate_catala_params import ContractValidateCatalaParams as ContractValidateCatalaParams
+from .contract_analyze_opposing_params import ContractAnalyzeOpposingParams as ContractAnalyzeOpposingParams
+from .contract_edit_from_docx_response import ContractEditFromDocxResponse as ContractEditFromDocxResponse
+from .contract_edit_from_text_response import ContractEditFromTextResponse as ContractEditFromTextResponse
+from .contract_validate_catala_response import ContractValidateCatalaResponse as ContractValidateCatalaResponse
+from .contract_upload_and_formalize_params import ContractUploadAndFormalizeParams as ContractUploadAndFormalizeParams
+from .contract_retrieve_model_view_response import (
+    ContractRetrieveModelViewResponse as ContractRetrieveModelViewResponse,
+)
+from .contract_retrieve_paragraphs_response import (
+    ContractRetrieveParagraphsResponse as ContractRetrieveParagraphsResponse,
+)
+from .contract_test_data_with_preview_params import (
+    ContractTestDataWithPreviewParams as ContractTestDataWithPreviewParams,
+)
+from .contract_upload_and_formalize_response import (
+    ContractUploadAndFormalizeResponse as ContractUploadAndFormalizeResponse,
+)
+from .contract_retrieve_edit_suggestions_params import (
+    ContractRetrieveEditSuggestionsParams as ContractRetrieveEditSuggestionsParams,
+)
+from .contract_retrieve_edit_suggestions_response import (
+    ContractRetrieveEditSuggestionsResponse as ContractRetrieveEditSuggestionsResponse,
+)
+from .contract_retrieve_test_data_with_working_copy_params import (
+    ContractRetrieveTestDataWithWorkingCopyParams as ContractRetrieveTestDataWithWorkingCopyParams,
+)
