@@ -1,5 +1,5 @@
 [project]
-name = "formalize"
+name = "benchify_formalize"
 version = "0.0.1"
 description = "The official Python library for the formalize API"
 dynamic = ["readme"]
