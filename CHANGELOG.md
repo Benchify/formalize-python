@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.0 (2026-03-05)
+
+Full Changelog: [v0.0.3...v1.0.0](https://github.com/Benchify/formalize-python/compare/v0.0.3...v1.0.0)
+
+### Chores
+
+* update SDK settings ([b64f037](https://github.com/Benchify/formalize-python/commit/b64f03751166f206e8dca5ec9b01867614e78b82))
+
 ## 0.0.3 (2026-03-05)
 
 Full Changelog: [v0.0.2...v0.0.3](https://github.com/Benchify/formalize-python/compare/v0.0.2...v0.0.3)
