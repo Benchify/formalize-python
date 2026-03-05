@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from . import v1 as v1
 from .docx_change import DocxChange as DocxChange
 from .model_section import ModelSection as ModelSection
 from .contract_document import ContractDocument as ContractDocument
