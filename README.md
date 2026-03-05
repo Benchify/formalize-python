@@ -1,7 +1,7 @@
 # Formalize Python API library
 
 <!-- prettier-ignore -->
-[![PyPI version](https://img.shields.io/pypi/v/benchify_formalize.svg?label=pypi%20(stable))](https://pypi.org/project/benchify_formalize/)
+[![PyPI version](https://img.shields.io/pypi/v/benchify.svg?label=pypi%20(stable))](https://pypi.org/project/benchify/)
 
 The Formalize Python library provides convenient access to the Formalize REST API from any Python 3.9+
 application. The library includes type definitions for all request params and response fields,
@@ -17,7 +17,7 @@ The full API of this library can be found in [api.md](api.md).
 
 ```sh
 # install from PyPI
-pip install benchify_formalize
+pip install benchify
 ```
 
 ## Usage
@@ -73,7 +73,7 @@ You can enable this by installing `aiohttp`:
 
 ```sh
 # install from PyPI
-pip install benchify_formalize[aiohttp]
+pip install benchify[aiohttp]
 ```
 
 Then you can enable it by instantiating the client with `http_client=DefaultAioHttpClient()`:
