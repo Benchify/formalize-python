@@ -197,7 +197,7 @@ class ContractsResource(SyncAPIResource):
                 extra_query=extra_query,
                 extra_body=extra_body,
                 timeout=timeout,
-                security={},
+                security={"bearer_auth": True},
             ),
             cast_to=ContractRetrieveResponse,
         )
@@ -256,7 +256,7 @@ class ContractsResource(SyncAPIResource):
                     },
                     contract_list_params.ContractListParams,
                 ),
-                security={},
+                security={"bearer_auth": True},
             ),
             cast_to=ContractListResponse,
         )
@@ -666,7 +666,7 @@ class AsyncContractsResource(AsyncAPIResource):
                 extra_query=extra_query,
                 extra_body=extra_body,
                 timeout=timeout,
-                security={},
+                security={"bearer_auth": True},
             ),
             cast_to=ContractRetrieveResponse,
         )
@@ -725,7 +725,7 @@ class AsyncContractsResource(AsyncAPIResource):
                     },
                     contract_list_params.ContractListParams,
                 ),
-                security={},
+                security={"bearer_auth": True},
             ),
             cast_to=ContractListResponse,
         )

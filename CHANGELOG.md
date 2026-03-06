@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.0 (2026-03-06)
+
+Full Changelog: [v1.0.0...v1.1.0](https://github.com/Benchify/formalize-python/compare/v1.0.0...v1.1.0)
+
+### Features
+
+* **api:** manual updates ([dfe90dd](https://github.com/Benchify/formalize-python/commit/dfe90ddefabf9523ffacb51ebd28210e159f856b))
+
 ## 1.0.0 (2026-03-05)
 
 Full Changelog: [v0.0.3...v1.0.0](https://github.com/Benchify/formalize-python/compare/v0.0.3...v1.0.0)
