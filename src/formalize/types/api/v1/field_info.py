@@ -15,7 +15,7 @@ class FieldInfo(BaseModel):
     """
 
     name: str
-    """The field name as defined in the Catala code"""
+    """The field name as defined in the specification"""
 
     type_name: str
     """The type of the field (e.g., 'integer', 'money', 'PharmaClaim')"""

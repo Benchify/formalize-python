@@ -10,7 +10,7 @@ __all__ = ["ModelSection", "Declaration", "Scope"]
 
 
 class Declaration(BaseModel):
-    """A struct or enum declaration extracted from a Catala spec section."""
+    """A struct or enum declaration extracted from a specification section."""
 
     kind: str
 
@@ -24,7 +24,7 @@ class Declaration(BaseModel):
 
 
 class Scope(BaseModel):
-    """A Catala scope's interface (inputs/outputs/internals)."""
+    """A scope's interface (inputs/outputs/internals)."""
 
     inputs: List[Dict[str, str]]
 
@@ -40,7 +40,7 @@ class Scope(BaseModel):
 
 
 class ModelSection(BaseModel):
-    """A section of the contract with its Catala content."""
+    """A section of the contract with its formal specification content."""
 
     children: List["ModelSection"]
 

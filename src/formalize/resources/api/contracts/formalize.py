@@ -60,7 +60,8 @@ class FormalizeResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> FormalizeCreateResponse:
         """
-        Start background formalization of a contract document into Catala code.
+        Start background formalization of a contract document into an executable
+        specification.
 
         Returns 202 Accepted immediately. Poll GET /{contract_id} for
         formalization_status (IN_PROGRESS → COMPLETED / FAILED / CANCELED).
@@ -160,7 +161,8 @@ class AsyncFormalizeResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> FormalizeCreateResponse:
         """
-        Start background formalization of a contract document into Catala code.
+        Start background formalization of a contract document into an executable
+        specification.
 
         Returns 202 Accepted immediately. Poll GET /{contract_id} for
         formalization_status (IN_PROGRESS → COMPLETED / FAILED / CANCELED).

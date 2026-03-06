@@ -18,7 +18,7 @@ class ContractListParams(TypedDict, total=False):
     """Offset for pagination"""
 
     org_id: Optional[str]
-    """Organization ID (defaults to default org)"""
+    """Organization ID. If authenticated, defaults to user's org."""
 
     status: Optional[FormalizationStatus]
     """Filter by formalization status"""

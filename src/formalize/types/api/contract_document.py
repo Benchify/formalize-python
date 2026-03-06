@@ -3,6 +3,8 @@
 from typing import Dict, Optional
 from datetime import datetime
 
+from pydantic import Field as FieldInfo
+
 from ..._models import BaseModel
 from .v1.formalization_status import FormalizationStatus
 
@@ -11,8 +13,6 @@ __all__ = ["ContractDocument"]
 
 class ContractDocument(BaseModel):
     id: str
-
-    catala_code: Optional[str] = None
 
     created_at: datetime
 
@@ -29,6 +29,8 @@ class ContractDocument(BaseModel):
     contract_metadata: Optional[Dict[str, object]] = None
 
     formalization_progress: Optional[Dict[str, object]] = None
+
+    api_model_code: Optional[str] = FieldInfo(alias="model_code", default=None)
 
     optimization_results: Optional[Dict[str, object]] = None
 

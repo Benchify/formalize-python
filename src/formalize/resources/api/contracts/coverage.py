@@ -59,8 +59,8 @@ class CoverageResource(SyncAPIResource):
         """
         Generate formalization coverage for a contract.
 
-        This uses an LLM to analyze the contract paragraphs and Catala code, creating
-        attributions that link document text to formalized expressions.
+        This uses an LLM to analyze the contract paragraphs and specification code,
+        creating attributions that link document text to formalized expressions.
 
         Args: contract_id: ID of the contract regenerate: If True, regenerate even if
         coverage already exists
@@ -201,8 +201,8 @@ class AsyncCoverageResource(AsyncAPIResource):
         """
         Generate formalization coverage for a contract.
 
-        This uses an LLM to analyze the contract paragraphs and Catala code, creating
-        attributions that link document text to formalized expressions.
+        This uses an LLM to analyze the contract paragraphs and specification code,
+        creating attributions that link document text to formalized expressions.
 
         Args: contract_id: ID of the contract regenerate: If True, regenerate even if
         coverage already exists

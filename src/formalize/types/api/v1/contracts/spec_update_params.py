@@ -8,14 +8,14 @@ __all__ = ["SpecUpdateParams"]
 
 
 class SpecUpdateParams(TypedDict, total=False):
-    catala_code: Required[str]
-    """The complete Catala source code for the contract.
+    model_code: Required[str]
+    """The complete specification source code for the contract.
 
-    This should be valid Catala code that compiles without errors.
+    This should be valid specification code.
     """
 
     validate_syntax: bool
-    """If true, validate the Catala code syntax before saving.
+    """If true, validate the specification syntax before saving.
 
     Set to false to save draft code that may have errors.
     """
