@@ -27,7 +27,7 @@ class Scope(BaseModel):
     """
 
     name: str
-    """The scope name as defined in the Catala code"""
+    """The scope name as defined in the specification"""
 
     outputs: List[FieldInfo]
     """Output fields produced by this scope"""

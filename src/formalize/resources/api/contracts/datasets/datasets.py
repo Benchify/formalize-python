@@ -73,8 +73,12 @@ class DatasetsResource(SyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> object:
-        """
-        Upload a new test dataset for a contract.
+        """Upload a new test dataset for a contract.
+
+        Accepts .xlsx, .xls, and .csv files.
+
+        CSV files are automatically converted to
+        Excel format for consistent downstream processing.
 
         Args:
           name: Name for the dataset
@@ -363,8 +367,12 @@ class AsyncDatasetsResource(AsyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> object:
-        """
-        Upload a new test dataset for a contract.
+        """Upload a new test dataset for a contract.
+
+        Accepts .xlsx, .xls, and .csv files.
+
+        CSV files are automatically converted to
+        Excel format for consistent downstream processing.
 
         Args:
           name: Name for the dataset

@@ -12,7 +12,6 @@ from tests.utils import assert_matches_type
 from formalize.types.api.v1 import (
     ContractListResponse,
     ContractCreateResponse,
-    ContractDeleteResponse,
     ContractExportResponse,
     ContractRetrieveResponse,
     ContractGetSchemaResponse,
@@ -43,8 +42,8 @@ class TestContracts:
         contract = client.api.v1.contracts.create(
             docx_base64="UEsDBBQAAAAIAA...",
             filename="rebate_agreement.docx",
-            catala_code="catala_code",
             document_title="PBM Rebate Agreement 2024",
+            model_code="model_code",
             org_id="org_default",
         )
         assert_matches_type(ContractCreateResponse, contract, path=["response"])
@@ -164,7 +163,7 @@ class TestContracts:
         contract = client.api.v1.contracts.delete(
             "contract_id",
         )
-        assert_matches_type(ContractDeleteResponse, contract, path=["response"])
+        assert_matches_type(object, contract, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
@@ -176,7 +175,7 @@ class TestContracts:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         contract = response.parse()
-        assert_matches_type(ContractDeleteResponse, contract, path=["response"])
+        assert_matches_type(object, contract, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
@@ -188,7 +187,7 @@ class TestContracts:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             contract = response.parse()
-            assert_matches_type(ContractDeleteResponse, contract, path=["response"])
+            assert_matches_type(object, contract, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -508,8 +507,8 @@ class TestAsyncContracts:
         contract = await async_client.api.v1.contracts.create(
             docx_base64="UEsDBBQAAAAIAA...",
             filename="rebate_agreement.docx",
-            catala_code="catala_code",
             document_title="PBM Rebate Agreement 2024",
+            model_code="model_code",
             org_id="org_default",
         )
         assert_matches_type(ContractCreateResponse, contract, path=["response"])
@@ -629,7 +628,7 @@ class TestAsyncContracts:
         contract = await async_client.api.v1.contracts.delete(
             "contract_id",
         )
-        assert_matches_type(ContractDeleteResponse, contract, path=["response"])
+        assert_matches_type(object, contract, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
@@ -641,7 +640,7 @@ class TestAsyncContracts:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         contract = await response.parse()
-        assert_matches_type(ContractDeleteResponse, contract, path=["response"])
+        assert_matches_type(object, contract, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
@@ -653,7 +652,7 @@ class TestAsyncContracts:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             contract = await response.parse()
-            assert_matches_type(ContractDeleteResponse, contract, path=["response"])
+            assert_matches_type(object, contract, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 

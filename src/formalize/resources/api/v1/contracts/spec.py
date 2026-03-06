@@ -50,7 +50,7 @@ class SpecResource(SyncAPIResource):
         self,
         contract_id: str,
         *,
-        catala_code: str,
+        model_code: str,
         validate_syntax: bool | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -60,13 +60,13 @@ class SpecResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> SpecUpdateResponse:
         """
-        Update the Catala specification for a contract.
+        Update the formal specification for a contract.
 
         Args:
-          catala_code: The complete Catala source code for the contract. This should be valid Catala
-              code that compiles without errors.
+          model_code: The complete specification source code for the contract. This should be valid
+              specification code.
 
-          validate_syntax: If true, validate the Catala code syntax before saving. Set to false to save
+          validate_syntax: If true, validate the specification syntax before saving. Set to false to save
               draft code that may have errors.
 
           extra_headers: Send extra headers
@@ -83,7 +83,7 @@ class SpecResource(SyncAPIResource):
             f"/api/v1/contracts/{contract_id}/spec",
             body=maybe_transform(
                 {
-                    "catala_code": catala_code,
+                    "model_code": model_code,
                     "validate_syntax": validate_syntax,
                 },
                 spec_update_params.SpecUpdateParams,
@@ -106,7 +106,7 @@ class SpecResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> SpecGetResponse:
         """
-        Get the Catala specification for a contract.
+        Get the formal specification for a contract.
 
         Args:
           extra_headers: Send extra headers
@@ -156,7 +156,7 @@ class AsyncSpecResource(AsyncAPIResource):
         self,
         contract_id: str,
         *,
-        catala_code: str,
+        model_code: str,
         validate_syntax: bool | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -166,13 +166,13 @@ class AsyncSpecResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> SpecUpdateResponse:
         """
-        Update the Catala specification for a contract.
+        Update the formal specification for a contract.
 
         Args:
-          catala_code: The complete Catala source code for the contract. This should be valid Catala
-              code that compiles without errors.
+          model_code: The complete specification source code for the contract. This should be valid
+              specification code.
 
-          validate_syntax: If true, validate the Catala code syntax before saving. Set to false to save
+          validate_syntax: If true, validate the specification syntax before saving. Set to false to save
               draft code that may have errors.
 
           extra_headers: Send extra headers
@@ -189,7 +189,7 @@ class AsyncSpecResource(AsyncAPIResource):
             f"/api/v1/contracts/{contract_id}/spec",
             body=await async_maybe_transform(
                 {
-                    "catala_code": catala_code,
+                    "model_code": model_code,
                     "validate_syntax": validate_syntax,
                 },
                 spec_update_params.SpecUpdateParams,
@@ -212,7 +212,7 @@ class AsyncSpecResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> SpecGetResponse:
         """
-        Get the Catala specification for a contract.
+        Get the formal specification for a contract.
 
         Args:
           extra_headers: Send extra headers

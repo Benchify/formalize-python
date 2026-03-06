@@ -127,7 +127,11 @@ class DocxResource(SyncAPIResource):
         return self._get(
             f"/api/v1/contracts/{contract_id}/docx/download",
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                security={},
             ),
             cast_to=object,
         )
@@ -160,7 +164,11 @@ class DocxResource(SyncAPIResource):
         return self._get(
             f"/api/v1/contracts/{contract_id}/docx",
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                security={},
             ),
             cast_to=DocxGetInfoResponse,
         )
@@ -269,7 +277,11 @@ class AsyncDocxResource(AsyncAPIResource):
         return await self._get(
             f"/api/v1/contracts/{contract_id}/docx/download",
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                security={},
             ),
             cast_to=object,
         )
@@ -302,7 +314,11 @@ class AsyncDocxResource(AsyncAPIResource):
         return await self._get(
             f"/api/v1/contracts/{contract_id}/docx",
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                security={},
             ),
             cast_to=DocxGetInfoResponse,
         )

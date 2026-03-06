@@ -101,11 +101,13 @@ class TestDataResource(SyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> object:
-        """
-        Upload test scenario Excel file for a contract.
+        """Upload test scenario file for a contract.
 
-        Validates the uploaded file against the contract's Catala schema and saves it if
-        validation passes.
+        Accepts .xlsx, .xls, and .csv files.
+
+        CSV files are converted to Excel. Validates
+        the uploaded file against the contract's schema and saves it if validation
+        passes.
 
         Args:
           extra_headers: Send extra headers
@@ -213,11 +215,13 @@ class AsyncTestDataResource(AsyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> object:
-        """
-        Upload test scenario Excel file for a contract.
+        """Upload test scenario file for a contract.
 
-        Validates the uploaded file against the contract's Catala schema and saves it if
-        validation passes.
+        Accepts .xlsx, .xls, and .csv files.
+
+        CSV files are converted to Excel. Validates
+        the uploaded file against the contract's schema and saves it if validation
+        passes.
 
         Args:
           extra_headers: Send extra headers

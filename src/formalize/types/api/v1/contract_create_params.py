@@ -15,11 +15,11 @@ class ContractCreateParams(TypedDict, total=False):
     filename: Required[str]
     """Original filename of the DOCX document"""
 
-    catala_code: Optional[str]
-    """Optional pre-existing Catala formalization code"""
-
     document_title: Optional[str]
     """Human-readable title. If not provided, will be extracted from DOCX."""
+
+    model_code: Optional[str]
+    """Optional pre-existing formalization code"""
 
     org_id: Optional[str]
     """Organization ID to associate with this contract"""
