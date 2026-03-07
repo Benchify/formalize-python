@@ -60,8 +60,8 @@ class ColumnMappingsResource(SyncAPIResource):
         Return fuzzy-match suggestions and any saved mappings for a dataset.
 
         Suggestions are computed on the fly by comparing the dataset's Excel headers
-        against the Catala scope schema extracted from the contract's current
-        catala_code. Saved user overrides are layered on top.
+        against the scope schema extracted from the contract's current model code. Saved
+        user overrides are layered on top.
 
         Args:
           extra_headers: Send extra headers
@@ -168,8 +168,8 @@ class AsyncColumnMappingsResource(AsyncAPIResource):
         Return fuzzy-match suggestions and any saved mappings for a dataset.
 
         Suggestions are computed on the fly by comparing the dataset's Excel headers
-        against the Catala scope schema extracted from the contract's current
-        catala_code. Saved user overrides are layered on top.
+        against the scope schema extracted from the contract's current model code. Saved
+        user overrides are layered on top.
 
         Args:
           extra_headers: Send extra headers

@@ -9,7 +9,7 @@ __all__ = ["ContractEditFromDocxResponse"]
 
 
 class ContractEditFromDocxResponse(BaseModel):
-    """Result of applying docx changes to the Catala formalization."""
+    """Result of applying docx changes to the contract formalization."""
 
     changes_applied: List[DocxChange]
 
@@ -17,10 +17,10 @@ class ContractEditFromDocxResponse(BaseModel):
 
     latency_seconds: float
 
-    original_catala: str
+    original_model_code: str
 
     success: bool
 
-    updated_catala: str
+    updated_model_code: str
 
     final_error: Optional[str] = None

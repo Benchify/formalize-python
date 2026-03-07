@@ -9,7 +9,7 @@ __all__ = ["SpecUpdateResponse"]
 
 
 class SpecUpdateResponse(BaseModel):
-    """Response after updating the Catala specification."""
+    """Response after updating the formal specification."""
 
     contract_id: str
     """The updated contract's ID"""
@@ -30,7 +30,7 @@ class SpecUpdateResponse(BaseModel):
     """Timestamp of the update"""
 
     validation_passed: bool
-    """Whether the Catala code passed syntax validation"""
+    """Whether the specification passed syntax validation"""
 
     validation_errors: Optional[List[str]] = None
     """List of validation errors if validation failed"""

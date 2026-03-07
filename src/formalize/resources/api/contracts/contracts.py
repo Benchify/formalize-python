@@ -67,17 +67,13 @@ from ...._response import (
     async_to_streamed_response_wrapper,
 )
 from ....types.api import (
-    contract_list_params,
     contract_upload_params,
     contract_optimize_params,
     contract_diff_docx_params,
-    contract_edit_catala_params,
-    contract_save_catala_params,
     contract_evaluate_row_params,
     contract_working_copy_params,
     contract_edit_from_docx_params,
     contract_edit_from_text_params,
-    contract_validate_catala_params,
     contract_analyze_opposing_params,
     contract_upload_and_formalize_params,
     contract_test_data_with_preview_params,
@@ -110,14 +106,10 @@ from .optimization_results import (
     AsyncOptimizationResultsResourceWithStreamingResponse,
 )
 from ....types.api.contract_document import ContractDocument
-from ....types.api.contract_list_response import ContractListResponse
 from ....types.api.contract_diff_docx_response import ContractDiffDocxResponse
-from ....types.api.contract_edit_catala_response import ContractEditCatalaResponse
-from ....types.api.contract_save_catala_response import ContractSaveCatalaResponse
 from ....types.api.contract_working_copy_response import ContractWorkingCopyResponse
 from ....types.api.contract_edit_from_docx_response import ContractEditFromDocxResponse
 from ....types.api.contract_edit_from_text_response import ContractEditFromTextResponse
-from ....types.api.contract_validate_catala_response import ContractValidateCatalaResponse
 from ....types.api.contract_retrieve_model_view_response import ContractRetrieveModelViewResponse
 from ....types.api.contract_retrieve_paragraphs_response import ContractRetrieveParagraphsResponse
 from ....types.api.contract_upload_and_formalize_response import ContractUploadAndFormalizeResponse
@@ -225,50 +217,6 @@ class ContractsResource(SyncAPIResource):
             cast_to=ContractDocument,
         )
 
-    def list(
-        self,
-        *,
-        limit: int | Omit = omit,
-        org_id: Optional[str] | Omit = omit,
-        skip: int | Omit = omit,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ContractListResponse:
-        """
-        List Contracts
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        return self._get(
-            "/api/contracts",
-            options=make_request_options(
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                query=maybe_transform(
-                    {
-                        "limit": limit,
-                        "org_id": org_id,
-                        "skip": skip,
-                    },
-                    contract_list_params.ContractListParams,
-                ),
-            ),
-            cast_to=ContractListResponse,
-        )
-
     def delete(
         self,
         contract_id: str,
@@ -319,7 +267,7 @@ class ContractsResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> object:
         """
-        Analyze opposing counsel's redlines against the Catala spec.
+        Analyze opposing counsel's redlines against the contract specification.
 
         Args:
           extra_headers: Send extra headers
@@ -431,54 +379,6 @@ class ContractsResource(SyncAPIResource):
             cast_to=ContractDiffDocxResponse,
         )
 
-    def edit_catala(
-        self,
-        contract_id: str,
-        *,
-        change_description: str,
-        current_catala: Optional[str] | Omit = omit,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ContractEditCatalaResponse:
-        """
-        Apply a natural-language change to the Catala formalization.
-
-        Returns a preview of the result (does NOT auto-save). Use POST
-        /{contract_id}/save-catala to persist.
-
-        This endpoint now also generates a contract clause that can be inserted into the
-        document, making AI edits visible in the contract itself.
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not contract_id:
-            raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
-        return self._post(
-            f"/api/contracts/{contract_id}/edit-catala",
-            body=maybe_transform(
-                {
-                    "change_description": change_description,
-                    "current_catala": current_catala,
-                },
-                contract_edit_catala_params.ContractEditCatalaParams,
-            ),
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=ContractEditCatalaResponse,
-        )
-
     def edit_from_docx(
         self,
         contract_id: str,
@@ -499,7 +399,7 @@ class ContractsResource(SyncAPIResource):
         1. Diff uploaded docx against the original
         2. Build a batched change description
         3. Apply via apply_change_to_spec with validation
-        4. Return the preview (does NOT auto-save — use save-catala to persist)
+        4. Return the preview (does NOT auto-save — use save-dsl to persist)
 
         Args:
           extra_headers: Send extra headers
@@ -545,9 +445,9 @@ class ContractsResource(SyncAPIResource):
 
         The frontend sends the full list of paragraphs after the user made inline edits.
         The backend diffs them against the original docx paragraphs, maps each detected
-        change to a Catala edit, and applies them.
+        change to a specification edit, and applies them.
 
-        Returns a preview (does NOT auto-save — use save-catala to persist).
+        Returns a preview (does NOT auto-save — use save-dsl to persist).
 
         Args:
           extra_headers: Send extra headers
@@ -585,13 +485,13 @@ class ContractsResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> object:
         """
-        Evaluate a single data row against the Catala model and return every variable
+        Evaluate a single data row against the contract model and return every variable
         value.
 
-        Uses the existing AutoQueryGenerator + evaluate() pipeline but runs with
-        `trace=True` so we capture all intermediate variable assignments, not just final
-        outputs. The raw JSON trace values are returned as-is (no conversion) so the
-        frontend can render them with full type information (enums, arrays, …).
+        Uses the existing evaluation pipeline but runs with `trace=True` so we capture
+        all intermediate variable assignments, not just final outputs. The raw JSON
+        trace values are returned as-is (no conversion) so the frontend can render them
+        with full type information (enums, arrays, ...).
 
         Query wrapper scopes (`Query_*`) are filtered from the response — only the
         model's own scopes are returned.
@@ -653,42 +553,6 @@ class ContractsResource(SyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
         return self._post(
             f"/api/contracts/{contract_id}/export",
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=object,
-        )
-
-    def fix_formalization(
-        self,
-        contract_id: str,
-        *,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> object:
-        """
-        AI-powered iterative fix loop for failed formalizations.
-
-        NOT YET IMPLEMENTED — the new incremental autoformalization agent is under
-        construction. See docs/AUTOFORMALIZATION_AGENT.md for the design.
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not contract_id:
-            raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
-        return self._post(
-            f"/api/contracts/{contract_id}/fix-formalization",
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -782,39 +646,6 @@ class ContractsResource(SyncAPIResource):
             cast_to=object,
         )
 
-    def retrieve_catala(
-        self,
-        contract_id: str,
-        *,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> object:
-        """
-        Return the current Catala formalization text.
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not contract_id:
-            raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
-        return self._get(
-            f"/api/contracts/{contract_id}/catala",
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=object,
-        )
-
     def retrieve_docx(
         self,
         contract_id: str,
@@ -865,7 +696,7 @@ class ContractsResource(SyncAPIResource):
 
         Suggestions are generated based on:
 
-        - The contract text/Catala code
+        - The contract text and specification code
         - The configured output variable to optimize
         - The desired optimization direction (increase/decrease)
 
@@ -943,8 +774,7 @@ class ContractsResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> ContractRetrieveModelViewResponse:
         """
-        Return a structured model view generated statically from the Catala
-        formalization.
+        Return a structured model view generated from the contract formalization.
 
         Organizes the contract's formal model into the document's article/section
         hierarchy with scope schemas, type definitions, and execution order.
@@ -1022,7 +852,7 @@ class ContractsResource(SyncAPIResource):
 
         1. Loads test scenarios from the Excel file (or specified dataset)
         2. Gets accepted + in-review redlines
-        3. Applies those redlines to create a "working copy" Catala spec
+        3. Applies those redlines to create a "working copy" specification
         4. Evaluates each test scenario against both base and working copy specs
         5. Returns scenarios with both "Payment" and "Working Copy Payment" columns
 
@@ -1064,46 +894,11 @@ class ContractsResource(SyncAPIResource):
             cast_to=object,
         )
 
-    def save_catala(
-        self,
-        contract_id: str,
-        *,
-        catala_code: str,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ContractSaveCatalaResponse:
-        """
-        Persist catala code to the database (after user confirms a preview).
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not contract_id:
-            raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
-        return self._post(
-            f"/api/contracts/{contract_id}/save-catala",
-            body=maybe_transform({"catala_code": catala_code}, contract_save_catala_params.ContractSaveCatalaParams),
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=ContractSaveCatalaResponse,
-        )
-
     def test_data_with_preview(
         self,
         contract_id: str,
         *,
-        preview_catala: str,
+        preview_model_code: str,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -1112,20 +907,20 @@ class ContractsResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> object:
         """
-        Evaluate test scenarios using a preview Catala spec (without saving).
+        Evaluate test scenarios using a preview specification (without saving).
 
         This endpoint allows the user to test changes before committing them:
 
         1. Loads test scenarios from the Excel file
-        2. Uses the provided preview_catala as the "working copy" instead of applying
-           redlines
+        2. Uses the provided preview_model_code as the "working copy" instead of
+           applying redlines
         3. Evaluates each test scenario against both base (saved) and preview specs
         4. Returns scenarios with comparison columns
 
         This does NOT modify the database - it's purely for preview/testing.
 
         Args:
-          preview_catala: The preview Catala code to evaluate
+          preview_model_code: The preview specification code to evaluate
 
           extra_headers: Send extra headers
 
@@ -1140,7 +935,7 @@ class ContractsResource(SyncAPIResource):
         return self._post(
             f"/api/contracts/{contract_id}/test-data-with-preview",
             body=maybe_transform(
-                {"preview_catala": preview_catala},
+                {"preview_model_code": preview_model_code},
                 contract_test_data_with_preview_params.ContractTestDataWithPreviewParams,
             ),
             options=make_request_options(
@@ -1255,42 +1050,9 @@ class ContractsResource(SyncAPIResource):
                     },
                     contract_upload_and_formalize_params.ContractUploadAndFormalizeParams,
                 ),
+                security={"bearer_auth": True},
             ),
             cast_to=ContractUploadAndFormalizeResponse,
-        )
-
-    def validate_catala(
-        self,
-        *,
-        catala_code: str,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ContractValidateCatalaResponse:
-        """
-        Typecheck Catala code without saving.
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        return self._post(
-            "/api/contracts/validate-catala",
-            body=maybe_transform(
-                {"catala_code": catala_code}, contract_validate_catala_params.ContractValidateCatalaParams
-            ),
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=ContractValidateCatalaResponse,
         )
 
     def working_copy(
@@ -1306,14 +1068,14 @@ class ContractsResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> ContractWorkingCopyResponse:
         """
-        Preview a working copy of the Catala formalization with selected redlines
+        Preview a working copy of the contract formalization with selected redlines
         applied.
 
         This endpoint takes a list of redline IDs and applies them sequentially to the
-        base Catala formalization, returning a preview of the resulting code.
+        base formalization, returning a preview of the resulting code.
 
         The working copy is NOT persisted — it's a preview for the user to review. Use
-        POST /{contract_id}/save-catala to persist the working copy if desired.
+        POST /{contract_id}/save-dsl to persist the working copy if desired.
 
         Args:
           extra_headers: Send extra headers
@@ -1435,50 +1197,6 @@ class AsyncContractsResource(AsyncAPIResource):
             cast_to=ContractDocument,
         )
 
-    async def list(
-        self,
-        *,
-        limit: int | Omit = omit,
-        org_id: Optional[str] | Omit = omit,
-        skip: int | Omit = omit,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ContractListResponse:
-        """
-        List Contracts
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        return await self._get(
-            "/api/contracts",
-            options=make_request_options(
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                query=await async_maybe_transform(
-                    {
-                        "limit": limit,
-                        "org_id": org_id,
-                        "skip": skip,
-                    },
-                    contract_list_params.ContractListParams,
-                ),
-            ),
-            cast_to=ContractListResponse,
-        )
-
     async def delete(
         self,
         contract_id: str,
@@ -1529,7 +1247,7 @@ class AsyncContractsResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> object:
         """
-        Analyze opposing counsel's redlines against the Catala spec.
+        Analyze opposing counsel's redlines against the contract specification.
 
         Args:
           extra_headers: Send extra headers
@@ -1641,54 +1359,6 @@ class AsyncContractsResource(AsyncAPIResource):
             cast_to=ContractDiffDocxResponse,
         )
 
-    async def edit_catala(
-        self,
-        contract_id: str,
-        *,
-        change_description: str,
-        current_catala: Optional[str] | Omit = omit,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ContractEditCatalaResponse:
-        """
-        Apply a natural-language change to the Catala formalization.
-
-        Returns a preview of the result (does NOT auto-save). Use POST
-        /{contract_id}/save-catala to persist.
-
-        This endpoint now also generates a contract clause that can be inserted into the
-        document, making AI edits visible in the contract itself.
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not contract_id:
-            raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
-        return await self._post(
-            f"/api/contracts/{contract_id}/edit-catala",
-            body=await async_maybe_transform(
-                {
-                    "change_description": change_description,
-                    "current_catala": current_catala,
-                },
-                contract_edit_catala_params.ContractEditCatalaParams,
-            ),
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=ContractEditCatalaResponse,
-        )
-
     async def edit_from_docx(
         self,
         contract_id: str,
@@ -1709,7 +1379,7 @@ class AsyncContractsResource(AsyncAPIResource):
         1. Diff uploaded docx against the original
         2. Build a batched change description
         3. Apply via apply_change_to_spec with validation
-        4. Return the preview (does NOT auto-save — use save-catala to persist)
+        4. Return the preview (does NOT auto-save — use save-dsl to persist)
 
         Args:
           extra_headers: Send extra headers
@@ -1755,9 +1425,9 @@ class AsyncContractsResource(AsyncAPIResource):
 
         The frontend sends the full list of paragraphs after the user made inline edits.
         The backend diffs them against the original docx paragraphs, maps each detected
-        change to a Catala edit, and applies them.
+        change to a specification edit, and applies them.
 
-        Returns a preview (does NOT auto-save — use save-catala to persist).
+        Returns a preview (does NOT auto-save — use save-dsl to persist).
 
         Args:
           extra_headers: Send extra headers
@@ -1795,13 +1465,13 @@ class AsyncContractsResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> object:
         """
-        Evaluate a single data row against the Catala model and return every variable
+        Evaluate a single data row against the contract model and return every variable
         value.
 
-        Uses the existing AutoQueryGenerator + evaluate() pipeline but runs with
-        `trace=True` so we capture all intermediate variable assignments, not just final
-        outputs. The raw JSON trace values are returned as-is (no conversion) so the
-        frontend can render them with full type information (enums, arrays, …).
+        Uses the existing evaluation pipeline but runs with `trace=True` so we capture
+        all intermediate variable assignments, not just final outputs. The raw JSON
+        trace values are returned as-is (no conversion) so the frontend can render them
+        with full type information (enums, arrays, ...).
 
         Query wrapper scopes (`Query_*`) are filtered from the response — only the
         model's own scopes are returned.
@@ -1863,42 +1533,6 @@ class AsyncContractsResource(AsyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
         return await self._post(
             f"/api/contracts/{contract_id}/export",
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=object,
-        )
-
-    async def fix_formalization(
-        self,
-        contract_id: str,
-        *,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> object:
-        """
-        AI-powered iterative fix loop for failed formalizations.
-
-        NOT YET IMPLEMENTED — the new incremental autoformalization agent is under
-        construction. See docs/AUTOFORMALIZATION_AGENT.md for the design.
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not contract_id:
-            raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
-        return await self._post(
-            f"/api/contracts/{contract_id}/fix-formalization",
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -1992,39 +1626,6 @@ class AsyncContractsResource(AsyncAPIResource):
             cast_to=object,
         )
 
-    async def retrieve_catala(
-        self,
-        contract_id: str,
-        *,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> object:
-        """
-        Return the current Catala formalization text.
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not contract_id:
-            raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
-        return await self._get(
-            f"/api/contracts/{contract_id}/catala",
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=object,
-        )
-
     async def retrieve_docx(
         self,
         contract_id: str,
@@ -2075,7 +1676,7 @@ class AsyncContractsResource(AsyncAPIResource):
 
         Suggestions are generated based on:
 
-        - The contract text/Catala code
+        - The contract text and specification code
         - The configured output variable to optimize
         - The desired optimization direction (increase/decrease)
 
@@ -2153,8 +1754,7 @@ class AsyncContractsResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> ContractRetrieveModelViewResponse:
         """
-        Return a structured model view generated statically from the Catala
-        formalization.
+        Return a structured model view generated from the contract formalization.
 
         Organizes the contract's formal model into the document's article/section
         hierarchy with scope schemas, type definitions, and execution order.
@@ -2232,7 +1832,7 @@ class AsyncContractsResource(AsyncAPIResource):
 
         1. Loads test scenarios from the Excel file (or specified dataset)
         2. Gets accepted + in-review redlines
-        3. Applies those redlines to create a "working copy" Catala spec
+        3. Applies those redlines to create a "working copy" specification
         4. Evaluates each test scenario against both base and working copy specs
         5. Returns scenarios with both "Payment" and "Working Copy Payment" columns
 
@@ -2274,48 +1874,11 @@ class AsyncContractsResource(AsyncAPIResource):
             cast_to=object,
         )
 
-    async def save_catala(
-        self,
-        contract_id: str,
-        *,
-        catala_code: str,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ContractSaveCatalaResponse:
-        """
-        Persist catala code to the database (after user confirms a preview).
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not contract_id:
-            raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
-        return await self._post(
-            f"/api/contracts/{contract_id}/save-catala",
-            body=await async_maybe_transform(
-                {"catala_code": catala_code}, contract_save_catala_params.ContractSaveCatalaParams
-            ),
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=ContractSaveCatalaResponse,
-        )
-
     async def test_data_with_preview(
         self,
         contract_id: str,
         *,
-        preview_catala: str,
+        preview_model_code: str,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -2324,20 +1887,20 @@ class AsyncContractsResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> object:
         """
-        Evaluate test scenarios using a preview Catala spec (without saving).
+        Evaluate test scenarios using a preview specification (without saving).
 
         This endpoint allows the user to test changes before committing them:
 
         1. Loads test scenarios from the Excel file
-        2. Uses the provided preview_catala as the "working copy" instead of applying
-           redlines
+        2. Uses the provided preview_model_code as the "working copy" instead of
+           applying redlines
         3. Evaluates each test scenario against both base (saved) and preview specs
         4. Returns scenarios with comparison columns
 
         This does NOT modify the database - it's purely for preview/testing.
 
         Args:
-          preview_catala: The preview Catala code to evaluate
+          preview_model_code: The preview specification code to evaluate
 
           extra_headers: Send extra headers
 
@@ -2352,7 +1915,7 @@ class AsyncContractsResource(AsyncAPIResource):
         return await self._post(
             f"/api/contracts/{contract_id}/test-data-with-preview",
             body=await async_maybe_transform(
-                {"preview_catala": preview_catala},
+                {"preview_model_code": preview_model_code},
                 contract_test_data_with_preview_params.ContractTestDataWithPreviewParams,
             ),
             options=make_request_options(
@@ -2469,42 +2032,9 @@ class AsyncContractsResource(AsyncAPIResource):
                     },
                     contract_upload_and_formalize_params.ContractUploadAndFormalizeParams,
                 ),
+                security={"bearer_auth": True},
             ),
             cast_to=ContractUploadAndFormalizeResponse,
-        )
-
-    async def validate_catala(
-        self,
-        *,
-        catala_code: str,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ContractValidateCatalaResponse:
-        """
-        Typecheck Catala code without saving.
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        return await self._post(
-            "/api/contracts/validate-catala",
-            body=await async_maybe_transform(
-                {"catala_code": catala_code}, contract_validate_catala_params.ContractValidateCatalaParams
-            ),
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=ContractValidateCatalaResponse,
         )
 
     async def working_copy(
@@ -2520,14 +2050,14 @@ class AsyncContractsResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> ContractWorkingCopyResponse:
         """
-        Preview a working copy of the Catala formalization with selected redlines
+        Preview a working copy of the contract formalization with selected redlines
         applied.
 
         This endpoint takes a list of redline IDs and applies them sequentially to the
-        base Catala formalization, returning a preview of the resulting code.
+        base formalization, returning a preview of the resulting code.
 
         The working copy is NOT persisted — it's a preview for the user to review. Use
-        POST /{contract_id}/save-catala to persist the working copy if desired.
+        POST /{contract_id}/save-dsl to persist the working copy if desired.
 
         Args:
           extra_headers: Send extra headers
@@ -2559,9 +2089,6 @@ class ContractsResourceWithRawResponse:
         self.retrieve = to_raw_response_wrapper(
             contracts.retrieve,
         )
-        self.list = to_raw_response_wrapper(
-            contracts.list,
-        )
         self.delete = to_raw_response_wrapper(
             contracts.delete,
         )
@@ -2573,9 +2100,6 @@ class ContractsResourceWithRawResponse:
         )
         self.diff_docx = to_raw_response_wrapper(
             contracts.diff_docx,
-        )
-        self.edit_catala = to_raw_response_wrapper(
-            contracts.edit_catala,
         )
         self.edit_from_docx = to_raw_response_wrapper(
             contracts.edit_from_docx,
@@ -2589,17 +2113,11 @@ class ContractsResourceWithRawResponse:
         self.export = to_raw_response_wrapper(
             contracts.export,
         )
-        self.fix_formalization = to_raw_response_wrapper(
-            contracts.fix_formalization,
-        )
         self.optimize = to_raw_response_wrapper(
             contracts.optimize,
         )
         self.refresh_scope_metadata = to_raw_response_wrapper(
             contracts.refresh_scope_metadata,
-        )
-        self.retrieve_catala = to_raw_response_wrapper(
-            contracts.retrieve_catala,
         )
         self.retrieve_docx = to_raw_response_wrapper(
             contracts.retrieve_docx,
@@ -2619,9 +2137,6 @@ class ContractsResourceWithRawResponse:
         self.retrieve_test_data_with_working_copy = to_raw_response_wrapper(
             contracts.retrieve_test_data_with_working_copy,
         )
-        self.save_catala = to_raw_response_wrapper(
-            contracts.save_catala,
-        )
         self.test_data_with_preview = to_raw_response_wrapper(
             contracts.test_data_with_preview,
         )
@@ -2630,9 +2145,6 @@ class ContractsResourceWithRawResponse:
         )
         self.upload_and_formalize = to_raw_response_wrapper(
             contracts.upload_and_formalize,
-        )
-        self.validate_catala = to_raw_response_wrapper(
-            contracts.validate_catala,
         )
         self.working_copy = to_raw_response_wrapper(
             contracts.working_copy,
@@ -2692,9 +2204,6 @@ class AsyncContractsResourceWithRawResponse:
         self.retrieve = async_to_raw_response_wrapper(
             contracts.retrieve,
         )
-        self.list = async_to_raw_response_wrapper(
-            contracts.list,
-        )
         self.delete = async_to_raw_response_wrapper(
             contracts.delete,
         )
@@ -2706,9 +2215,6 @@ class AsyncContractsResourceWithRawResponse:
         )
         self.diff_docx = async_to_raw_response_wrapper(
             contracts.diff_docx,
-        )
-        self.edit_catala = async_to_raw_response_wrapper(
-            contracts.edit_catala,
         )
         self.edit_from_docx = async_to_raw_response_wrapper(
             contracts.edit_from_docx,
@@ -2722,17 +2228,11 @@ class AsyncContractsResourceWithRawResponse:
         self.export = async_to_raw_response_wrapper(
             contracts.export,
         )
-        self.fix_formalization = async_to_raw_response_wrapper(
-            contracts.fix_formalization,
-        )
         self.optimize = async_to_raw_response_wrapper(
             contracts.optimize,
         )
         self.refresh_scope_metadata = async_to_raw_response_wrapper(
             contracts.refresh_scope_metadata,
-        )
-        self.retrieve_catala = async_to_raw_response_wrapper(
-            contracts.retrieve_catala,
         )
         self.retrieve_docx = async_to_raw_response_wrapper(
             contracts.retrieve_docx,
@@ -2752,9 +2252,6 @@ class AsyncContractsResourceWithRawResponse:
         self.retrieve_test_data_with_working_copy = async_to_raw_response_wrapper(
             contracts.retrieve_test_data_with_working_copy,
         )
-        self.save_catala = async_to_raw_response_wrapper(
-            contracts.save_catala,
-        )
         self.test_data_with_preview = async_to_raw_response_wrapper(
             contracts.test_data_with_preview,
         )
@@ -2763,9 +2260,6 @@ class AsyncContractsResourceWithRawResponse:
         )
         self.upload_and_formalize = async_to_raw_response_wrapper(
             contracts.upload_and_formalize,
-        )
-        self.validate_catala = async_to_raw_response_wrapper(
-            contracts.validate_catala,
         )
         self.working_copy = async_to_raw_response_wrapper(
             contracts.working_copy,
@@ -2825,9 +2319,6 @@ class ContractsResourceWithStreamingResponse:
         self.retrieve = to_streamed_response_wrapper(
             contracts.retrieve,
         )
-        self.list = to_streamed_response_wrapper(
-            contracts.list,
-        )
         self.delete = to_streamed_response_wrapper(
             contracts.delete,
         )
@@ -2839,9 +2330,6 @@ class ContractsResourceWithStreamingResponse:
         )
         self.diff_docx = to_streamed_response_wrapper(
             contracts.diff_docx,
-        )
-        self.edit_catala = to_streamed_response_wrapper(
-            contracts.edit_catala,
         )
         self.edit_from_docx = to_streamed_response_wrapper(
             contracts.edit_from_docx,
@@ -2855,17 +2343,11 @@ class ContractsResourceWithStreamingResponse:
         self.export = to_streamed_response_wrapper(
             contracts.export,
         )
-        self.fix_formalization = to_streamed_response_wrapper(
-            contracts.fix_formalization,
-        )
         self.optimize = to_streamed_response_wrapper(
             contracts.optimize,
         )
         self.refresh_scope_metadata = to_streamed_response_wrapper(
             contracts.refresh_scope_metadata,
-        )
-        self.retrieve_catala = to_streamed_response_wrapper(
-            contracts.retrieve_catala,
         )
         self.retrieve_docx = to_streamed_response_wrapper(
             contracts.retrieve_docx,
@@ -2885,9 +2367,6 @@ class ContractsResourceWithStreamingResponse:
         self.retrieve_test_data_with_working_copy = to_streamed_response_wrapper(
             contracts.retrieve_test_data_with_working_copy,
         )
-        self.save_catala = to_streamed_response_wrapper(
-            contracts.save_catala,
-        )
         self.test_data_with_preview = to_streamed_response_wrapper(
             contracts.test_data_with_preview,
         )
@@ -2896,9 +2375,6 @@ class ContractsResourceWithStreamingResponse:
         )
         self.upload_and_formalize = to_streamed_response_wrapper(
             contracts.upload_and_formalize,
-        )
-        self.validate_catala = to_streamed_response_wrapper(
-            contracts.validate_catala,
         )
         self.working_copy = to_streamed_response_wrapper(
             contracts.working_copy,
@@ -2958,9 +2434,6 @@ class AsyncContractsResourceWithStreamingResponse:
         self.retrieve = async_to_streamed_response_wrapper(
             contracts.retrieve,
         )
-        self.list = async_to_streamed_response_wrapper(
-            contracts.list,
-        )
         self.delete = async_to_streamed_response_wrapper(
             contracts.delete,
         )
@@ -2972,9 +2445,6 @@ class AsyncContractsResourceWithStreamingResponse:
         )
         self.diff_docx = async_to_streamed_response_wrapper(
             contracts.diff_docx,
-        )
-        self.edit_catala = async_to_streamed_response_wrapper(
-            contracts.edit_catala,
         )
         self.edit_from_docx = async_to_streamed_response_wrapper(
             contracts.edit_from_docx,
@@ -2988,17 +2458,11 @@ class AsyncContractsResourceWithStreamingResponse:
         self.export = async_to_streamed_response_wrapper(
             contracts.export,
         )
-        self.fix_formalization = async_to_streamed_response_wrapper(
-            contracts.fix_formalization,
-        )
         self.optimize = async_to_streamed_response_wrapper(
             contracts.optimize,
         )
         self.refresh_scope_metadata = async_to_streamed_response_wrapper(
             contracts.refresh_scope_metadata,
-        )
-        self.retrieve_catala = async_to_streamed_response_wrapper(
-            contracts.retrieve_catala,
         )
         self.retrieve_docx = async_to_streamed_response_wrapper(
             contracts.retrieve_docx,
@@ -3018,9 +2482,6 @@ class AsyncContractsResourceWithStreamingResponse:
         self.retrieve_test_data_with_working_copy = async_to_streamed_response_wrapper(
             contracts.retrieve_test_data_with_working_copy,
         )
-        self.save_catala = async_to_streamed_response_wrapper(
-            contracts.save_catala,
-        )
         self.test_data_with_preview = async_to_streamed_response_wrapper(
             contracts.test_data_with_preview,
         )
@@ -3029,9 +2490,6 @@ class AsyncContractsResourceWithStreamingResponse:
         )
         self.upload_and_formalize = async_to_streamed_response_wrapper(
             contracts.upload_and_formalize,
-        )
-        self.validate_catala = async_to_streamed_response_wrapper(
-            contracts.validate_catala,
         )
         self.working_copy = async_to_streamed_response_wrapper(
             contracts.working_copy,

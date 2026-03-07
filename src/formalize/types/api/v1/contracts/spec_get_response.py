@@ -2,6 +2,8 @@
 
 from typing import Optional
 
+from pydantic import Field as FieldInfo
+
 from ....._models import BaseModel
 from ..formalization_status import FormalizationStatus
 
@@ -9,7 +11,7 @@ __all__ = ["SpecGetResponse"]
 
 
 class SpecGetResponse(BaseModel):
-    """Response containing the Catala specification code."""
+    """Response containing the formal specification."""
 
     contract_id: str
     """The contract's ID"""
@@ -18,7 +20,7 @@ class SpecGetResponse(BaseModel):
     """Current formalization status"""
 
     has_code: bool
-    """Whether the contract has Catala code"""
+    """Whether the contract has been formalized"""
 
-    catala_code: Optional[str] = None
-    """The Catala source code, or null if not yet formalized"""
+    api_model_code: Optional[str] = FieldInfo(alias="model_code", default=None)
+    """The specification source code, or null if not yet formalized"""

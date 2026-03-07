@@ -30,14 +30,6 @@ from .audit import (
     AuditResourceWithStreamingResponse,
     AsyncAuditResourceWithStreamingResponse,
 )
-from .datasets import (
-    DatasetsResource,
-    AsyncDatasetsResource,
-    DatasetsResourceWithRawResponse,
-    AsyncDatasetsResourceWithRawResponse,
-    DatasetsResourceWithStreamingResponse,
-    AsyncDatasetsResourceWithStreamingResponse,
-)
 from ....._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
 from ....._utils import maybe_transform, async_maybe_transform
 from ....._compat import cached_property
@@ -59,7 +51,6 @@ from .....types.api.v1 import (
 from .....types.api.v1.formalization_status import FormalizationStatus
 from .....types.api.v1.contract_list_response import ContractListResponse
 from .....types.api.v1.contract_create_response import ContractCreateResponse
-from .....types.api.v1.contract_delete_response import ContractDeleteResponse
 from .....types.api.v1.contract_export_response import ContractExportResponse
 from .....types.api.v1.contract_retrieve_response import ContractRetrieveResponse
 from .....types.api.v1.contract_get_schema_response import ContractGetSchemaResponse
@@ -98,13 +89,6 @@ class ContractsResource(SyncAPIResource):
         return DocxResource(self._client)
 
     @cached_property
-    def datasets(self) -> DatasetsResource:
-        """
-        Contract document management - upload, view, delete, and manage contract documents
-        """
-        return DatasetsResource(self._client)
-
-    @cached_property
     def with_raw_response(self) -> ContractsResourceWithRawResponse:
         """
         This property can be used as a prefix for any HTTP method call to return
@@ -128,8 +112,8 @@ class ContractsResource(SyncAPIResource):
         *,
         docx_base64: str,
         filename: str,
-        catala_code: Optional[str] | Omit = omit,
         document_title: Optional[str] | Omit = omit,
+        model_code: Optional[str] | Omit = omit,
         org_id: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -146,9 +130,9 @@ class ContractsResource(SyncAPIResource):
 
           filename: Original filename of the DOCX document
 
-          catala_code: Optional pre-existing Catala formalization code
-
           document_title: Human-readable title. If not provided, will be extracted from DOCX.
+
+          model_code: Optional pre-existing formalization code
 
           org_id: Organization ID to associate with this contract
 
@@ -166,8 +150,8 @@ class ContractsResource(SyncAPIResource):
                 {
                     "docx_base64": docx_base64,
                     "filename": filename,
-                    "catala_code": catala_code,
                     "document_title": document_title,
+                    "model_code": model_code,
                     "org_id": org_id,
                 },
                 contract_create_params.ContractCreateParams,
@@ -189,8 +173,11 @@ class ContractsResource(SyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> ContractRetrieveResponse:
-        """
-        Get detailed information about a specific contract.
+        """Get detailed information about a specific contract.
+
+        Requires authentication.
+
+        User must be a member of the contract's organization.
 
         Args:
           extra_headers: Send extra headers
@@ -206,7 +193,11 @@ class ContractsResource(SyncAPIResource):
         return self._get(
             f"/api/v1/contracts/{contract_id}",
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                security={"bearer_auth": True},
             ),
             cast_to=ContractRetrieveResponse,
         )
@@ -225,15 +216,19 @@ class ContractsResource(SyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> ContractListResponse:
-        """
-        List all contracts for an organization.
+        """List all contracts for an organization.
+
+        Requires authentication.
+
+        Returns contracts for the user's organization. If
+        org_id is provided, user must be a member of that org.
 
         Args:
           limit: Max contracts to return
 
           offset: Offset for pagination
 
-          org_id: Organization ID (defaults to default org)
+          org_id: Organization ID. If authenticated, defaults to user's org.
 
           status: Filter by formalization status
 
@@ -261,6 +256,7 @@ class ContractsResource(SyncAPIResource):
                     },
                     contract_list_params.ContractListParams,
                 ),
+                security={"bearer_auth": True},
             ),
             cast_to=ContractListResponse,
         )
@@ -275,7 +271,7 @@ class ContractsResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ContractDeleteResponse:
+    ) -> object:
         """
         Delete a contract and all associated data.
 
@@ -295,7 +291,7 @@ class ContractsResource(SyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=ContractDeleteResponse,
+            cast_to=object,
         )
 
     def export(
@@ -499,7 +495,7 @@ class ContractsResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> ContractUpdateMetadataResponse:
         """
-        Update metadata for a contract without changing the DOCX or Catala code.
+        Update metadata for a contract without changing the DOCX or specification.
 
         Args:
           contract_metadata: Custom metadata dictionary. Will be merged with existing metadata.
@@ -562,13 +558,6 @@ class AsyncContractsResource(AsyncAPIResource):
         return AsyncDocxResource(self._client)
 
     @cached_property
-    def datasets(self) -> AsyncDatasetsResource:
-        """
-        Contract document management - upload, view, delete, and manage contract documents
-        """
-        return AsyncDatasetsResource(self._client)
-
-    @cached_property
     def with_raw_response(self) -> AsyncContractsResourceWithRawResponse:
         """
         This property can be used as a prefix for any HTTP method call to return
@@ -592,8 +581,8 @@ class AsyncContractsResource(AsyncAPIResource):
         *,
         docx_base64: str,
         filename: str,
-        catala_code: Optional[str] | Omit = omit,
         document_title: Optional[str] | Omit = omit,
+        model_code: Optional[str] | Omit = omit,
         org_id: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -610,9 +599,9 @@ class AsyncContractsResource(AsyncAPIResource):
 
           filename: Original filename of the DOCX document
 
-          catala_code: Optional pre-existing Catala formalization code
-
           document_title: Human-readable title. If not provided, will be extracted from DOCX.
+
+          model_code: Optional pre-existing formalization code
 
           org_id: Organization ID to associate with this contract
 
@@ -630,8 +619,8 @@ class AsyncContractsResource(AsyncAPIResource):
                 {
                     "docx_base64": docx_base64,
                     "filename": filename,
-                    "catala_code": catala_code,
                     "document_title": document_title,
+                    "model_code": model_code,
                     "org_id": org_id,
                 },
                 contract_create_params.ContractCreateParams,
@@ -653,8 +642,11 @@ class AsyncContractsResource(AsyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> ContractRetrieveResponse:
-        """
-        Get detailed information about a specific contract.
+        """Get detailed information about a specific contract.
+
+        Requires authentication.
+
+        User must be a member of the contract's organization.
 
         Args:
           extra_headers: Send extra headers
@@ -670,7 +662,11 @@ class AsyncContractsResource(AsyncAPIResource):
         return await self._get(
             f"/api/v1/contracts/{contract_id}",
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                security={"bearer_auth": True},
             ),
             cast_to=ContractRetrieveResponse,
         )
@@ -689,15 +685,19 @@ class AsyncContractsResource(AsyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> ContractListResponse:
-        """
-        List all contracts for an organization.
+        """List all contracts for an organization.
+
+        Requires authentication.
+
+        Returns contracts for the user's organization. If
+        org_id is provided, user must be a member of that org.
 
         Args:
           limit: Max contracts to return
 
           offset: Offset for pagination
 
-          org_id: Organization ID (defaults to default org)
+          org_id: Organization ID. If authenticated, defaults to user's org.
 
           status: Filter by formalization status
 
@@ -725,6 +725,7 @@ class AsyncContractsResource(AsyncAPIResource):
                     },
                     contract_list_params.ContractListParams,
                 ),
+                security={"bearer_auth": True},
             ),
             cast_to=ContractListResponse,
         )
@@ -739,7 +740,7 @@ class AsyncContractsResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ContractDeleteResponse:
+    ) -> object:
         """
         Delete a contract and all associated data.
 
@@ -759,7 +760,7 @@ class AsyncContractsResource(AsyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=ContractDeleteResponse,
+            cast_to=object,
         )
 
     async def export(
@@ -963,7 +964,7 @@ class AsyncContractsResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> ContractUpdateMetadataResponse:
         """
-        Update metadata for a contract without changing the DOCX or Catala code.
+        Update metadata for a contract without changing the DOCX or specification.
 
         Args:
           contract_metadata: Custom metadata dictionary. Will be merged with existing metadata.
@@ -1055,13 +1056,6 @@ class ContractsResourceWithRawResponse:
         """
         return DocxResourceWithRawResponse(self._contracts.docx)
 
-    @cached_property
-    def datasets(self) -> DatasetsResourceWithRawResponse:
-        """
-        Contract document management - upload, view, delete, and manage contract documents
-        """
-        return DatasetsResourceWithRawResponse(self._contracts.datasets)
-
 
 class AsyncContractsResourceWithRawResponse:
     def __init__(self, contracts: AsyncContractsResource) -> None:
@@ -1118,13 +1112,6 @@ class AsyncContractsResourceWithRawResponse:
         Contract document management - upload, view, delete, and manage contract documents
         """
         return AsyncDocxResourceWithRawResponse(self._contracts.docx)
-
-    @cached_property
-    def datasets(self) -> AsyncDatasetsResourceWithRawResponse:
-        """
-        Contract document management - upload, view, delete, and manage contract documents
-        """
-        return AsyncDatasetsResourceWithRawResponse(self._contracts.datasets)
 
 
 class ContractsResourceWithStreamingResponse:
@@ -1183,13 +1170,6 @@ class ContractsResourceWithStreamingResponse:
         """
         return DocxResourceWithStreamingResponse(self._contracts.docx)
 
-    @cached_property
-    def datasets(self) -> DatasetsResourceWithStreamingResponse:
-        """
-        Contract document management - upload, view, delete, and manage contract documents
-        """
-        return DatasetsResourceWithStreamingResponse(self._contracts.datasets)
-
 
 class AsyncContractsResourceWithStreamingResponse:
     def __init__(self, contracts: AsyncContractsResource) -> None:
@@ -1246,10 +1226,3 @@ class AsyncContractsResourceWithStreamingResponse:
         Contract document management - upload, view, delete, and manage contract documents
         """
         return AsyncDocxResourceWithStreamingResponse(self._contracts.docx)
-
-    @cached_property
-    def datasets(self) -> AsyncDatasetsResourceWithStreamingResponse:
-        """
-        Contract document management - upload, view, delete, and manage contract documents
-        """
-        return AsyncDatasetsResourceWithStreamingResponse(self._contracts.datasets)

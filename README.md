@@ -25,12 +25,9 @@ pip install benchify
 The full API of this library can be found in [api.md](api.md).
 
 ```python
-import os
 from formalize import Formalize
 
-client = Formalize(
-    api_key=os.environ.get("FORMALIZE_API_KEY"),  # This is the default and can be omitted
-)
+client = Formalize()
 
 contracts = client.api.v1.contracts.list()
 print(contracts.contracts)
@@ -46,13 +43,10 @@ so that your API Key is not stored in source control.
 Simply import `AsyncFormalize` instead of `Formalize` and use `await` with each API call:
 
 ```python
-import os
 import asyncio
 from formalize import AsyncFormalize
 
-client = AsyncFormalize(
-    api_key=os.environ.get("FORMALIZE_API_KEY"),  # This is the default and can be omitted
-)
+client = AsyncFormalize()
 
 
 async def main() -> None:
@@ -79,7 +73,6 @@ pip install benchify[aiohttp]
 Then you can enable it by instantiating the client with `http_client=DefaultAioHttpClient()`:
 
 ```python
-import os
 import asyncio
 from formalize import DefaultAioHttpClient
 from formalize import AsyncFormalize
@@ -87,7 +80,6 @@ from formalize import AsyncFormalize
 
 async def main() -> None:
     async with AsyncFormalize(
-        api_key=os.environ.get("FORMALIZE_API_KEY"),  # This is the default and can be omitted
         http_client=DefaultAioHttpClient(),
     ) as client:
         contracts = await client.api.v1.contracts.list()

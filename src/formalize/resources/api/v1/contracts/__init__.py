@@ -24,14 +24,6 @@ from .audit import (
     AuditResourceWithStreamingResponse,
     AsyncAuditResourceWithStreamingResponse,
 )
-from .datasets import (
-    DatasetsResource,
-    AsyncDatasetsResource,
-    DatasetsResourceWithRawResponse,
-    AsyncDatasetsResourceWithRawResponse,
-    DatasetsResourceWithStreamingResponse,
-    AsyncDatasetsResourceWithStreamingResponse,
-)
 from .contracts import (
     ContractsResource,
     AsyncContractsResource,
@@ -60,12 +52,6 @@ __all__ = [
     "AsyncDocxResourceWithRawResponse",
     "DocxResourceWithStreamingResponse",
     "AsyncDocxResourceWithStreamingResponse",
-    "DatasetsResource",
-    "AsyncDatasetsResource",
-    "DatasetsResourceWithRawResponse",
-    "AsyncDatasetsResourceWithRawResponse",
-    "DatasetsResourceWithStreamingResponse",
-    "AsyncDatasetsResourceWithStreamingResponse",
     "ContractsResource",
     "AsyncContractsResource",
     "ContractsResourceWithRawResponse",

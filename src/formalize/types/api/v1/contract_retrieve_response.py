@@ -24,7 +24,7 @@ class ContractRetrieveResponse(BaseModel):
     formalization_status: FormalizationStatus
     """Current formalization status"""
 
-    has_catala_code: bool
+    has_model_code: bool
     """Whether the contract has been formalized"""
 
     has_test_data: bool

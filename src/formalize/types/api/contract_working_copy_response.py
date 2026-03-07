@@ -14,7 +14,7 @@ class ContractWorkingCopyResponse(BaseModel):
 
     latency_seconds: float
 
-    original_catala: str
+    original_model_code: str
 
     redlines_applied: List[str]
 
@@ -22,4 +22,4 @@ class ContractWorkingCopyResponse(BaseModel):
 
     success: bool
 
-    working_copy_catala: str
+    working_copy_model_code: str
