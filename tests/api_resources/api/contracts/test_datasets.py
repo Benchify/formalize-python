@@ -22,7 +22,7 @@ class TestDatasets:
         dataset = client.api.contracts.datasets.create(
             contract_id="contract_id",
             name="name",
-            file=b"raw file contents",
+            file=b"Example data",
         )
         assert_matches_type(object, dataset, path=["response"])
 
@@ -32,7 +32,7 @@ class TestDatasets:
         dataset = client.api.contracts.datasets.create(
             contract_id="contract_id",
             name="name",
-            file=b"raw file contents",
+            file=b"Example data",
             description="description",
             is_primary=True,
             target_scope="target_scope",
@@ -45,7 +45,7 @@ class TestDatasets:
         response = client.api.contracts.datasets.with_raw_response.create(
             contract_id="contract_id",
             name="name",
-            file=b"raw file contents",
+            file=b"Example data",
         )
 
         assert response.is_closed is True
@@ -59,7 +59,7 @@ class TestDatasets:
         with client.api.contracts.datasets.with_streaming_response.create(
             contract_id="contract_id",
             name="name",
-            file=b"raw file contents",
+            file=b"Example data",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -76,7 +76,7 @@ class TestDatasets:
             client.api.contracts.datasets.with_raw_response.create(
                 contract_id="",
                 name="name",
-                file=b"raw file contents",
+                file=b"Example data",
             )
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
@@ -354,7 +354,7 @@ class TestAsyncDatasets:
         dataset = await async_client.api.contracts.datasets.create(
             contract_id="contract_id",
             name="name",
-            file=b"raw file contents",
+            file=b"Example data",
         )
         assert_matches_type(object, dataset, path=["response"])
 
@@ -364,7 +364,7 @@ class TestAsyncDatasets:
         dataset = await async_client.api.contracts.datasets.create(
             contract_id="contract_id",
             name="name",
-            file=b"raw file contents",
+            file=b"Example data",
             description="description",
             is_primary=True,
             target_scope="target_scope",
@@ -377,7 +377,7 @@ class TestAsyncDatasets:
         response = await async_client.api.contracts.datasets.with_raw_response.create(
             contract_id="contract_id",
             name="name",
-            file=b"raw file contents",
+            file=b"Example data",
         )
 
         assert response.is_closed is True
@@ -391,7 +391,7 @@ class TestAsyncDatasets:
         async with async_client.api.contracts.datasets.with_streaming_response.create(
             contract_id="contract_id",
             name="name",
-            file=b"raw file contents",
+            file=b"Example data",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -408,7 +408,7 @@ class TestAsyncDatasets:
             await async_client.api.contracts.datasets.with_raw_response.create(
                 contract_id="",
                 name="name",
-                file=b"raw file contents",
+                file=b"Example data",
             )
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
