@@ -213,7 +213,7 @@ class TestContracts:
     def test_method_diff_docx(self, client: Formalize) -> None:
         contract = client.api.contracts.diff_docx(
             contract_id="contract_id",
-            file=b"raw file contents",
+            file=b"Example data",
         )
         assert_matches_type(ContractDiffDocxResponse, contract, path=["response"])
 
@@ -222,7 +222,7 @@ class TestContracts:
     def test_raw_response_diff_docx(self, client: Formalize) -> None:
         response = client.api.contracts.with_raw_response.diff_docx(
             contract_id="contract_id",
-            file=b"raw file contents",
+            file=b"Example data",
         )
 
         assert response.is_closed is True
@@ -235,7 +235,7 @@ class TestContracts:
     def test_streaming_response_diff_docx(self, client: Formalize) -> None:
         with client.api.contracts.with_streaming_response.diff_docx(
             contract_id="contract_id",
-            file=b"raw file contents",
+            file=b"Example data",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -251,7 +251,7 @@ class TestContracts:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `contract_id` but received ''"):
             client.api.contracts.with_raw_response.diff_docx(
                 contract_id="",
-                file=b"raw file contents",
+                file=b"Example data",
             )
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
@@ -259,7 +259,7 @@ class TestContracts:
     def test_method_edit_from_docx(self, client: Formalize) -> None:
         contract = client.api.contracts.edit_from_docx(
             contract_id="contract_id",
-            file=b"raw file contents",
+            file=b"Example data",
         )
         assert_matches_type(ContractEditFromDocxResponse, contract, path=["response"])
 
@@ -268,7 +268,7 @@ class TestContracts:
     def test_raw_response_edit_from_docx(self, client: Formalize) -> None:
         response = client.api.contracts.with_raw_response.edit_from_docx(
             contract_id="contract_id",
-            file=b"raw file contents",
+            file=b"Example data",
         )
 
         assert response.is_closed is True
@@ -281,7 +281,7 @@ class TestContracts:
     def test_streaming_response_edit_from_docx(self, client: Formalize) -> None:
         with client.api.contracts.with_streaming_response.edit_from_docx(
             contract_id="contract_id",
-            file=b"raw file contents",
+            file=b"Example data",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -297,7 +297,7 @@ class TestContracts:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `contract_id` but received ''"):
             client.api.contracts.with_raw_response.edit_from_docx(
                 contract_id="",
-                file=b"raw file contents",
+                file=b"Example data",
             )
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
@@ -863,7 +863,7 @@ class TestContracts:
     @parametrize
     def test_method_upload(self, client: Formalize) -> None:
         contract = client.api.contracts.upload(
-            file=b"raw file contents",
+            file=b"Example data",
         )
         assert_matches_type(ContractDocument, contract, path=["response"])
 
@@ -871,7 +871,7 @@ class TestContracts:
     @parametrize
     def test_method_upload_with_all_params(self, client: Formalize) -> None:
         contract = client.api.contracts.upload(
-            file=b"raw file contents",
+            file=b"Example data",
             org_id="org_id",
             side="side",
         )
@@ -881,7 +881,7 @@ class TestContracts:
     @parametrize
     def test_raw_response_upload(self, client: Formalize) -> None:
         response = client.api.contracts.with_raw_response.upload(
-            file=b"raw file contents",
+            file=b"Example data",
         )
 
         assert response.is_closed is True
@@ -893,7 +893,7 @@ class TestContracts:
     @parametrize
     def test_streaming_response_upload(self, client: Formalize) -> None:
         with client.api.contracts.with_streaming_response.upload(
-            file=b"raw file contents",
+            file=b"Example data",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -907,7 +907,7 @@ class TestContracts:
     @parametrize
     def test_method_upload_and_formalize(self, client: Formalize) -> None:
         contract = client.api.contracts.upload_and_formalize(
-            file=b"raw file contents",
+            file=b"Example data",
         )
         assert_matches_type(ContractUploadAndFormalizeResponse, contract, path=["response"])
 
@@ -915,7 +915,7 @@ class TestContracts:
     @parametrize
     def test_method_upload_and_formalize_with_all_params(self, client: Formalize) -> None:
         contract = client.api.contracts.upload_and_formalize(
-            file=b"raw file contents",
+            file=b"Example data",
             max_prompts=0,
             org_id="org_id",
             side="side",
@@ -926,7 +926,7 @@ class TestContracts:
     @parametrize
     def test_raw_response_upload_and_formalize(self, client: Formalize) -> None:
         response = client.api.contracts.with_raw_response.upload_and_formalize(
-            file=b"raw file contents",
+            file=b"Example data",
         )
 
         assert response.is_closed is True
@@ -938,7 +938,7 @@ class TestContracts:
     @parametrize
     def test_streaming_response_upload_and_formalize(self, client: Formalize) -> None:
         with client.api.contracts.with_streaming_response.upload_and_formalize(
-            file=b"raw file contents",
+            file=b"Example data",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -1186,7 +1186,7 @@ class TestAsyncContracts:
     async def test_method_diff_docx(self, async_client: AsyncFormalize) -> None:
         contract = await async_client.api.contracts.diff_docx(
             contract_id="contract_id",
-            file=b"raw file contents",
+            file=b"Example data",
         )
         assert_matches_type(ContractDiffDocxResponse, contract, path=["response"])
 
@@ -1195,7 +1195,7 @@ class TestAsyncContracts:
     async def test_raw_response_diff_docx(self, async_client: AsyncFormalize) -> None:
         response = await async_client.api.contracts.with_raw_response.diff_docx(
             contract_id="contract_id",
-            file=b"raw file contents",
+            file=b"Example data",
         )
 
         assert response.is_closed is True
@@ -1208,7 +1208,7 @@ class TestAsyncContracts:
     async def test_streaming_response_diff_docx(self, async_client: AsyncFormalize) -> None:
         async with async_client.api.contracts.with_streaming_response.diff_docx(
             contract_id="contract_id",
-            file=b"raw file contents",
+            file=b"Example data",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -1224,7 +1224,7 @@ class TestAsyncContracts:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `contract_id` but received ''"):
             await async_client.api.contracts.with_raw_response.diff_docx(
                 contract_id="",
-                file=b"raw file contents",
+                file=b"Example data",
             )
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
@@ -1232,7 +1232,7 @@ class TestAsyncContracts:
     async def test_method_edit_from_docx(self, async_client: AsyncFormalize) -> None:
         contract = await async_client.api.contracts.edit_from_docx(
             contract_id="contract_id",
-            file=b"raw file contents",
+            file=b"Example data",
         )
         assert_matches_type(ContractEditFromDocxResponse, contract, path=["response"])
 
@@ -1241,7 +1241,7 @@ class TestAsyncContracts:
     async def test_raw_response_edit_from_docx(self, async_client: AsyncFormalize) -> None:
         response = await async_client.api.contracts.with_raw_response.edit_from_docx(
             contract_id="contract_id",
-            file=b"raw file contents",
+            file=b"Example data",
         )
 
         assert response.is_closed is True
@@ -1254,7 +1254,7 @@ class TestAsyncContracts:
     async def test_streaming_response_edit_from_docx(self, async_client: AsyncFormalize) -> None:
         async with async_client.api.contracts.with_streaming_response.edit_from_docx(
             contract_id="contract_id",
-            file=b"raw file contents",
+            file=b"Example data",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -1270,7 +1270,7 @@ class TestAsyncContracts:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `contract_id` but received ''"):
             await async_client.api.contracts.with_raw_response.edit_from_docx(
                 contract_id="",
-                file=b"raw file contents",
+                file=b"Example data",
             )
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
@@ -1838,7 +1838,7 @@ class TestAsyncContracts:
     @parametrize
     async def test_method_upload(self, async_client: AsyncFormalize) -> None:
         contract = await async_client.api.contracts.upload(
-            file=b"raw file contents",
+            file=b"Example data",
         )
         assert_matches_type(ContractDocument, contract, path=["response"])
 
@@ -1846,7 +1846,7 @@ class TestAsyncContracts:
     @parametrize
     async def test_method_upload_with_all_params(self, async_client: AsyncFormalize) -> None:
         contract = await async_client.api.contracts.upload(
-            file=b"raw file contents",
+            file=b"Example data",
             org_id="org_id",
             side="side",
         )
@@ -1856,7 +1856,7 @@ class TestAsyncContracts:
     @parametrize
     async def test_raw_response_upload(self, async_client: AsyncFormalize) -> None:
         response = await async_client.api.contracts.with_raw_response.upload(
-            file=b"raw file contents",
+            file=b"Example data",
         )
 
         assert response.is_closed is True
@@ -1868,7 +1868,7 @@ class TestAsyncContracts:
     @parametrize
     async def test_streaming_response_upload(self, async_client: AsyncFormalize) -> None:
         async with async_client.api.contracts.with_streaming_response.upload(
-            file=b"raw file contents",
+            file=b"Example data",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -1882,7 +1882,7 @@ class TestAsyncContracts:
     @parametrize
     async def test_method_upload_and_formalize(self, async_client: AsyncFormalize) -> None:
         contract = await async_client.api.contracts.upload_and_formalize(
-            file=b"raw file contents",
+            file=b"Example data",
         )
         assert_matches_type(ContractUploadAndFormalizeResponse, contract, path=["response"])
 
@@ -1890,7 +1890,7 @@ class TestAsyncContracts:
     @parametrize
     async def test_method_upload_and_formalize_with_all_params(self, async_client: AsyncFormalize) -> None:
         contract = await async_client.api.contracts.upload_and_formalize(
-            file=b"raw file contents",
+            file=b"Example data",
             max_prompts=0,
             org_id="org_id",
             side="side",
@@ -1901,7 +1901,7 @@ class TestAsyncContracts:
     @parametrize
     async def test_raw_response_upload_and_formalize(self, async_client: AsyncFormalize) -> None:
         response = await async_client.api.contracts.with_raw_response.upload_and_formalize(
-            file=b"raw file contents",
+            file=b"Example data",
         )
 
         assert response.is_closed is True
@@ -1913,7 +1913,7 @@ class TestAsyncContracts:
     @parametrize
     async def test_streaming_response_upload_and_formalize(self, async_client: AsyncFormalize) -> None:
         async with async_client.api.contracts.with_streaming_response.upload_and_formalize(
-            file=b"raw file contents",
+            file=b"Example data",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
