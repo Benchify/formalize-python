@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.1.1 (2026-03-08)
+
+Full Changelog: [v1.1.0...v1.1.1](https://github.com/Benchify/formalize-python/compare/v1.1.0...v1.1.1)
+
+### Chores
+
+* **ci:** skip uploading artifacts on stainless-internal branches ([b2a03bc](https://github.com/Benchify/formalize-python/commit/b2a03bcfe6b3091bb71a5a7c8d26a15649022b2c))
+* update placeholder string ([6b55582](https://github.com/Benchify/formalize-python/commit/6b555821785b082a042906593fcc8e984623b0de))
+
 ## 1.1.0 (2026-03-06)
 
 Full Changelog: [v1.0.0...v1.1.0](https://github.com/Benchify/formalize-python/compare/v1.0.0...v1.1.0)
