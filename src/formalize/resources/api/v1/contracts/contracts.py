@@ -187,18 +187,14 @@ class ContractsResource(SyncAPIResource):
         """
         if not contract_id:
             raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
-        if not type_name:
-            raise ValueError(f"Expected a non-empty value for `type_name` but received {type_name!r}")
-        return cast(
-            ContractRetrieveResponse,
-            self._get(
-                f"/api/v1/contracts/{contract_id}/types/{type_name}",
-                options=make_request_options(
-                    extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-                ),
-                cast_to=cast(
-                    Any, ContractRetrieveResponse
-                ),  # Union types cannot be passed in as arguments in the type system
+        return self._get(
+            f"/api/v1/contracts/{contract_id}",
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                security={"bearer_auth": True},
             ),
         )
 
@@ -256,6 +252,7 @@ class ContractsResource(SyncAPIResource):
                     },
                     contract_list_params.ContractListParams,
                 ),
+                security={"bearer_auth": True},
             ),
             cast_to=ContractListResponse,
         )
@@ -615,18 +612,14 @@ class AsyncContractsResource(AsyncAPIResource):
         """
         if not contract_id:
             raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
-        if not type_name:
-            raise ValueError(f"Expected a non-empty value for `type_name` but received {type_name!r}")
-        return cast(
-            ContractRetrieveResponse,
-            await self._get(
-                f"/api/v1/contracts/{contract_id}/types/{type_name}",
-                options=make_request_options(
-                    extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-                ),
-                cast_to=cast(
-                    Any, ContractRetrieveResponse
-                ),  # Union types cannot be passed in as arguments in the type system
+        return await self._get(
+            f"/api/v1/contracts/{contract_id}",
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                security={"bearer_auth": True},
             ),
         )
 
@@ -684,6 +677,7 @@ class AsyncContractsResource(AsyncAPIResource):
                     },
                     contract_list_params.ContractListParams,
                 ),
+                security={"bearer_auth": True},
             ),
             cast_to=ContractListResponse,
         )

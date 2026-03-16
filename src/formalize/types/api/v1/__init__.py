@@ -3,9 +3,12 @@
 from __future__ import annotations
 
 from .field_info import FieldInfo as FieldInfo
+from .user_profile import UserProfile as UserProfile
 from .enum_type_info import EnumTypeInfo as EnumTypeInfo
 from .struct_type_info import StructTypeInfo as StructTypeInfo
+from .organization_info import OrganizationInfo as OrganizationInfo
 from .struct_field_info import StructFieldInfo as StructFieldInfo
+from .me_patch_all_params import MePatchAllParams as MePatchAllParams
 from .contract_list_params import ContractListParams as ContractListParams
 from .formalization_status import FormalizationStatus as FormalizationStatus
 from .contract_create_params import ContractCreateParams as ContractCreateParams
@@ -14,11 +17,15 @@ from .contract_list_response import ContractListResponse as ContractListResponse
 from .contract_create_response import ContractCreateResponse as ContractCreateResponse
 from .contract_export_response import ContractExportResponse as ContractExportResponse
 from .contract_retrieve_response import ContractRetrieveResponse as ContractRetrieveResponse
-from .contract_get_schema_response import ContractGetSchemaResponse as ContractGetSchemaResponse
+from .organization_create_params import OrganizationCreateParams as OrganizationCreateParams
+from .organization_update_params import OrganizationUpdateParams as OrganizationUpdateParams
 from .contract_update_metadata_params import ContractUpdateMetadataParams as ContractUpdateMetadataParams
+from .contract_retrieve_schema_response import ContractRetrieveSchemaResponse as ContractRetrieveSchemaResponse
 from .contract_update_metadata_response import ContractUpdateMetadataResponse as ContractUpdateMetadataResponse
-from .contract_get_computations_response import ContractGetComputationsResponse as ContractGetComputationsResponse
-from .contract_get_dependencies_response import ContractGetDependenciesResponse as ContractGetDependenciesResponse
-from .contract_get_type_definition_response import (
-    ContractGetTypeDefinitionResponse as ContractGetTypeDefinitionResponse,
+from .me_retrieve_organizations_response import MeRetrieveOrganizationsResponse as MeRetrieveOrganizationsResponse
+from .contract_retrieve_computations_response import (
+    ContractRetrieveComputationsResponse as ContractRetrieveComputationsResponse,
+)
+from .contract_retrieve_dependencies_response import (
+    ContractRetrieveDependenciesResponse as ContractRetrieveDependenciesResponse,
 )

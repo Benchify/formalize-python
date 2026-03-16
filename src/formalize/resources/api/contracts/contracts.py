@@ -1218,6 +1218,7 @@ class ContractsResource(SyncAPIResource):
                     },
                     contract_upload_and_formalize_params.ContractUploadAndFormalizeParams,
                 ),
+                security={"bearer_auth": True},
             ),
             cast_to=ContractUploadAndFormalizeResponse,
         )
@@ -2393,6 +2394,7 @@ class AsyncContractsResource(AsyncAPIResource):
                     },
                     contract_upload_and_formalize_params.ContractUploadAndFormalizeParams,
                 ),
+                security={"bearer_auth": True},
             ),
             cast_to=ContractUploadAndFormalizeResponse,
         )

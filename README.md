@@ -25,28 +25,34 @@ pip install benchify
 The full API of this library can be found in [api.md](api.md).
 
 ```python
+import os
 from formalize import Formalize
 
-client = Formalize()
+client = Formalize(
+    bearer_token=os.environ.get("FORMALIZE_BEARER_TOKEN"),  # This is the default and can be omitted
+)
 
 contracts = client.api.v1.contracts.list()
 print(contracts.contracts)
 ```
 
-While you can provide an `api_key` keyword argument,
+While you can provide a `bearer_token` keyword argument,
 we recommend using [python-dotenv](https://pypi.org/project/python-dotenv/)
-to add `FORMALIZE_API_KEY="My API Key"` to your `.env` file
-so that your API Key is not stored in source control.
+to add `FORMALIZE_BEARER_TOKEN="My Bearer Token"` to your `.env` file
+so that your Bearer Token is not stored in source control.
 
 ## Async usage
 
 Simply import `AsyncFormalize` instead of `Formalize` and use `await` with each API call:
 
 ```python
+import os
 import asyncio
 from formalize import AsyncFormalize
 
-client = AsyncFormalize()
+client = AsyncFormalize(
+    bearer_token=os.environ.get("FORMALIZE_BEARER_TOKEN"),  # This is the default and can be omitted
+)
 
 
 async def main() -> None:
@@ -73,6 +79,7 @@ pip install benchify[aiohttp]
 Then you can enable it by instantiating the client with `http_client=DefaultAioHttpClient()`:
 
 ```python
+import os
 import asyncio
 from formalize import DefaultAioHttpClient
 from formalize import AsyncFormalize
@@ -80,6 +87,9 @@ from formalize import AsyncFormalize
 
 async def main() -> None:
     async with AsyncFormalize(
+        bearer_token=os.environ.get(
+            "FORMALIZE_BEARER_TOKEN"
+        ),  # This is the default and can be omitted
         http_client=DefaultAioHttpClient(),
     ) as client:
         contracts = await client.api.v1.contracts.list()
