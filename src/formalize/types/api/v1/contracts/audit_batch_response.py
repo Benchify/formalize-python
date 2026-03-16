@@ -4,7 +4,7 @@ from typing import Dict, List, Optional
 
 from ....._models import BaseModel
 
-__all__ = ["AuditRunBatchResponse", "Result"]
+__all__ = ["AuditBatchResponse", "Result"]
 
 
 class Result(BaseModel):
@@ -23,7 +23,7 @@ class Result(BaseModel):
     """The computed output values"""
 
 
-class AuditRunBatchResponse(BaseModel):
+class AuditBatchResponse(BaseModel):
     """Response from batch auditing multiple scenarios."""
 
     contract_id: str

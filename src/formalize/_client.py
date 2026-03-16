@@ -51,11 +51,13 @@ __all__ = [
 
 class Formalize(SyncAPIClient):
     # client options
+    bearer_token: str | None
     api_key: str | None
 
     def __init__(
         self,
         *,
+        bearer_token: str | None = None,
         api_key: str | None = None,
         base_url: str | httpx.URL | None = None,
         timeout: float | Timeout | None | NotGiven = not_given,
@@ -78,8 +80,14 @@ class Formalize(SyncAPIClient):
     ) -> None:
         """Construct a new synchronous Formalize client instance.
 
-        This automatically infers the `api_key` argument from the `FORMALIZE_API_KEY` environment variable if it is not provided.
+        This automatically infers the following arguments from their corresponding environment variables if they are not provided:
+        - `bearer_token` from `FORMALIZE_BEARER_TOKEN`
+        - `api_key` from `FORMALIZE_API_KEY`
         """
+        if bearer_token is None:
+            bearer_token = os.environ.get("FORMALIZE_BEARER_TOKEN")
+        self.bearer_token = bearer_token
+
         if api_key is None:
             api_key = os.environ.get("FORMALIZE_API_KEY")
         self.api_key = api_key
@@ -128,15 +136,23 @@ class Formalize(SyncAPIClient):
     @override
     def _auth_headers(self, security: SecurityOptions) -> dict[str, str]:
         return {
-            **(self._bearer_auth if security.get("bearer_auth", False) else {}),
+            **(self._http_bearer if security.get("http_bearer", False) else {}),
+            **(self._api_key_header if security.get("api_key_header", False) else {}),
         }
 
     @property
-    def _bearer_auth(self) -> dict[str, str]:
+    def _http_bearer(self) -> dict[str, str]:
+        bearer_token = self.bearer_token
+        if bearer_token is None:
+            return {}
+        return {"Authorization": f"Bearer {bearer_token}"}
+
+    @property
+    def _api_key_header(self) -> dict[str, str]:
         api_key = self.api_key
         if api_key is None:
             return {}
-        return {"Authorization": f"Bearer {api_key}"}
+        return {"X-API-Key": api_key}
 
     @property
     @override
@@ -152,13 +168,17 @@ class Formalize(SyncAPIClient):
         if headers.get("Authorization") or isinstance(custom_headers.get("Authorization"), Omit):
             return
 
+        if headers.get("X-API-Key") or isinstance(custom_headers.get("X-API-Key"), Omit):
+            return
+
         raise TypeError(
-            '"Could not resolve authentication method. Expected the api_key to be set. Or for the `Authorization` headers to be explicitly omitted"'
+            '"Could not resolve authentication method. Expected either bearer_token or api_key to be set. Or for one of the `Authorization` or `X-API-Key` headers to be explicitly omitted"'
         )
 
     def copy(
         self,
         *,
+        bearer_token: str | None = None,
         api_key: str | None = None,
         base_url: str | httpx.URL | None = None,
         timeout: float | Timeout | None | NotGiven = not_given,
@@ -193,6 +213,7 @@ class Formalize(SyncAPIClient):
 
         http_client = http_client or self._client
         return self.__class__(
+            bearer_token=bearer_token or self.bearer_token,
             api_key=api_key or self.api_key,
             base_url=base_url or self.base_url,
             timeout=self.timeout if isinstance(timeout, NotGiven) else timeout,
@@ -243,11 +264,13 @@ class Formalize(SyncAPIClient):
 
 class AsyncFormalize(AsyncAPIClient):
     # client options
+    bearer_token: str | None
     api_key: str | None
 
     def __init__(
         self,
         *,
+        bearer_token: str | None = None,
         api_key: str | None = None,
         base_url: str | httpx.URL | None = None,
         timeout: float | Timeout | None | NotGiven = not_given,
@@ -270,8 +293,14 @@ class AsyncFormalize(AsyncAPIClient):
     ) -> None:
         """Construct a new async AsyncFormalize client instance.
 
-        This automatically infers the `api_key` argument from the `FORMALIZE_API_KEY` environment variable if it is not provided.
+        This automatically infers the following arguments from their corresponding environment variables if they are not provided:
+        - `bearer_token` from `FORMALIZE_BEARER_TOKEN`
+        - `api_key` from `FORMALIZE_API_KEY`
         """
+        if bearer_token is None:
+            bearer_token = os.environ.get("FORMALIZE_BEARER_TOKEN")
+        self.bearer_token = bearer_token
+
         if api_key is None:
             api_key = os.environ.get("FORMALIZE_API_KEY")
         self.api_key = api_key
@@ -320,15 +349,23 @@ class AsyncFormalize(AsyncAPIClient):
     @override
     def _auth_headers(self, security: SecurityOptions) -> dict[str, str]:
         return {
-            **(self._bearer_auth if security.get("bearer_auth", False) else {}),
+            **(self._http_bearer if security.get("http_bearer", False) else {}),
+            **(self._api_key_header if security.get("api_key_header", False) else {}),
         }
 
     @property
-    def _bearer_auth(self) -> dict[str, str]:
+    def _http_bearer(self) -> dict[str, str]:
+        bearer_token = self.bearer_token
+        if bearer_token is None:
+            return {}
+        return {"Authorization": f"Bearer {bearer_token}"}
+
+    @property
+    def _api_key_header(self) -> dict[str, str]:
         api_key = self.api_key
         if api_key is None:
             return {}
-        return {"Authorization": f"Bearer {api_key}"}
+        return {"X-API-Key": api_key}
 
     @property
     @override
@@ -344,13 +381,17 @@ class AsyncFormalize(AsyncAPIClient):
         if headers.get("Authorization") or isinstance(custom_headers.get("Authorization"), Omit):
             return
 
+        if headers.get("X-API-Key") or isinstance(custom_headers.get("X-API-Key"), Omit):
+            return
+
         raise TypeError(
-            '"Could not resolve authentication method. Expected the api_key to be set. Or for the `Authorization` headers to be explicitly omitted"'
+            '"Could not resolve authentication method. Expected either bearer_token or api_key to be set. Or for one of the `Authorization` or `X-API-Key` headers to be explicitly omitted"'
         )
 
     def copy(
         self,
         *,
+        bearer_token: str | None = None,
         api_key: str | None = None,
         base_url: str | httpx.URL | None = None,
         timeout: float | Timeout | None | NotGiven = not_given,
@@ -385,6 +426,7 @@ class AsyncFormalize(AsyncAPIClient):
 
         http_client = http_client or self._client
         return self.__class__(
+            bearer_token=bearer_token or self.bearer_token,
             api_key=api_key or self.api_key,
             base_url=base_url or self.base_url,
             timeout=self.timeout if isinstance(timeout, NotGiven) else timeout,

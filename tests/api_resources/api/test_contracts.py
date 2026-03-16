@@ -10,8 +10,12 @@ import pytest
 from formalize import Formalize, AsyncFormalize
 from tests.utils import assert_matches_type
 from formalize.types.api import (
-    ContractDocument,
+    ContractEditDslResponse,
+    ContractSaveDslResponse,
     ContractDiffDocxResponse,
+    ContractDocumentResponse,
+    ContractRetrieveResponse,
+    ContractValidateDslResponse,
     ContractWorkingCopyResponse,
     ContractEditFromDocxResponse,
     ContractEditFromTextResponse,
@@ -33,7 +37,7 @@ class TestContracts:
         contract = client.api.contracts.retrieve(
             "contract_id",
         )
-        assert_matches_type(ContractDocument, contract, path=["response"])
+        assert_matches_type(ContractDocumentResponse, contract, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
@@ -45,7 +49,7 @@ class TestContracts:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         contract = response.parse()
-        assert_matches_type(ContractDocument, contract, path=["response"])
+        assert_matches_type(ContractDocumentResponse, contract, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
@@ -57,7 +61,7 @@ class TestContracts:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             contract = response.parse()
-            assert_matches_type(ContractDocument, contract, path=["response"])
+            assert_matches_type(ContractDocumentResponse, contract, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -213,7 +217,7 @@ class TestContracts:
     def test_method_diff_docx(self, client: Formalize) -> None:
         contract = client.api.contracts.diff_docx(
             contract_id="contract_id",
-            file=b"raw file contents",
+            file=b"Example data",
         )
         assert_matches_type(ContractDiffDocxResponse, contract, path=["response"])
 
@@ -222,7 +226,7 @@ class TestContracts:
     def test_raw_response_diff_docx(self, client: Formalize) -> None:
         response = client.api.contracts.with_raw_response.diff_docx(
             contract_id="contract_id",
-            file=b"raw file contents",
+            file=b"Example data",
         )
 
         assert response.is_closed is True
@@ -235,7 +239,7 @@ class TestContracts:
     def test_streaming_response_diff_docx(self, client: Formalize) -> None:
         with client.api.contracts.with_streaming_response.diff_docx(
             contract_id="contract_id",
-            file=b"raw file contents",
+            file=b"Example data",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -251,7 +255,63 @@ class TestContracts:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `contract_id` but received ''"):
             client.api.contracts.with_raw_response.diff_docx(
                 contract_id="",
-                file=b"raw file contents",
+                file=b"Example data",
+            )
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_method_edit_dsl(self, client: Formalize) -> None:
+        contract = client.api.contracts.edit_dsl(
+            contract_id="contract_id",
+            change_description="change_description",
+        )
+        assert_matches_type(ContractEditDslResponse, contract, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_method_edit_dsl_with_all_params(self, client: Formalize) -> None:
+        contract = client.api.contracts.edit_dsl(
+            contract_id="contract_id",
+            change_description="change_description",
+            current_spec="current_spec",
+        )
+        assert_matches_type(ContractEditDslResponse, contract, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_raw_response_edit_dsl(self, client: Formalize) -> None:
+        response = client.api.contracts.with_raw_response.edit_dsl(
+            contract_id="contract_id",
+            change_description="change_description",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        contract = response.parse()
+        assert_matches_type(ContractEditDslResponse, contract, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_streaming_response_edit_dsl(self, client: Formalize) -> None:
+        with client.api.contracts.with_streaming_response.edit_dsl(
+            contract_id="contract_id",
+            change_description="change_description",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            contract = response.parse()
+            assert_matches_type(ContractEditDslResponse, contract, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_path_params_edit_dsl(self, client: Formalize) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `contract_id` but received ''"):
+            client.api.contracts.with_raw_response.edit_dsl(
+                contract_id="",
+                change_description="change_description",
             )
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
@@ -259,7 +319,7 @@ class TestContracts:
     def test_method_edit_from_docx(self, client: Formalize) -> None:
         contract = client.api.contracts.edit_from_docx(
             contract_id="contract_id",
-            file=b"raw file contents",
+            file=b"Example data",
         )
         assert_matches_type(ContractEditFromDocxResponse, contract, path=["response"])
 
@@ -268,7 +328,7 @@ class TestContracts:
     def test_raw_response_edit_from_docx(self, client: Formalize) -> None:
         response = client.api.contracts.with_raw_response.edit_from_docx(
             contract_id="contract_id",
-            file=b"raw file contents",
+            file=b"Example data",
         )
 
         assert response.is_closed is True
@@ -281,7 +341,7 @@ class TestContracts:
     def test_streaming_response_edit_from_docx(self, client: Formalize) -> None:
         with client.api.contracts.with_streaming_response.edit_from_docx(
             contract_id="contract_id",
-            file=b"raw file contents",
+            file=b"Example data",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -297,7 +357,7 @@ class TestContracts:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `contract_id` but received ''"):
             client.api.contracts.with_raw_response.edit_from_docx(
                 contract_id="",
-                file=b"raw file contents",
+                file=b"Example data",
             )
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
@@ -543,6 +603,44 @@ class TestContracts:
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
+    def test_method_list(self, client: Formalize) -> None:
+        contract = client.api.contracts.list()
+        assert_matches_type(ContractRetrieveResponse, contract, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_method_list_with_all_params(self, client: Formalize) -> None:
+        contract = client.api.contracts.list(
+            limit=0,
+            org_id="org_id",
+            skip=0,
+        )
+        assert_matches_type(ContractRetrieveResponse, contract, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_raw_response_list(self, client: Formalize) -> None:
+        response = client.api.contracts.with_raw_response.list()
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        contract = response.parse()
+        assert_matches_type(ContractRetrieveResponse, contract, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_streaming_response_list(self, client: Formalize) -> None:
+        with client.api.contracts.with_streaming_response.list() as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            contract = response.parse()
+            assert_matches_type(ContractRetrieveResponse, contract, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
     def test_method_retrieve_docx(self, client: Formalize) -> None:
         contract = client.api.contracts.retrieve_docx(
             "contract_id",
@@ -673,6 +771,48 @@ class TestContracts:
     def test_path_params_retrieve_html(self, client: Formalize) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `contract_id` but received ''"):
             client.api.contracts.with_raw_response.retrieve_html(
+                "",
+            )
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_method_retrieve_model_code(self, client: Formalize) -> None:
+        contract = client.api.contracts.retrieve_model_code(
+            "contract_id",
+        )
+        assert_matches_type(object, contract, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_raw_response_retrieve_model_code(self, client: Formalize) -> None:
+        response = client.api.contracts.with_raw_response.retrieve_model_code(
+            "contract_id",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        contract = response.parse()
+        assert_matches_type(object, contract, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_streaming_response_retrieve_model_code(self, client: Formalize) -> None:
+        with client.api.contracts.with_streaming_response.retrieve_model_code(
+            "contract_id",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            contract = response.parse()
+            assert_matches_type(object, contract, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_path_params_retrieve_model_code(self, client: Formalize) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `contract_id` but received ''"):
+            client.api.contracts.with_raw_response.retrieve_model_code(
                 "",
             )
 
@@ -815,6 +955,52 @@ class TestContracts:
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
+    def test_method_save_dsl(self, client: Formalize) -> None:
+        contract = client.api.contracts.save_dsl(
+            contract_id="contract_id",
+            model_code="model_code",
+        )
+        assert_matches_type(ContractSaveDslResponse, contract, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_raw_response_save_dsl(self, client: Formalize) -> None:
+        response = client.api.contracts.with_raw_response.save_dsl(
+            contract_id="contract_id",
+            model_code="model_code",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        contract = response.parse()
+        assert_matches_type(ContractSaveDslResponse, contract, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_streaming_response_save_dsl(self, client: Formalize) -> None:
+        with client.api.contracts.with_streaming_response.save_dsl(
+            contract_id="contract_id",
+            model_code="model_code",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            contract = response.parse()
+            assert_matches_type(ContractSaveDslResponse, contract, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_path_params_save_dsl(self, client: Formalize) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `contract_id` but received ''"):
+            client.api.contracts.with_raw_response.save_dsl(
+                contract_id="",
+                model_code="model_code",
+            )
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
     def test_method_test_data_with_preview(self, client: Formalize) -> None:
         contract = client.api.contracts.test_data_with_preview(
             contract_id="contract_id",
@@ -863,43 +1049,43 @@ class TestContracts:
     @parametrize
     def test_method_upload(self, client: Formalize) -> None:
         contract = client.api.contracts.upload(
-            file=b"raw file contents",
+            file=b"Example data",
         )
-        assert_matches_type(ContractDocument, contract, path=["response"])
+        assert_matches_type(ContractDocumentResponse, contract, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_upload_with_all_params(self, client: Formalize) -> None:
         contract = client.api.contracts.upload(
-            file=b"raw file contents",
+            file=b"Example data",
             org_id="org_id",
             side="side",
         )
-        assert_matches_type(ContractDocument, contract, path=["response"])
+        assert_matches_type(ContractDocumentResponse, contract, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_upload(self, client: Formalize) -> None:
         response = client.api.contracts.with_raw_response.upload(
-            file=b"raw file contents",
+            file=b"Example data",
         )
 
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         contract = response.parse()
-        assert_matches_type(ContractDocument, contract, path=["response"])
+        assert_matches_type(ContractDocumentResponse, contract, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_upload(self, client: Formalize) -> None:
         with client.api.contracts.with_streaming_response.upload(
-            file=b"raw file contents",
+            file=b"Example data",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             contract = response.parse()
-            assert_matches_type(ContractDocument, contract, path=["response"])
+            assert_matches_type(ContractDocumentResponse, contract, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -907,7 +1093,7 @@ class TestContracts:
     @parametrize
     def test_method_upload_and_formalize(self, client: Formalize) -> None:
         contract = client.api.contracts.upload_and_formalize(
-            file=b"raw file contents",
+            file=b"Example data",
         )
         assert_matches_type(ContractUploadAndFormalizeResponse, contract, path=["response"])
 
@@ -915,7 +1101,7 @@ class TestContracts:
     @parametrize
     def test_method_upload_and_formalize_with_all_params(self, client: Formalize) -> None:
         contract = client.api.contracts.upload_and_formalize(
-            file=b"raw file contents",
+            file=b"Example data",
             max_prompts=0,
             org_id="org_id",
             side="side",
@@ -926,7 +1112,7 @@ class TestContracts:
     @parametrize
     def test_raw_response_upload_and_formalize(self, client: Formalize) -> None:
         response = client.api.contracts.with_raw_response.upload_and_formalize(
-            file=b"raw file contents",
+            file=b"Example data",
         )
 
         assert response.is_closed is True
@@ -938,13 +1124,47 @@ class TestContracts:
     @parametrize
     def test_streaming_response_upload_and_formalize(self, client: Formalize) -> None:
         with client.api.contracts.with_streaming_response.upload_and_formalize(
-            file=b"raw file contents",
+            file=b"Example data",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             contract = response.parse()
             assert_matches_type(ContractUploadAndFormalizeResponse, contract, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_method_validate_dsl(self, client: Formalize) -> None:
+        contract = client.api.contracts.validate_dsl(
+            model_code="model_code",
+        )
+        assert_matches_type(ContractValidateDslResponse, contract, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_raw_response_validate_dsl(self, client: Formalize) -> None:
+        response = client.api.contracts.with_raw_response.validate_dsl(
+            model_code="model_code",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        contract = response.parse()
+        assert_matches_type(ContractValidateDslResponse, contract, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_streaming_response_validate_dsl(self, client: Formalize) -> None:
+        with client.api.contracts.with_streaming_response.validate_dsl(
+            model_code="model_code",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            contract = response.parse()
+            assert_matches_type(ContractValidateDslResponse, contract, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -1006,7 +1226,7 @@ class TestAsyncContracts:
         contract = await async_client.api.contracts.retrieve(
             "contract_id",
         )
-        assert_matches_type(ContractDocument, contract, path=["response"])
+        assert_matches_type(ContractDocumentResponse, contract, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
@@ -1018,7 +1238,7 @@ class TestAsyncContracts:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         contract = await response.parse()
-        assert_matches_type(ContractDocument, contract, path=["response"])
+        assert_matches_type(ContractDocumentResponse, contract, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
@@ -1030,7 +1250,7 @@ class TestAsyncContracts:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             contract = await response.parse()
-            assert_matches_type(ContractDocument, contract, path=["response"])
+            assert_matches_type(ContractDocumentResponse, contract, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -1186,7 +1406,7 @@ class TestAsyncContracts:
     async def test_method_diff_docx(self, async_client: AsyncFormalize) -> None:
         contract = await async_client.api.contracts.diff_docx(
             contract_id="contract_id",
-            file=b"raw file contents",
+            file=b"Example data",
         )
         assert_matches_type(ContractDiffDocxResponse, contract, path=["response"])
 
@@ -1195,7 +1415,7 @@ class TestAsyncContracts:
     async def test_raw_response_diff_docx(self, async_client: AsyncFormalize) -> None:
         response = await async_client.api.contracts.with_raw_response.diff_docx(
             contract_id="contract_id",
-            file=b"raw file contents",
+            file=b"Example data",
         )
 
         assert response.is_closed is True
@@ -1208,7 +1428,7 @@ class TestAsyncContracts:
     async def test_streaming_response_diff_docx(self, async_client: AsyncFormalize) -> None:
         async with async_client.api.contracts.with_streaming_response.diff_docx(
             contract_id="contract_id",
-            file=b"raw file contents",
+            file=b"Example data",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -1224,7 +1444,63 @@ class TestAsyncContracts:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `contract_id` but received ''"):
             await async_client.api.contracts.with_raw_response.diff_docx(
                 contract_id="",
-                file=b"raw file contents",
+                file=b"Example data",
+            )
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_method_edit_dsl(self, async_client: AsyncFormalize) -> None:
+        contract = await async_client.api.contracts.edit_dsl(
+            contract_id="contract_id",
+            change_description="change_description",
+        )
+        assert_matches_type(ContractEditDslResponse, contract, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_method_edit_dsl_with_all_params(self, async_client: AsyncFormalize) -> None:
+        contract = await async_client.api.contracts.edit_dsl(
+            contract_id="contract_id",
+            change_description="change_description",
+            current_spec="current_spec",
+        )
+        assert_matches_type(ContractEditDslResponse, contract, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_raw_response_edit_dsl(self, async_client: AsyncFormalize) -> None:
+        response = await async_client.api.contracts.with_raw_response.edit_dsl(
+            contract_id="contract_id",
+            change_description="change_description",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        contract = await response.parse()
+        assert_matches_type(ContractEditDslResponse, contract, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_streaming_response_edit_dsl(self, async_client: AsyncFormalize) -> None:
+        async with async_client.api.contracts.with_streaming_response.edit_dsl(
+            contract_id="contract_id",
+            change_description="change_description",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            contract = await response.parse()
+            assert_matches_type(ContractEditDslResponse, contract, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_path_params_edit_dsl(self, async_client: AsyncFormalize) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `contract_id` but received ''"):
+            await async_client.api.contracts.with_raw_response.edit_dsl(
+                contract_id="",
+                change_description="change_description",
             )
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
@@ -1232,7 +1508,7 @@ class TestAsyncContracts:
     async def test_method_edit_from_docx(self, async_client: AsyncFormalize) -> None:
         contract = await async_client.api.contracts.edit_from_docx(
             contract_id="contract_id",
-            file=b"raw file contents",
+            file=b"Example data",
         )
         assert_matches_type(ContractEditFromDocxResponse, contract, path=["response"])
 
@@ -1241,7 +1517,7 @@ class TestAsyncContracts:
     async def test_raw_response_edit_from_docx(self, async_client: AsyncFormalize) -> None:
         response = await async_client.api.contracts.with_raw_response.edit_from_docx(
             contract_id="contract_id",
-            file=b"raw file contents",
+            file=b"Example data",
         )
 
         assert response.is_closed is True
@@ -1254,7 +1530,7 @@ class TestAsyncContracts:
     async def test_streaming_response_edit_from_docx(self, async_client: AsyncFormalize) -> None:
         async with async_client.api.contracts.with_streaming_response.edit_from_docx(
             contract_id="contract_id",
-            file=b"raw file contents",
+            file=b"Example data",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -1270,7 +1546,7 @@ class TestAsyncContracts:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `contract_id` but received ''"):
             await async_client.api.contracts.with_raw_response.edit_from_docx(
                 contract_id="",
-                file=b"raw file contents",
+                file=b"Example data",
             )
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
@@ -1516,6 +1792,44 @@ class TestAsyncContracts:
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
+    async def test_method_list(self, async_client: AsyncFormalize) -> None:
+        contract = await async_client.api.contracts.list()
+        assert_matches_type(ContractRetrieveResponse, contract, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_method_list_with_all_params(self, async_client: AsyncFormalize) -> None:
+        contract = await async_client.api.contracts.list(
+            limit=0,
+            org_id="org_id",
+            skip=0,
+        )
+        assert_matches_type(ContractRetrieveResponse, contract, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_raw_response_list(self, async_client: AsyncFormalize) -> None:
+        response = await async_client.api.contracts.with_raw_response.list()
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        contract = await response.parse()
+        assert_matches_type(ContractRetrieveResponse, contract, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_streaming_response_list(self, async_client: AsyncFormalize) -> None:
+        async with async_client.api.contracts.with_streaming_response.list() as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            contract = await response.parse()
+            assert_matches_type(ContractRetrieveResponse, contract, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
     async def test_method_retrieve_docx(self, async_client: AsyncFormalize) -> None:
         contract = await async_client.api.contracts.retrieve_docx(
             "contract_id",
@@ -1646,6 +1960,48 @@ class TestAsyncContracts:
     async def test_path_params_retrieve_html(self, async_client: AsyncFormalize) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `contract_id` but received ''"):
             await async_client.api.contracts.with_raw_response.retrieve_html(
+                "",
+            )
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_method_retrieve_model_code(self, async_client: AsyncFormalize) -> None:
+        contract = await async_client.api.contracts.retrieve_model_code(
+            "contract_id",
+        )
+        assert_matches_type(object, contract, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_raw_response_retrieve_model_code(self, async_client: AsyncFormalize) -> None:
+        response = await async_client.api.contracts.with_raw_response.retrieve_model_code(
+            "contract_id",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        contract = await response.parse()
+        assert_matches_type(object, contract, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_streaming_response_retrieve_model_code(self, async_client: AsyncFormalize) -> None:
+        async with async_client.api.contracts.with_streaming_response.retrieve_model_code(
+            "contract_id",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            contract = await response.parse()
+            assert_matches_type(object, contract, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_path_params_retrieve_model_code(self, async_client: AsyncFormalize) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `contract_id` but received ''"):
+            await async_client.api.contracts.with_raw_response.retrieve_model_code(
                 "",
             )
 
@@ -1790,6 +2146,52 @@ class TestAsyncContracts:
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
+    async def test_method_save_dsl(self, async_client: AsyncFormalize) -> None:
+        contract = await async_client.api.contracts.save_dsl(
+            contract_id="contract_id",
+            model_code="model_code",
+        )
+        assert_matches_type(ContractSaveDslResponse, contract, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_raw_response_save_dsl(self, async_client: AsyncFormalize) -> None:
+        response = await async_client.api.contracts.with_raw_response.save_dsl(
+            contract_id="contract_id",
+            model_code="model_code",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        contract = await response.parse()
+        assert_matches_type(ContractSaveDslResponse, contract, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_streaming_response_save_dsl(self, async_client: AsyncFormalize) -> None:
+        async with async_client.api.contracts.with_streaming_response.save_dsl(
+            contract_id="contract_id",
+            model_code="model_code",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            contract = await response.parse()
+            assert_matches_type(ContractSaveDslResponse, contract, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_path_params_save_dsl(self, async_client: AsyncFormalize) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `contract_id` but received ''"):
+            await async_client.api.contracts.with_raw_response.save_dsl(
+                contract_id="",
+                model_code="model_code",
+            )
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
     async def test_method_test_data_with_preview(self, async_client: AsyncFormalize) -> None:
         contract = await async_client.api.contracts.test_data_with_preview(
             contract_id="contract_id",
@@ -1838,43 +2240,43 @@ class TestAsyncContracts:
     @parametrize
     async def test_method_upload(self, async_client: AsyncFormalize) -> None:
         contract = await async_client.api.contracts.upload(
-            file=b"raw file contents",
+            file=b"Example data",
         )
-        assert_matches_type(ContractDocument, contract, path=["response"])
+        assert_matches_type(ContractDocumentResponse, contract, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_upload_with_all_params(self, async_client: AsyncFormalize) -> None:
         contract = await async_client.api.contracts.upload(
-            file=b"raw file contents",
+            file=b"Example data",
             org_id="org_id",
             side="side",
         )
-        assert_matches_type(ContractDocument, contract, path=["response"])
+        assert_matches_type(ContractDocumentResponse, contract, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_upload(self, async_client: AsyncFormalize) -> None:
         response = await async_client.api.contracts.with_raw_response.upload(
-            file=b"raw file contents",
+            file=b"Example data",
         )
 
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         contract = await response.parse()
-        assert_matches_type(ContractDocument, contract, path=["response"])
+        assert_matches_type(ContractDocumentResponse, contract, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_upload(self, async_client: AsyncFormalize) -> None:
         async with async_client.api.contracts.with_streaming_response.upload(
-            file=b"raw file contents",
+            file=b"Example data",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             contract = await response.parse()
-            assert_matches_type(ContractDocument, contract, path=["response"])
+            assert_matches_type(ContractDocumentResponse, contract, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -1882,7 +2284,7 @@ class TestAsyncContracts:
     @parametrize
     async def test_method_upload_and_formalize(self, async_client: AsyncFormalize) -> None:
         contract = await async_client.api.contracts.upload_and_formalize(
-            file=b"raw file contents",
+            file=b"Example data",
         )
         assert_matches_type(ContractUploadAndFormalizeResponse, contract, path=["response"])
 
@@ -1890,7 +2292,7 @@ class TestAsyncContracts:
     @parametrize
     async def test_method_upload_and_formalize_with_all_params(self, async_client: AsyncFormalize) -> None:
         contract = await async_client.api.contracts.upload_and_formalize(
-            file=b"raw file contents",
+            file=b"Example data",
             max_prompts=0,
             org_id="org_id",
             side="side",
@@ -1901,7 +2303,7 @@ class TestAsyncContracts:
     @parametrize
     async def test_raw_response_upload_and_formalize(self, async_client: AsyncFormalize) -> None:
         response = await async_client.api.contracts.with_raw_response.upload_and_formalize(
-            file=b"raw file contents",
+            file=b"Example data",
         )
 
         assert response.is_closed is True
@@ -1913,13 +2315,47 @@ class TestAsyncContracts:
     @parametrize
     async def test_streaming_response_upload_and_formalize(self, async_client: AsyncFormalize) -> None:
         async with async_client.api.contracts.with_streaming_response.upload_and_formalize(
-            file=b"raw file contents",
+            file=b"Example data",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             contract = await response.parse()
             assert_matches_type(ContractUploadAndFormalizeResponse, contract, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_method_validate_dsl(self, async_client: AsyncFormalize) -> None:
+        contract = await async_client.api.contracts.validate_dsl(
+            model_code="model_code",
+        )
+        assert_matches_type(ContractValidateDslResponse, contract, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_raw_response_validate_dsl(self, async_client: AsyncFormalize) -> None:
+        response = await async_client.api.contracts.with_raw_response.validate_dsl(
+            model_code="model_code",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        contract = await response.parse()
+        assert_matches_type(ContractValidateDslResponse, contract, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_streaming_response_validate_dsl(self, async_client: AsyncFormalize) -> None:
+        async with async_client.api.contracts.with_streaming_response.validate_dsl(
+            model_code="model_code",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            contract = await response.parse()
+            assert_matches_type(ContractValidateDslResponse, contract, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 

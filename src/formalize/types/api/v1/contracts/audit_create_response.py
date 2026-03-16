@@ -4,10 +4,10 @@ from typing import Dict, Optional
 
 from ....._models import BaseModel
 
-__all__ = ["AuditRunResponse"]
+__all__ = ["AuditCreateResponse"]
 
 
-class AuditRunResponse(BaseModel):
+class AuditCreateResponse(BaseModel):
     """Response from auditing a contract computation."""
 
     contract_id: str

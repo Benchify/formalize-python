@@ -8,7 +8,7 @@ __all__ = ["DocxGetInfoResponse"]
 
 
 class DocxGetInfoResponse(BaseModel):
-    """Response containing the DOCX document metadata and download info."""
+    """Response containing the DOCX document info."""
 
     contract_id: str
     """The contract's ID"""

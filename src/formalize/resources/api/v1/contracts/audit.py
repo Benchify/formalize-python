@@ -17,9 +17,9 @@ from ....._response import (
     async_to_streamed_response_wrapper,
 )
 from ....._base_client import make_request_options
-from .....types.api.v1.contracts import audit_run_params, audit_run_batch_params
-from .....types.api.v1.contracts.audit_run_response import AuditRunResponse
-from .....types.api.v1.contracts.audit_run_batch_response import AuditRunBatchResponse
+from .....types.api.v1.contracts import audit_batch_params, audit_create_params
+from .....types.api.v1.contracts.audit_batch_response import AuditBatchResponse
+from .....types.api.v1.contracts.audit_create_response import AuditCreateResponse
 
 __all__ = ["AuditResource", "AsyncAuditResource"]
 
@@ -48,7 +48,7 @@ class AuditResource(SyncAPIResource):
         """
         return AuditResourceWithStreamingResponse(self)
 
-    def run(
+    def create(
         self,
         contract_id: str,
         *,
@@ -60,7 +60,7 @@ class AuditResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> AuditRunResponse:
+    ) -> AuditCreateResponse:
         """
         Execute a contract computation with given inputs and return the results.
 
@@ -87,15 +87,15 @@ class AuditResource(SyncAPIResource):
                     "inputs": inputs,
                     "scope_name": scope_name,
                 },
-                audit_run_params.AuditRunParams,
+                audit_create_params.AuditCreateParams,
             ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=AuditRunResponse,
+            cast_to=AuditCreateResponse,
         )
 
-    def run_batch(
+    def batch(
         self,
         contract_id: str,
         *,
@@ -107,7 +107,7 @@ class AuditResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> AuditRunBatchResponse:
+    ) -> AuditBatchResponse:
         """
         Execute a contract computation with multiple input scenarios.
 
@@ -133,12 +133,12 @@ class AuditResource(SyncAPIResource):
                     "scenarios": scenarios,
                     "scope_name": scope_name,
                 },
-                audit_run_batch_params.AuditRunBatchParams,
+                audit_batch_params.AuditBatchParams,
             ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=AuditRunBatchResponse,
+            cast_to=AuditBatchResponse,
         )
 
 
@@ -166,7 +166,7 @@ class AsyncAuditResource(AsyncAPIResource):
         """
         return AsyncAuditResourceWithStreamingResponse(self)
 
-    async def run(
+    async def create(
         self,
         contract_id: str,
         *,
@@ -178,7 +178,7 @@ class AsyncAuditResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> AuditRunResponse:
+    ) -> AuditCreateResponse:
         """
         Execute a contract computation with given inputs and return the results.
 
@@ -205,15 +205,15 @@ class AsyncAuditResource(AsyncAPIResource):
                     "inputs": inputs,
                     "scope_name": scope_name,
                 },
-                audit_run_params.AuditRunParams,
+                audit_create_params.AuditCreateParams,
             ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=AuditRunResponse,
+            cast_to=AuditCreateResponse,
         )
 
-    async def run_batch(
+    async def batch(
         self,
         contract_id: str,
         *,
@@ -225,7 +225,7 @@ class AsyncAuditResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> AuditRunBatchResponse:
+    ) -> AuditBatchResponse:
         """
         Execute a contract computation with multiple input scenarios.
 
@@ -251,12 +251,12 @@ class AsyncAuditResource(AsyncAPIResource):
                     "scenarios": scenarios,
                     "scope_name": scope_name,
                 },
-                audit_run_batch_params.AuditRunBatchParams,
+                audit_batch_params.AuditBatchParams,
             ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=AuditRunBatchResponse,
+            cast_to=AuditBatchResponse,
         )
 
 
@@ -264,11 +264,11 @@ class AuditResourceWithRawResponse:
     def __init__(self, audit: AuditResource) -> None:
         self._audit = audit
 
-        self.run = to_raw_response_wrapper(
-            audit.run,
+        self.create = to_raw_response_wrapper(
+            audit.create,
         )
-        self.run_batch = to_raw_response_wrapper(
-            audit.run_batch,
+        self.batch = to_raw_response_wrapper(
+            audit.batch,
         )
 
 
@@ -276,11 +276,11 @@ class AsyncAuditResourceWithRawResponse:
     def __init__(self, audit: AsyncAuditResource) -> None:
         self._audit = audit
 
-        self.run = async_to_raw_response_wrapper(
-            audit.run,
+        self.create = async_to_raw_response_wrapper(
+            audit.create,
         )
-        self.run_batch = async_to_raw_response_wrapper(
-            audit.run_batch,
+        self.batch = async_to_raw_response_wrapper(
+            audit.batch,
         )
 
 
@@ -288,11 +288,11 @@ class AuditResourceWithStreamingResponse:
     def __init__(self, audit: AuditResource) -> None:
         self._audit = audit
 
-        self.run = to_streamed_response_wrapper(
-            audit.run,
+        self.create = to_streamed_response_wrapper(
+            audit.create,
         )
-        self.run_batch = to_streamed_response_wrapper(
-            audit.run_batch,
+        self.batch = to_streamed_response_wrapper(
+            audit.batch,
         )
 
 
@@ -300,9 +300,9 @@ class AsyncAuditResourceWithStreamingResponse:
     def __init__(self, audit: AsyncAuditResource) -> None:
         self._audit = audit
 
-        self.run = async_to_streamed_response_wrapper(
-            audit.run,
+        self.create = async_to_streamed_response_wrapper(
+            audit.create,
         )
-        self.run_batch = async_to_streamed_response_wrapper(
-            audit.run_batch,
+        self.batch = async_to_streamed_response_wrapper(
+            audit.batch,
         )

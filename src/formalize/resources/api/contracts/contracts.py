@@ -68,9 +68,13 @@ from ...._response import (
 )
 from ....types.api import (
     contract_upload_params,
+    contract_edit_dsl_params,
     contract_optimize_params,
+    contract_retrieve_params,
+    contract_save_dsl_params,
     contract_diff_docx_params,
     contract_evaluate_row_params,
+    contract_validate_dsl_params,
     contract_working_copy_params,
     contract_edit_from_docx_params,
     contract_edit_from_text_params,
@@ -105,8 +109,12 @@ from .optimization_results import (
     OptimizationResultsResourceWithStreamingResponse,
     AsyncOptimizationResultsResourceWithStreamingResponse,
 )
-from ....types.api.contract_document import ContractDocument
+from ....types.api.contract_document_response import ContractDocumentResponse
+from ....types.api.contract_edit_dsl_response import ContractEditDslResponse
+from ....types.api.contract_retrieve_response import ContractRetrieveResponse
+from ....types.api.contract_save_dsl_response import ContractSaveDslResponse
 from ....types.api.contract_diff_docx_response import ContractDiffDocxResponse
+from ....types.api.contract_validate_dsl_response import ContractValidateDslResponse
 from ....types.api.contract_working_copy_response import ContractWorkingCopyResponse
 from ....types.api.contract_edit_from_docx_response import ContractEditFromDocxResponse
 from ....types.api.contract_edit_from_text_response import ContractEditFromTextResponse
@@ -194,7 +202,7 @@ class ContractsResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ContractDocument:
+    ) -> ContractDocumentResponse:
         """
         Get Contract
 
@@ -214,7 +222,7 @@ class ContractsResource(SyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=ContractDocument,
+            cast_to=ContractDocumentResponse,
         )
 
     def delete(
@@ -377,6 +385,54 @@ class ContractsResource(SyncAPIResource):
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
             cast_to=ContractDiffDocxResponse,
+        )
+
+    def edit_dsl(
+        self,
+        contract_id: str,
+        *,
+        change_description: str,
+        current_spec: Optional[str] | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ContractEditDslResponse:
+        """
+        Apply a natural-language change to the contract formalization.
+
+        Returns a preview of the result (does NOT auto-save). Use POST
+        /{contract_id}/save-dsl to persist.
+
+        This endpoint now also generates a contract clause that can be inserted into the
+        document, making AI edits visible in the contract itself.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not contract_id:
+            raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
+        return self._post(
+            f"/api/contracts/{contract_id}/edit-dsl",
+            body=maybe_transform(
+                {
+                    "change_description": change_description,
+                    "current_spec": current_spec,
+                },
+                contract_edit_dsl_params.ContractEditDslParams,
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=ContractEditDslResponse,
         )
 
     def edit_from_docx(
@@ -646,6 +702,50 @@ class ContractsResource(SyncAPIResource):
             cast_to=object,
         )
 
+    def list(
+        self,
+        *,
+        limit: int | Omit = omit,
+        org_id: Optional[str] | Omit = omit,
+        skip: int | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ContractRetrieveResponse:
+        """
+        List Contracts
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        return self._get(
+            "/api/contracts/",
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=maybe_transform(
+                    {
+                        "limit": limit,
+                        "org_id": org_id,
+                        "skip": skip,
+                    },
+                    contract_retrieve_params.ContractRetrieveParams,
+                ),
+            ),
+            cast_to=ContractRetrieveResponse,
+        )
+
     def retrieve_docx(
         self,
         contract_id: str,
@@ -756,6 +856,39 @@ class ContractsResource(SyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
         return self._get(
             f"/api/contracts/{contract_id}/html",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=object,
+        )
+
+    def retrieve_model_code(
+        self,
+        contract_id: str,
+        *,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> object:
+        """
+        Return the current formalization code.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not contract_id:
+            raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
+        return self._get(
+            f"/api/contracts/{contract_id}/model-code",
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -894,6 +1027,41 @@ class ContractsResource(SyncAPIResource):
             cast_to=object,
         )
 
+    def save_dsl(
+        self,
+        contract_id: str,
+        *,
+        model_code: str,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ContractSaveDslResponse:
+        """
+        Persist specification code to the database (after user confirms a preview).
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not contract_id:
+            raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
+        return self._post(
+            f"/api/contracts/{contract_id}/save-dsl",
+            body=maybe_transform({"model_code": model_code}, contract_save_dsl_params.ContractSaveDslParams),
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=ContractSaveDslResponse,
+        )
+
     def test_data_with_preview(
         self,
         contract_id: str,
@@ -956,7 +1124,7 @@ class ContractsResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ContractDocument:
+    ) -> ContractDocumentResponse:
         """
         Upload Contract
 
@@ -992,7 +1160,7 @@ class ContractsResource(SyncAPIResource):
                     contract_upload_params.ContractUploadParams,
                 ),
             ),
-            cast_to=ContractDocument,
+            cast_to=ContractDocumentResponse,
         )
 
     def upload_and_formalize(
@@ -1050,9 +1218,41 @@ class ContractsResource(SyncAPIResource):
                     },
                     contract_upload_and_formalize_params.ContractUploadAndFormalizeParams,
                 ),
-                security={"bearer_auth": True},
+                security={"http_bearer": True, "api_key_header": True},
             ),
             cast_to=ContractUploadAndFormalizeResponse,
+        )
+
+    def validate_dsl(
+        self,
+        *,
+        model_code: str,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ContractValidateDslResponse:
+        """
+        Typecheck specification code without saving.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        return self._post(
+            "/api/contracts/validate-dsl",
+            body=maybe_transform({"model_code": model_code}, contract_validate_dsl_params.ContractValidateDslParams),
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=ContractValidateDslResponse,
         )
 
     def working_copy(
@@ -1174,7 +1374,7 @@ class AsyncContractsResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ContractDocument:
+    ) -> ContractDocumentResponse:
         """
         Get Contract
 
@@ -1194,7 +1394,7 @@ class AsyncContractsResource(AsyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=ContractDocument,
+            cast_to=ContractDocumentResponse,
         )
 
     async def delete(
@@ -1357,6 +1557,54 @@ class AsyncContractsResource(AsyncAPIResource):
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
             cast_to=ContractDiffDocxResponse,
+        )
+
+    async def edit_dsl(
+        self,
+        contract_id: str,
+        *,
+        change_description: str,
+        current_spec: Optional[str] | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ContractEditDslResponse:
+        """
+        Apply a natural-language change to the contract formalization.
+
+        Returns a preview of the result (does NOT auto-save). Use POST
+        /{contract_id}/save-dsl to persist.
+
+        This endpoint now also generates a contract clause that can be inserted into the
+        document, making AI edits visible in the contract itself.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not contract_id:
+            raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
+        return await self._post(
+            f"/api/contracts/{contract_id}/edit-dsl",
+            body=await async_maybe_transform(
+                {
+                    "change_description": change_description,
+                    "current_spec": current_spec,
+                },
+                contract_edit_dsl_params.ContractEditDslParams,
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=ContractEditDslResponse,
         )
 
     async def edit_from_docx(
@@ -1626,6 +1874,50 @@ class AsyncContractsResource(AsyncAPIResource):
             cast_to=object,
         )
 
+    async def list(
+        self,
+        *,
+        limit: int | Omit = omit,
+        org_id: Optional[str] | Omit = omit,
+        skip: int | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ContractRetrieveResponse:
+        """
+        List Contracts
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        return await self._get(
+            "/api/contracts/",
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query=await async_maybe_transform(
+                    {
+                        "limit": limit,
+                        "org_id": org_id,
+                        "skip": skip,
+                    },
+                    contract_retrieve_params.ContractRetrieveParams,
+                ),
+            ),
+            cast_to=ContractRetrieveResponse,
+        )
+
     async def retrieve_docx(
         self,
         contract_id: str,
@@ -1736,6 +2028,39 @@ class AsyncContractsResource(AsyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
         return await self._get(
             f"/api/contracts/{contract_id}/html",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=object,
+        )
+
+    async def retrieve_model_code(
+        self,
+        contract_id: str,
+        *,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> object:
+        """
+        Return the current formalization code.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not contract_id:
+            raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
+        return await self._get(
+            f"/api/contracts/{contract_id}/model-code",
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -1874,6 +2199,43 @@ class AsyncContractsResource(AsyncAPIResource):
             cast_to=object,
         )
 
+    async def save_dsl(
+        self,
+        contract_id: str,
+        *,
+        model_code: str,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ContractSaveDslResponse:
+        """
+        Persist specification code to the database (after user confirms a preview).
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not contract_id:
+            raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
+        return await self._post(
+            f"/api/contracts/{contract_id}/save-dsl",
+            body=await async_maybe_transform(
+                {"model_code": model_code}, contract_save_dsl_params.ContractSaveDslParams
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=ContractSaveDslResponse,
+        )
+
     async def test_data_with_preview(
         self,
         contract_id: str,
@@ -1936,7 +2298,7 @@ class AsyncContractsResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ContractDocument:
+    ) -> ContractDocumentResponse:
         """
         Upload Contract
 
@@ -1972,7 +2334,7 @@ class AsyncContractsResource(AsyncAPIResource):
                     contract_upload_params.ContractUploadParams,
                 ),
             ),
-            cast_to=ContractDocument,
+            cast_to=ContractDocumentResponse,
         )
 
     async def upload_and_formalize(
@@ -2032,9 +2394,43 @@ class AsyncContractsResource(AsyncAPIResource):
                     },
                     contract_upload_and_formalize_params.ContractUploadAndFormalizeParams,
                 ),
-                security={"bearer_auth": True},
+                security={"http_bearer": True, "api_key_header": True},
             ),
             cast_to=ContractUploadAndFormalizeResponse,
+        )
+
+    async def validate_dsl(
+        self,
+        *,
+        model_code: str,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> ContractValidateDslResponse:
+        """
+        Typecheck specification code without saving.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        return await self._post(
+            "/api/contracts/validate-dsl",
+            body=await async_maybe_transform(
+                {"model_code": model_code}, contract_validate_dsl_params.ContractValidateDslParams
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=ContractValidateDslResponse,
         )
 
     async def working_copy(
@@ -2101,6 +2497,9 @@ class ContractsResourceWithRawResponse:
         self.diff_docx = to_raw_response_wrapper(
             contracts.diff_docx,
         )
+        self.edit_dsl = to_raw_response_wrapper(
+            contracts.edit_dsl,
+        )
         self.edit_from_docx = to_raw_response_wrapper(
             contracts.edit_from_docx,
         )
@@ -2119,6 +2518,9 @@ class ContractsResourceWithRawResponse:
         self.refresh_scope_metadata = to_raw_response_wrapper(
             contracts.refresh_scope_metadata,
         )
+        self.list = to_raw_response_wrapper(
+            contracts.list,
+        )
         self.retrieve_docx = to_raw_response_wrapper(
             contracts.retrieve_docx,
         )
@@ -2127,6 +2529,9 @@ class ContractsResourceWithRawResponse:
         )
         self.retrieve_html = to_raw_response_wrapper(
             contracts.retrieve_html,
+        )
+        self.retrieve_model_code = to_raw_response_wrapper(
+            contracts.retrieve_model_code,
         )
         self.retrieve_model_view = to_raw_response_wrapper(
             contracts.retrieve_model_view,
@@ -2137,6 +2542,9 @@ class ContractsResourceWithRawResponse:
         self.retrieve_test_data_with_working_copy = to_raw_response_wrapper(
             contracts.retrieve_test_data_with_working_copy,
         )
+        self.save_dsl = to_raw_response_wrapper(
+            contracts.save_dsl,
+        )
         self.test_data_with_preview = to_raw_response_wrapper(
             contracts.test_data_with_preview,
         )
@@ -2145,6 +2553,9 @@ class ContractsResourceWithRawResponse:
         )
         self.upload_and_formalize = to_raw_response_wrapper(
             contracts.upload_and_formalize,
+        )
+        self.validate_dsl = to_raw_response_wrapper(
+            contracts.validate_dsl,
         )
         self.working_copy = to_raw_response_wrapper(
             contracts.working_copy,
@@ -2216,6 +2627,9 @@ class AsyncContractsResourceWithRawResponse:
         self.diff_docx = async_to_raw_response_wrapper(
             contracts.diff_docx,
         )
+        self.edit_dsl = async_to_raw_response_wrapper(
+            contracts.edit_dsl,
+        )
         self.edit_from_docx = async_to_raw_response_wrapper(
             contracts.edit_from_docx,
         )
@@ -2234,6 +2648,9 @@ class AsyncContractsResourceWithRawResponse:
         self.refresh_scope_metadata = async_to_raw_response_wrapper(
             contracts.refresh_scope_metadata,
         )
+        self.list = async_to_raw_response_wrapper(
+            contracts.list,
+        )
         self.retrieve_docx = async_to_raw_response_wrapper(
             contracts.retrieve_docx,
         )
@@ -2242,6 +2659,9 @@ class AsyncContractsResourceWithRawResponse:
         )
         self.retrieve_html = async_to_raw_response_wrapper(
             contracts.retrieve_html,
+        )
+        self.retrieve_model_code = async_to_raw_response_wrapper(
+            contracts.retrieve_model_code,
         )
         self.retrieve_model_view = async_to_raw_response_wrapper(
             contracts.retrieve_model_view,
@@ -2252,6 +2672,9 @@ class AsyncContractsResourceWithRawResponse:
         self.retrieve_test_data_with_working_copy = async_to_raw_response_wrapper(
             contracts.retrieve_test_data_with_working_copy,
         )
+        self.save_dsl = async_to_raw_response_wrapper(
+            contracts.save_dsl,
+        )
         self.test_data_with_preview = async_to_raw_response_wrapper(
             contracts.test_data_with_preview,
         )
@@ -2260,6 +2683,9 @@ class AsyncContractsResourceWithRawResponse:
         )
         self.upload_and_formalize = async_to_raw_response_wrapper(
             contracts.upload_and_formalize,
+        )
+        self.validate_dsl = async_to_raw_response_wrapper(
+            contracts.validate_dsl,
         )
         self.working_copy = async_to_raw_response_wrapper(
             contracts.working_copy,
@@ -2331,6 +2757,9 @@ class ContractsResourceWithStreamingResponse:
         self.diff_docx = to_streamed_response_wrapper(
             contracts.diff_docx,
         )
+        self.edit_dsl = to_streamed_response_wrapper(
+            contracts.edit_dsl,
+        )
         self.edit_from_docx = to_streamed_response_wrapper(
             contracts.edit_from_docx,
         )
@@ -2349,6 +2778,9 @@ class ContractsResourceWithStreamingResponse:
         self.refresh_scope_metadata = to_streamed_response_wrapper(
             contracts.refresh_scope_metadata,
         )
+        self.list = to_streamed_response_wrapper(
+            contracts.list,
+        )
         self.retrieve_docx = to_streamed_response_wrapper(
             contracts.retrieve_docx,
         )
@@ -2357,6 +2789,9 @@ class ContractsResourceWithStreamingResponse:
         )
         self.retrieve_html = to_streamed_response_wrapper(
             contracts.retrieve_html,
+        )
+        self.retrieve_model_code = to_streamed_response_wrapper(
+            contracts.retrieve_model_code,
         )
         self.retrieve_model_view = to_streamed_response_wrapper(
             contracts.retrieve_model_view,
@@ -2367,6 +2802,9 @@ class ContractsResourceWithStreamingResponse:
         self.retrieve_test_data_with_working_copy = to_streamed_response_wrapper(
             contracts.retrieve_test_data_with_working_copy,
         )
+        self.save_dsl = to_streamed_response_wrapper(
+            contracts.save_dsl,
+        )
         self.test_data_with_preview = to_streamed_response_wrapper(
             contracts.test_data_with_preview,
         )
@@ -2375,6 +2813,9 @@ class ContractsResourceWithStreamingResponse:
         )
         self.upload_and_formalize = to_streamed_response_wrapper(
             contracts.upload_and_formalize,
+        )
+        self.validate_dsl = to_streamed_response_wrapper(
+            contracts.validate_dsl,
         )
         self.working_copy = to_streamed_response_wrapper(
             contracts.working_copy,
@@ -2446,6 +2887,9 @@ class AsyncContractsResourceWithStreamingResponse:
         self.diff_docx = async_to_streamed_response_wrapper(
             contracts.diff_docx,
         )
+        self.edit_dsl = async_to_streamed_response_wrapper(
+            contracts.edit_dsl,
+        )
         self.edit_from_docx = async_to_streamed_response_wrapper(
             contracts.edit_from_docx,
         )
@@ -2464,6 +2908,9 @@ class AsyncContractsResourceWithStreamingResponse:
         self.refresh_scope_metadata = async_to_streamed_response_wrapper(
             contracts.refresh_scope_metadata,
         )
+        self.list = async_to_streamed_response_wrapper(
+            contracts.list,
+        )
         self.retrieve_docx = async_to_streamed_response_wrapper(
             contracts.retrieve_docx,
         )
@@ -2472,6 +2919,9 @@ class AsyncContractsResourceWithStreamingResponse:
         )
         self.retrieve_html = async_to_streamed_response_wrapper(
             contracts.retrieve_html,
+        )
+        self.retrieve_model_code = async_to_streamed_response_wrapper(
+            contracts.retrieve_model_code,
         )
         self.retrieve_model_view = async_to_streamed_response_wrapper(
             contracts.retrieve_model_view,
@@ -2482,6 +2932,9 @@ class AsyncContractsResourceWithStreamingResponse:
         self.retrieve_test_data_with_working_copy = async_to_streamed_response_wrapper(
             contracts.retrieve_test_data_with_working_copy,
         )
+        self.save_dsl = async_to_streamed_response_wrapper(
+            contracts.save_dsl,
+        )
         self.test_data_with_preview = async_to_streamed_response_wrapper(
             contracts.test_data_with_preview,
         )
@@ -2490,6 +2943,9 @@ class AsyncContractsResourceWithStreamingResponse:
         )
         self.upload_and_formalize = async_to_streamed_response_wrapper(
             contracts.upload_and_formalize,
+        )
+        self.validate_dsl = async_to_streamed_response_wrapper(
+            contracts.validate_dsl,
         )
         self.working_copy = async_to_streamed_response_wrapper(
             contracts.working_copy,

@@ -15,9 +15,9 @@ from ....._response import (
     async_to_streamed_response_wrapper,
 )
 from ....._base_client import make_request_options
-from .....types.api.v1.contracts import spec_update_params
-from .....types.api.v1.contracts.spec_get_response import SpecGetResponse
-from .....types.api.v1.contracts.spec_update_response import SpecUpdateResponse
+from .....types.api.v1.contracts import spec_create_params
+from .....types.api.v1.contracts.spec_list_response import SpecListResponse
+from .....types.api.v1.contracts.spec_create_response import SpecCreateResponse
 
 __all__ = ["SpecResource", "AsyncSpecResource"]
 
@@ -46,7 +46,7 @@ class SpecResource(SyncAPIResource):
         """
         return SpecResourceWithStreamingResponse(self)
 
-    def update(
+    def create(
         self,
         contract_id: str,
         *,
@@ -58,7 +58,7 @@ class SpecResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SpecUpdateResponse:
+    ) -> SpecCreateResponse:
         """
         Update the formal specification for a contract.
 
@@ -86,15 +86,15 @@ class SpecResource(SyncAPIResource):
                     "model_code": model_code,
                     "validate_syntax": validate_syntax,
                 },
-                spec_update_params.SpecUpdateParams,
+                spec_create_params.SpecCreateParams,
             ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=SpecUpdateResponse,
+            cast_to=SpecCreateResponse,
         )
 
-    def get(
+    def list(
         self,
         contract_id: str,
         *,
@@ -104,7 +104,7 @@ class SpecResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SpecGetResponse:
+    ) -> SpecListResponse:
         """
         Get the formal specification for a contract.
 
@@ -124,7 +124,7 @@ class SpecResource(SyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=SpecGetResponse,
+            cast_to=SpecListResponse,
         )
 
 
@@ -152,7 +152,7 @@ class AsyncSpecResource(AsyncAPIResource):
         """
         return AsyncSpecResourceWithStreamingResponse(self)
 
-    async def update(
+    async def create(
         self,
         contract_id: str,
         *,
@@ -164,7 +164,7 @@ class AsyncSpecResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SpecUpdateResponse:
+    ) -> SpecCreateResponse:
         """
         Update the formal specification for a contract.
 
@@ -192,15 +192,15 @@ class AsyncSpecResource(AsyncAPIResource):
                     "model_code": model_code,
                     "validate_syntax": validate_syntax,
                 },
-                spec_update_params.SpecUpdateParams,
+                spec_create_params.SpecCreateParams,
             ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=SpecUpdateResponse,
+            cast_to=SpecCreateResponse,
         )
 
-    async def get(
+    async def list(
         self,
         contract_id: str,
         *,
@@ -210,7 +210,7 @@ class AsyncSpecResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SpecGetResponse:
+    ) -> SpecListResponse:
         """
         Get the formal specification for a contract.
 
@@ -230,7 +230,7 @@ class AsyncSpecResource(AsyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=SpecGetResponse,
+            cast_to=SpecListResponse,
         )
 
 
@@ -238,11 +238,11 @@ class SpecResourceWithRawResponse:
     def __init__(self, spec: SpecResource) -> None:
         self._spec = spec
 
-        self.update = to_raw_response_wrapper(
-            spec.update,
+        self.create = to_raw_response_wrapper(
+            spec.create,
         )
-        self.get = to_raw_response_wrapper(
-            spec.get,
+        self.list = to_raw_response_wrapper(
+            spec.list,
         )
 
 
@@ -250,11 +250,11 @@ class AsyncSpecResourceWithRawResponse:
     def __init__(self, spec: AsyncSpecResource) -> None:
         self._spec = spec
 
-        self.update = async_to_raw_response_wrapper(
-            spec.update,
+        self.create = async_to_raw_response_wrapper(
+            spec.create,
         )
-        self.get = async_to_raw_response_wrapper(
-            spec.get,
+        self.list = async_to_raw_response_wrapper(
+            spec.list,
         )
 
 
@@ -262,11 +262,11 @@ class SpecResourceWithStreamingResponse:
     def __init__(self, spec: SpecResource) -> None:
         self._spec = spec
 
-        self.update = to_streamed_response_wrapper(
-            spec.update,
+        self.create = to_streamed_response_wrapper(
+            spec.create,
         )
-        self.get = to_streamed_response_wrapper(
-            spec.get,
+        self.list = to_streamed_response_wrapper(
+            spec.list,
         )
 
 
@@ -274,9 +274,9 @@ class AsyncSpecResourceWithStreamingResponse:
     def __init__(self, spec: AsyncSpecResource) -> None:
         self._spec = spec
 
-        self.update = async_to_streamed_response_wrapper(
-            spec.update,
+        self.create = async_to_streamed_response_wrapper(
+            spec.create,
         )
-        self.get = async_to_streamed_response_wrapper(
-            spec.get,
+        self.list = async_to_streamed_response_wrapper(
+            spec.list,
         )

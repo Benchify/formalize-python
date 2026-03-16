@@ -22,7 +22,7 @@ class TestDatasets:
         dataset = client.api.contracts.datasets.create(
             contract_id="contract_id",
             name="name",
-            file=b"raw file contents",
+            file=b"Example data",
         )
         assert_matches_type(object, dataset, path=["response"])
 
@@ -32,7 +32,7 @@ class TestDatasets:
         dataset = client.api.contracts.datasets.create(
             contract_id="contract_id",
             name="name",
-            file=b"raw file contents",
+            file=b"Example data",
             description="description",
             is_primary=True,
             target_scope="target_scope",
@@ -45,7 +45,7 @@ class TestDatasets:
         response = client.api.contracts.datasets.with_raw_response.create(
             contract_id="contract_id",
             name="name",
-            file=b"raw file contents",
+            file=b"Example data",
         )
 
         assert response.is_closed is True
@@ -59,7 +59,7 @@ class TestDatasets:
         with client.api.contracts.datasets.with_streaming_response.create(
             contract_id="contract_id",
             name="name",
-            file=b"raw file contents",
+            file=b"Example data",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -76,7 +76,7 @@ class TestDatasets:
             client.api.contracts.datasets.with_raw_response.create(
                 contract_id="",
                 name="name",
-                file=b"raw file contents",
+                file=b"Example data",
             )
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
@@ -292,6 +292,63 @@ class TestDatasets:
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
+    def test_method_generate_columns(self, client: Formalize) -> None:
+        dataset = client.api.contracts.datasets.generate_columns(
+            dataset_id="dataset_id",
+            contract_id="contract_id",
+            fields=["string"],
+        )
+        assert_matches_type(object, dataset, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_raw_response_generate_columns(self, client: Formalize) -> None:
+        response = client.api.contracts.datasets.with_raw_response.generate_columns(
+            dataset_id="dataset_id",
+            contract_id="contract_id",
+            fields=["string"],
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        dataset = response.parse()
+        assert_matches_type(object, dataset, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_streaming_response_generate_columns(self, client: Formalize) -> None:
+        with client.api.contracts.datasets.with_streaming_response.generate_columns(
+            dataset_id="dataset_id",
+            contract_id="contract_id",
+            fields=["string"],
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            dataset = response.parse()
+            assert_matches_type(object, dataset, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    def test_path_params_generate_columns(self, client: Formalize) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `contract_id` but received ''"):
+            client.api.contracts.datasets.with_raw_response.generate_columns(
+                dataset_id="dataset_id",
+                contract_id="",
+                fields=["string"],
+            )
+
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `dataset_id` but received ''"):
+            client.api.contracts.datasets.with_raw_response.generate_columns(
+                dataset_id="",
+                contract_id="contract_id",
+                fields=["string"],
+            )
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
     def test_method_retrieve_download(self, client: Formalize) -> None:
         dataset = client.api.contracts.datasets.retrieve_download(
             dataset_id="dataset_id",
@@ -354,7 +411,7 @@ class TestAsyncDatasets:
         dataset = await async_client.api.contracts.datasets.create(
             contract_id="contract_id",
             name="name",
-            file=b"raw file contents",
+            file=b"Example data",
         )
         assert_matches_type(object, dataset, path=["response"])
 
@@ -364,7 +421,7 @@ class TestAsyncDatasets:
         dataset = await async_client.api.contracts.datasets.create(
             contract_id="contract_id",
             name="name",
-            file=b"raw file contents",
+            file=b"Example data",
             description="description",
             is_primary=True,
             target_scope="target_scope",
@@ -377,7 +434,7 @@ class TestAsyncDatasets:
         response = await async_client.api.contracts.datasets.with_raw_response.create(
             contract_id="contract_id",
             name="name",
-            file=b"raw file contents",
+            file=b"Example data",
         )
 
         assert response.is_closed is True
@@ -391,7 +448,7 @@ class TestAsyncDatasets:
         async with async_client.api.contracts.datasets.with_streaming_response.create(
             contract_id="contract_id",
             name="name",
-            file=b"raw file contents",
+            file=b"Example data",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -408,7 +465,7 @@ class TestAsyncDatasets:
             await async_client.api.contracts.datasets.with_raw_response.create(
                 contract_id="",
                 name="name",
-                file=b"raw file contents",
+                file=b"Example data",
             )
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
@@ -620,6 +677,63 @@ class TestAsyncDatasets:
             await async_client.api.contracts.datasets.with_raw_response.delete(
                 dataset_id="",
                 contract_id="contract_id",
+            )
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_method_generate_columns(self, async_client: AsyncFormalize) -> None:
+        dataset = await async_client.api.contracts.datasets.generate_columns(
+            dataset_id="dataset_id",
+            contract_id="contract_id",
+            fields=["string"],
+        )
+        assert_matches_type(object, dataset, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_raw_response_generate_columns(self, async_client: AsyncFormalize) -> None:
+        response = await async_client.api.contracts.datasets.with_raw_response.generate_columns(
+            dataset_id="dataset_id",
+            contract_id="contract_id",
+            fields=["string"],
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        dataset = await response.parse()
+        assert_matches_type(object, dataset, path=["response"])
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_streaming_response_generate_columns(self, async_client: AsyncFormalize) -> None:
+        async with async_client.api.contracts.datasets.with_streaming_response.generate_columns(
+            dataset_id="dataset_id",
+            contract_id="contract_id",
+            fields=["string"],
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            dataset = await response.parse()
+            assert_matches_type(object, dataset, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @pytest.mark.skip(reason="Mock server tests are disabled")
+    @parametrize
+    async def test_path_params_generate_columns(self, async_client: AsyncFormalize) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `contract_id` but received ''"):
+            await async_client.api.contracts.datasets.with_raw_response.generate_columns(
+                dataset_id="dataset_id",
+                contract_id="",
+                fields=["string"],
+            )
+
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `dataset_id` but received ''"):
+            await async_client.api.contracts.datasets.with_raw_response.generate_columns(
+                dataset_id="",
+                contract_id="contract_id",
+                fields=["string"],
             )
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
