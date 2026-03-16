@@ -18,14 +18,14 @@ class TestV1:
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
-    def test_method_health_check(self, client: Formalize) -> None:
-        v1 = client.api.v1.health_check()
+    def test_method_retrieve_health(self, client: Formalize) -> None:
+        v1 = client.api.v1.retrieve_health()
         assert_matches_type(object, v1, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
-    def test_raw_response_health_check(self, client: Formalize) -> None:
-        response = client.api.v1.with_raw_response.health_check()
+    def test_raw_response_retrieve_health(self, client: Formalize) -> None:
+        response = client.api.v1.with_raw_response.retrieve_health()
 
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -34,8 +34,8 @@ class TestV1:
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
-    def test_streaming_response_health_check(self, client: Formalize) -> None:
-        with client.api.v1.with_streaming_response.health_check() as response:
+    def test_streaming_response_retrieve_health(self, client: Formalize) -> None:
+        with client.api.v1.with_streaming_response.retrieve_health() as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
@@ -52,14 +52,14 @@ class TestAsyncV1:
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
-    async def test_method_health_check(self, async_client: AsyncFormalize) -> None:
-        v1 = await async_client.api.v1.health_check()
+    async def test_method_retrieve_health(self, async_client: AsyncFormalize) -> None:
+        v1 = await async_client.api.v1.retrieve_health()
         assert_matches_type(object, v1, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
-    async def test_raw_response_health_check(self, async_client: AsyncFormalize) -> None:
-        response = await async_client.api.v1.with_raw_response.health_check()
+    async def test_raw_response_retrieve_health(self, async_client: AsyncFormalize) -> None:
+        response = await async_client.api.v1.with_raw_response.retrieve_health()
 
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -68,8 +68,8 @@ class TestAsyncV1:
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
-    async def test_streaming_response_health_check(self, async_client: AsyncFormalize) -> None:
-        async with async_client.api.v1.with_streaming_response.health_check() as response:
+    async def test_streaming_response_retrieve_health(self, async_client: AsyncFormalize) -> None:
+        async with async_client.api.v1.with_streaming_response.retrieve_health() as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
