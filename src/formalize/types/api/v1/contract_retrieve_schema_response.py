@@ -8,7 +8,7 @@ from ...._models import BaseModel
 from .field_info import FieldInfo
 from .enum_type_info import EnumTypeInfo
 
-__all__ = ["ContractGetSchemaResponse", "Scope"]
+__all__ = ["ContractRetrieveSchemaResponse", "Scope"]
 
 
 class Scope(BaseModel):
@@ -33,7 +33,7 @@ class Scope(BaseModel):
     """Output fields produced by this scope"""
 
 
-class ContractGetSchemaResponse(BaseModel):
+class ContractRetrieveSchemaResponse(BaseModel):
     """Complete schema for a contract including all scopes and types."""
 
     contract_id: str

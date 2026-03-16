@@ -7,10 +7,10 @@ from pydantic import Field as FieldInfo
 from ....._models import BaseModel
 from ..formalization_status import FormalizationStatus
 
-__all__ = ["SpecGetResponse"]
+__all__ = ["SpecListResponse"]
 
 
-class SpecGetResponse(BaseModel):
+class SpecListResponse(BaseModel):
     """Response containing the formal specification."""
 
     contract_id: str

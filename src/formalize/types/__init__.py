@@ -12,12 +12,12 @@ from .. import _compat
 if _compat.PYDANTIC_V1:
     api.v1.struct_field_info.StructFieldInfo.update_forward_refs()  # type: ignore
     api.v1.struct_type_info.StructTypeInfo.update_forward_refs()  # type: ignore
-    api.v1.contract_get_schema_response.ContractGetSchemaResponse.update_forward_refs()  # type: ignore
+    api.v1.contract_retrieve_schema_response.ContractRetrieveSchemaResponse.update_forward_refs()  # type: ignore
     api.model_section.ModelSection.update_forward_refs()  # type: ignore
     api.contract_retrieve_model_view_response.ContractRetrieveModelViewResponse.update_forward_refs()  # type: ignore
 else:
     api.v1.struct_field_info.StructFieldInfo.model_rebuild(_parent_namespace_depth=0)
     api.v1.struct_type_info.StructTypeInfo.model_rebuild(_parent_namespace_depth=0)
-    api.v1.contract_get_schema_response.ContractGetSchemaResponse.model_rebuild(_parent_namespace_depth=0)
+    api.v1.contract_retrieve_schema_response.ContractRetrieveSchemaResponse.model_rebuild(_parent_namespace_depth=0)
     api.model_section.ModelSection.model_rebuild(_parent_namespace_depth=0)
     api.contract_retrieve_model_view_response.ContractRetrieveModelViewResponse.model_rebuild(_parent_namespace_depth=0)

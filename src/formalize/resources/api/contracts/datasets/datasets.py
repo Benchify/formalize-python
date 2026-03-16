@@ -6,7 +6,17 @@ from typing import Mapping, Optional, cast
 
 import httpx
 
-from ....._types import Body, Omit, Query, Headers, NotGiven, FileTypes, omit, not_given
+from ....._types import (
+    Body,
+    Omit,
+    Query,
+    Headers,
+    NotGiven,
+    FileTypes,
+    SequenceNotStr,
+    omit,
+    not_given,
+)
 from ....._utils import extract_files, maybe_transform, deepcopy_minimal, async_maybe_transform
 from ....._compat import cached_property
 from ....._resource import SyncAPIResource, AsyncAPIResource
@@ -25,7 +35,7 @@ from .column_mappings import (
     AsyncColumnMappingsResourceWithStreamingResponse,
 )
 from ....._base_client import make_request_options
-from .....types.api.contracts import dataset_create_params, dataset_update_params
+from .....types.api.contracts import dataset_create_params, dataset_update_params, dataset_generate_columns_params
 
 __all__ = ["DatasetsResource", "AsyncDatasetsResource"]
 
@@ -281,6 +291,50 @@ class DatasetsResource(SyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `dataset_id` but received {dataset_id!r}")
         return self._delete(
             f"/api/contracts/{contract_id}/datasets/{dataset_id}",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=object,
+        )
+
+    def generate_columns(
+        self,
+        dataset_id: str,
+        *,
+        contract_id: str,
+        fields: SequenceNotStr[str],
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> object:
+        """
+        Generate random realistic data for missing columns and add them to the dataset.
+
+        For each requested field, determines the type from the contract's schema,
+        generates random values appropriate for that type, and appends the column to the
+        dataset's Excel file. The updated file is persisted back to the database.
+
+        Args:
+          fields: List of specification field names to generate data for
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not contract_id:
+            raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
+        if not dataset_id:
+            raise ValueError(f"Expected a non-empty value for `dataset_id` but received {dataset_id!r}")
+        return self._post(
+            f"/api/contracts/{contract_id}/datasets/{dataset_id}/generate-columns",
+            body=maybe_transform({"fields": fields}, dataset_generate_columns_params.DatasetGenerateColumnsParams),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -581,6 +635,52 @@ class AsyncDatasetsResource(AsyncAPIResource):
             cast_to=object,
         )
 
+    async def generate_columns(
+        self,
+        dataset_id: str,
+        *,
+        contract_id: str,
+        fields: SequenceNotStr[str],
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> object:
+        """
+        Generate random realistic data for missing columns and add them to the dataset.
+
+        For each requested field, determines the type from the contract's schema,
+        generates random values appropriate for that type, and appends the column to the
+        dataset's Excel file. The updated file is persisted back to the database.
+
+        Args:
+          fields: List of specification field names to generate data for
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not contract_id:
+            raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
+        if not dataset_id:
+            raise ValueError(f"Expected a non-empty value for `dataset_id` but received {dataset_id!r}")
+        return await self._post(
+            f"/api/contracts/{contract_id}/datasets/{dataset_id}/generate-columns",
+            body=await async_maybe_transform(
+                {"fields": fields}, dataset_generate_columns_params.DatasetGenerateColumnsParams
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=object,
+        )
+
     async def retrieve_download(
         self,
         dataset_id: str,
@@ -637,6 +737,9 @@ class DatasetsResourceWithRawResponse:
         self.delete = to_raw_response_wrapper(
             datasets.delete,
         )
+        self.generate_columns = to_raw_response_wrapper(
+            datasets.generate_columns,
+        )
         self.retrieve_download = to_raw_response_wrapper(
             datasets.retrieve_download,
         )
@@ -665,6 +768,9 @@ class AsyncDatasetsResourceWithRawResponse:
         )
         self.delete = async_to_raw_response_wrapper(
             datasets.delete,
+        )
+        self.generate_columns = async_to_raw_response_wrapper(
+            datasets.generate_columns,
         )
         self.retrieve_download = async_to_raw_response_wrapper(
             datasets.retrieve_download,
@@ -695,6 +801,9 @@ class DatasetsResourceWithStreamingResponse:
         self.delete = to_streamed_response_wrapper(
             datasets.delete,
         )
+        self.generate_columns = to_streamed_response_wrapper(
+            datasets.generate_columns,
+        )
         self.retrieve_download = to_streamed_response_wrapper(
             datasets.retrieve_download,
         )
@@ -723,6 +832,9 @@ class AsyncDatasetsResourceWithStreamingResponse:
         )
         self.delete = async_to_streamed_response_wrapper(
             datasets.delete,
+        )
+        self.generate_columns = async_to_streamed_response_wrapper(
+            datasets.generate_columns,
         )
         self.retrieve_download = async_to_streamed_response_wrapper(
             datasets.retrieve_download,

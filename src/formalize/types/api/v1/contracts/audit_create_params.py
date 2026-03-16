@@ -5,10 +5,10 @@ from __future__ import annotations
 from typing import Dict, Optional
 from typing_extensions import Required, TypedDict
 
-__all__ = ["AuditRunParams"]
+__all__ = ["AuditCreateParams"]
 
 
-class AuditRunParams(TypedDict, total=False):
+class AuditCreateParams(TypedDict, total=False):
     inputs: Required[Dict[str, object]]
     """Input values for the computation.
 

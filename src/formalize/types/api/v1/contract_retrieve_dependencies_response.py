@@ -4,7 +4,7 @@ from typing import List, Optional
 
 from ...._models import BaseModel
 
-__all__ = ["ContractGetDependenciesResponse", "ScopeEdge", "VariableConnection"]
+__all__ = ["ContractRetrieveDependenciesResponse", "ScopeEdge", "VariableConnection"]
 
 
 class ScopeEdge(BaseModel):
@@ -39,7 +39,7 @@ class VariableConnection(BaseModel):
     """True if source_var is an input passed through to a sub-scope"""
 
 
-class ContractGetDependenciesResponse(BaseModel):
+class ContractRetrieveDependenciesResponse(BaseModel):
     """Variable and scope dependencies for a contract."""
 
     contract_id: str

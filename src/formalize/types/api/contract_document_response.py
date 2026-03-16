@@ -8,10 +8,10 @@ from pydantic import Field as FieldInfo
 from ..._models import BaseModel
 from .v1.formalization_status import FormalizationStatus
 
-__all__ = ["ContractDocument"]
+__all__ = ["ContractDocumentResponse"]
 
 
-class ContractDocument(BaseModel):
+class ContractDocumentResponse(BaseModel):
     id: str
 
     created_at: datetime

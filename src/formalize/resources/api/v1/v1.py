@@ -4,6 +4,14 @@ from __future__ import annotations
 
 import httpx
 
+from .me import (
+    MeResource,
+    AsyncMeResource,
+    MeResourceWithRawResponse,
+    AsyncMeResourceWithRawResponse,
+    MeResourceWithStreamingResponse,
+    AsyncMeResourceWithStreamingResponse,
+)
 from ...._types import Body, Query, Headers, NotGiven, not_given
 from ...._compat import cached_property
 from ...._resource import SyncAPIResource, AsyncAPIResource
@@ -22,6 +30,14 @@ from .contracts.contracts import (
     ContractsResourceWithStreamingResponse,
     AsyncContractsResourceWithStreamingResponse,
 )
+from .organizations.organizations import (
+    OrganizationsResource,
+    AsyncOrganizationsResource,
+    OrganizationsResourceWithRawResponse,
+    AsyncOrganizationsResourceWithRawResponse,
+    OrganizationsResourceWithStreamingResponse,
+    AsyncOrganizationsResourceWithStreamingResponse,
+)
 
 __all__ = ["V1Resource", "AsyncV1Resource"]
 
@@ -33,6 +49,16 @@ class V1Resource(SyncAPIResource):
         Contract document management - upload, view, delete, and manage contract documents
         """
         return ContractsResource(self._client)
+
+    @cached_property
+    def me(self) -> MeResource:
+        """User profile management - create, read, update user accounts"""
+        return MeResource(self._client)
+
+    @cached_property
+    def organizations(self) -> OrganizationsResource:
+        """User profile management - create, read, update user accounts"""
+        return OrganizationsResource(self._client)
 
     @cached_property
     def with_raw_response(self) -> V1ResourceWithRawResponse:
@@ -80,6 +106,16 @@ class AsyncV1Resource(AsyncAPIResource):
         Contract document management - upload, view, delete, and manage contract documents
         """
         return AsyncContractsResource(self._client)
+
+    @cached_property
+    def me(self) -> AsyncMeResource:
+        """User profile management - create, read, update user accounts"""
+        return AsyncMeResource(self._client)
+
+    @cached_property
+    def organizations(self) -> AsyncOrganizationsResource:
+        """User profile management - create, read, update user accounts"""
+        return AsyncOrganizationsResource(self._client)
 
     @cached_property
     def with_raw_response(self) -> AsyncV1ResourceWithRawResponse:
@@ -135,6 +171,16 @@ class V1ResourceWithRawResponse:
         """
         return ContractsResourceWithRawResponse(self._v1.contracts)
 
+    @cached_property
+    def me(self) -> MeResourceWithRawResponse:
+        """User profile management - create, read, update user accounts"""
+        return MeResourceWithRawResponse(self._v1.me)
+
+    @cached_property
+    def organizations(self) -> OrganizationsResourceWithRawResponse:
+        """User profile management - create, read, update user accounts"""
+        return OrganizationsResourceWithRawResponse(self._v1.organizations)
+
 
 class AsyncV1ResourceWithRawResponse:
     def __init__(self, v1: AsyncV1Resource) -> None:
@@ -150,6 +196,16 @@ class AsyncV1ResourceWithRawResponse:
         Contract document management - upload, view, delete, and manage contract documents
         """
         return AsyncContractsResourceWithRawResponse(self._v1.contracts)
+
+    @cached_property
+    def me(self) -> AsyncMeResourceWithRawResponse:
+        """User profile management - create, read, update user accounts"""
+        return AsyncMeResourceWithRawResponse(self._v1.me)
+
+    @cached_property
+    def organizations(self) -> AsyncOrganizationsResourceWithRawResponse:
+        """User profile management - create, read, update user accounts"""
+        return AsyncOrganizationsResourceWithRawResponse(self._v1.organizations)
 
 
 class V1ResourceWithStreamingResponse:
@@ -167,6 +223,16 @@ class V1ResourceWithStreamingResponse:
         """
         return ContractsResourceWithStreamingResponse(self._v1.contracts)
 
+    @cached_property
+    def me(self) -> MeResourceWithStreamingResponse:
+        """User profile management - create, read, update user accounts"""
+        return MeResourceWithStreamingResponse(self._v1.me)
+
+    @cached_property
+    def organizations(self) -> OrganizationsResourceWithStreamingResponse:
+        """User profile management - create, read, update user accounts"""
+        return OrganizationsResourceWithStreamingResponse(self._v1.organizations)
+
 
 class AsyncV1ResourceWithStreamingResponse:
     def __init__(self, v1: AsyncV1Resource) -> None:
@@ -182,3 +248,13 @@ class AsyncV1ResourceWithStreamingResponse:
         Contract document management - upload, view, delete, and manage contract documents
         """
         return AsyncContractsResourceWithStreamingResponse(self._v1.contracts)
+
+    @cached_property
+    def me(self) -> AsyncMeResourceWithStreamingResponse:
+        """User profile management - create, read, update user accounts"""
+        return AsyncMeResourceWithStreamingResponse(self._v1.me)
+
+    @cached_property
+    def organizations(self) -> AsyncOrganizationsResourceWithStreamingResponse:
+        """User profile management - create, read, update user accounts"""
+        return AsyncOrganizationsResourceWithStreamingResponse(self._v1.organizations)
