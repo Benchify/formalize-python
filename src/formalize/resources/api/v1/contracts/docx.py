@@ -17,9 +17,9 @@ from ....._response import (
     async_to_streamed_response_wrapper,
 )
 from ....._base_client import make_request_options
-from .....types.api.v1.contracts import docx_update_params
-from .....types.api.v1.contracts.docx_update_response import DocxUpdateResponse
-from .....types.api.v1.contracts.docx_get_info_response import DocxGetInfoResponse
+from .....types.api.v1.contracts import docx_create_params
+from .....types.api.v1.contracts.docx_list_response import DocxListResponse
+from .....types.api.v1.contracts.docx_create_response import DocxCreateResponse
 
 __all__ = ["DocxResource", "AsyncDocxResource"]
 
@@ -48,7 +48,7 @@ class DocxResource(SyncAPIResource):
         """
         return DocxResourceWithStreamingResponse(self)
 
-    def update(
+    def create(
         self,
         contract_id: str,
         *,
@@ -61,7 +61,7 @@ class DocxResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> DocxUpdateResponse:
+    ) -> DocxCreateResponse:
         """
         Update the original DOCX document for a contract.
 
@@ -91,15 +91,48 @@ class DocxResource(SyncAPIResource):
                     "document_title": document_title,
                     "filename": filename,
                 },
-                docx_update_params.DocxUpdateParams,
+                docx_create_params.DocxCreateParams,
             ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=DocxUpdateResponse,
+            cast_to=DocxCreateResponse,
         )
 
-    def download(
+    def list(
+        self,
+        contract_id: str,
+        *,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> DocxListResponse:
+        """
+        Get information about the original DOCX document for a contract.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not contract_id:
+            raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
+        return self._get(
+            f"/api/v1/contracts/{contract_id}/docx",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=DocxListResponse,
+        )
+
+    def retrieve_download(
         self,
         contract_id: str,
         *,
@@ -127,11 +160,7 @@ class DocxResource(SyncAPIResource):
         return self._get(
             f"/api/v1/contracts/{contract_id}/docx/download",
             options=make_request_options(
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                security={},
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
             cast_to=object,
         )
@@ -168,7 +197,7 @@ class DocxResource(SyncAPIResource):
                 extra_query=extra_query,
                 extra_body=extra_body,
                 timeout=timeout,
-                security={},
+                security={"bearer_auth": True},
             ),
             cast_to=DocxGetInfoResponse,
         )
@@ -198,7 +227,7 @@ class AsyncDocxResource(AsyncAPIResource):
         """
         return AsyncDocxResourceWithStreamingResponse(self)
 
-    async def update(
+    async def create(
         self,
         contract_id: str,
         *,
@@ -211,7 +240,7 @@ class AsyncDocxResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> DocxUpdateResponse:
+    ) -> DocxCreateResponse:
         """
         Update the original DOCX document for a contract.
 
@@ -241,15 +270,48 @@ class AsyncDocxResource(AsyncAPIResource):
                     "document_title": document_title,
                     "filename": filename,
                 },
-                docx_update_params.DocxUpdateParams,
+                docx_create_params.DocxCreateParams,
             ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=DocxUpdateResponse,
+            cast_to=DocxCreateResponse,
         )
 
-    async def download(
+    async def list(
+        self,
+        contract_id: str,
+        *,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> DocxListResponse:
+        """
+        Get information about the original DOCX document for a contract.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not contract_id:
+            raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
+        return await self._get(
+            f"/api/v1/contracts/{contract_id}/docx",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=DocxListResponse,
+        )
+
+    async def retrieve_download(
         self,
         contract_id: str,
         *,
@@ -277,11 +339,7 @@ class AsyncDocxResource(AsyncAPIResource):
         return await self._get(
             f"/api/v1/contracts/{contract_id}/docx/download",
             options=make_request_options(
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                security={},
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
             cast_to=object,
         )
@@ -318,7 +376,7 @@ class AsyncDocxResource(AsyncAPIResource):
                 extra_query=extra_query,
                 extra_body=extra_body,
                 timeout=timeout,
-                security={},
+                security={"bearer_auth": True},
             ),
             cast_to=DocxGetInfoResponse,
         )
@@ -328,14 +386,14 @@ class DocxResourceWithRawResponse:
     def __init__(self, docx: DocxResource) -> None:
         self._docx = docx
 
-        self.update = to_raw_response_wrapper(
-            docx.update,
+        self.create = to_raw_response_wrapper(
+            docx.create,
         )
-        self.download = to_raw_response_wrapper(
-            docx.download,
+        self.list = to_raw_response_wrapper(
+            docx.list,
         )
-        self.get_info = to_raw_response_wrapper(
-            docx.get_info,
+        self.retrieve_download = to_raw_response_wrapper(
+            docx.retrieve_download,
         )
 
 
@@ -343,14 +401,14 @@ class AsyncDocxResourceWithRawResponse:
     def __init__(self, docx: AsyncDocxResource) -> None:
         self._docx = docx
 
-        self.update = async_to_raw_response_wrapper(
-            docx.update,
+        self.create = async_to_raw_response_wrapper(
+            docx.create,
         )
-        self.download = async_to_raw_response_wrapper(
-            docx.download,
+        self.list = async_to_raw_response_wrapper(
+            docx.list,
         )
-        self.get_info = async_to_raw_response_wrapper(
-            docx.get_info,
+        self.retrieve_download = async_to_raw_response_wrapper(
+            docx.retrieve_download,
         )
 
 
@@ -358,14 +416,14 @@ class DocxResourceWithStreamingResponse:
     def __init__(self, docx: DocxResource) -> None:
         self._docx = docx
 
-        self.update = to_streamed_response_wrapper(
-            docx.update,
+        self.create = to_streamed_response_wrapper(
+            docx.create,
         )
-        self.download = to_streamed_response_wrapper(
-            docx.download,
+        self.list = to_streamed_response_wrapper(
+            docx.list,
         )
-        self.get_info = to_streamed_response_wrapper(
-            docx.get_info,
+        self.retrieve_download = to_streamed_response_wrapper(
+            docx.retrieve_download,
         )
 
 
@@ -373,12 +431,12 @@ class AsyncDocxResourceWithStreamingResponse:
     def __init__(self, docx: AsyncDocxResource) -> None:
         self._docx = docx
 
-        self.update = async_to_streamed_response_wrapper(
-            docx.update,
+        self.create = async_to_streamed_response_wrapper(
+            docx.create,
         )
-        self.download = async_to_streamed_response_wrapper(
-            docx.download,
+        self.list = async_to_streamed_response_wrapper(
+            docx.list,
         )
-        self.get_info = async_to_streamed_response_wrapper(
-            docx.get_info,
+        self.retrieve_download = async_to_streamed_response_wrapper(
+            docx.retrieve_download,
         )
