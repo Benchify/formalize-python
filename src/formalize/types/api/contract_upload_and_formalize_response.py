@@ -1,7 +1,7 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 from ..._models import BaseModel
-from .contract_document import ContractDocument
+from .contract_document_response import ContractDocumentResponse
 
 __all__ = ["ContractUploadAndFormalizeResponse"]
 
@@ -12,4 +12,4 @@ class ContractUploadAndFormalizeResponse(BaseModel):
     Clients should poll GET /contracts/{contract_id} to check formalization_status.
     """
 
-    contract: ContractDocument
+    contract: ContractDocumentResponse

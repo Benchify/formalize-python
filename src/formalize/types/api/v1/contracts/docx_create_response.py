@@ -5,10 +5,10 @@ from datetime import datetime
 
 from ....._models import BaseModel
 
-__all__ = ["DocxUpdateResponse"]
+__all__ = ["DocxCreateResponse"]
 
 
-class DocxUpdateResponse(BaseModel):
+class DocxCreateResponse(BaseModel):
     """Response after updating the DOCX document."""
 
     contract_id: str

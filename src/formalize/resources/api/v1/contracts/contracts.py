@@ -53,11 +53,10 @@ from .....types.api.v1.contract_list_response import ContractListResponse
 from .....types.api.v1.contract_create_response import ContractCreateResponse
 from .....types.api.v1.contract_export_response import ContractExportResponse
 from .....types.api.v1.contract_retrieve_response import ContractRetrieveResponse
-from .....types.api.v1.contract_get_schema_response import ContractGetSchemaResponse
+from .....types.api.v1.contract_retrieve_schema_response import ContractRetrieveSchemaResponse
 from .....types.api.v1.contract_update_metadata_response import ContractUpdateMetadataResponse
-from .....types.api.v1.contract_get_computations_response import ContractGetComputationsResponse
-from .....types.api.v1.contract_get_dependencies_response import ContractGetDependenciesResponse
-from .....types.api.v1.contract_get_type_definition_response import ContractGetTypeDefinitionResponse
+from .....types.api.v1.contract_retrieve_computations_response import ContractRetrieveComputationsResponse
+from .....types.api.v1.contract_retrieve_dependencies_response import ContractRetrieveDependenciesResponse
 
 __all__ = ["ContractsResource", "AsyncContractsResource"]
 
@@ -173,11 +172,8 @@ class ContractsResource(SyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> ContractRetrieveResponse:
-        """Get detailed information about a specific contract.
-
-        Requires authentication.
-
-        User must be a member of the contract's organization.
+        """
+        Get the definition of a specific type used in a contract.
 
         Args:
           extra_headers: Send extra headers
@@ -190,16 +186,19 @@ class ContractsResource(SyncAPIResource):
         """
         if not contract_id:
             raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
-        return self._get(
-            f"/api/v1/contracts/{contract_id}",
-            options=make_request_options(
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                security={"bearer_auth": True},
+        return cast(
+            ContractRetrieveResponse,
+            self._get(
+                f"/api/v1/contracts/{contract_id}",
+                options=make_request_options(
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                    security={"http_bearer": True, "api_key_header": True},
+                ),
+                cast_to=cast(Any, ContractRetrieveResponse),
             ),
-            cast_to=ContractRetrieveResponse,
         )
 
     def list(
@@ -256,7 +255,7 @@ class ContractsResource(SyncAPIResource):
                     },
                     contract_list_params.ContractListParams,
                 ),
-                security={"bearer_auth": True},
+                security={"http_bearer": True, "api_key_header": True},
             ),
             cast_to=ContractListResponse,
         )
@@ -340,7 +339,7 @@ class ContractsResource(SyncAPIResource):
             cast_to=ContractExportResponse,
         )
 
-    def get_computations(
+    def retrieve_computations(
         self,
         contract_id: str,
         *,
@@ -350,7 +349,7 @@ class ContractsResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ContractGetComputationsResponse:
+    ) -> ContractRetrieveComputationsResponse:
         """
         Get all runnable computations for a contract.
 
@@ -370,10 +369,10 @@ class ContractsResource(SyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=ContractGetComputationsResponse,
+            cast_to=ContractRetrieveComputationsResponse,
         )
 
-    def get_dependencies(
+    def retrieve_dependencies(
         self,
         contract_id: str,
         *,
@@ -383,7 +382,7 @@ class ContractsResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ContractGetDependenciesResponse:
+    ) -> ContractRetrieveDependenciesResponse:
         """
         Get the dependency graph showing how variables and scopes connect.
 
@@ -403,10 +402,10 @@ class ContractsResource(SyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=ContractGetDependenciesResponse,
+            cast_to=ContractRetrieveDependenciesResponse,
         )
 
-    def get_schema(
+    def retrieve_schema(
         self,
         contract_id: str,
         *,
@@ -416,7 +415,7 @@ class ContractsResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ContractGetSchemaResponse:
+    ) -> ContractRetrieveSchemaResponse:
         """
         Get the complete schema for a contract including all scopes and types.
 
@@ -436,48 +435,7 @@ class ContractsResource(SyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=ContractGetSchemaResponse,
-        )
-
-    def get_type_definition(
-        self,
-        type_name: str,
-        *,
-        contract_id: str,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ContractGetTypeDefinitionResponse:
-        """
-        Get the definition of a specific type used in a contract.
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not contract_id:
-            raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
-        if not type_name:
-            raise ValueError(f"Expected a non-empty value for `type_name` but received {type_name!r}")
-        return cast(
-            ContractGetTypeDefinitionResponse,
-            self._get(
-                f"/api/v1/contracts/{contract_id}/types/{type_name}",
-                options=make_request_options(
-                    extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-                ),
-                cast_to=cast(
-                    Any, ContractGetTypeDefinitionResponse
-                ),  # Union types cannot be passed in as arguments in the type system
-            ),
+            cast_to=ContractRetrieveSchemaResponse,
         )
 
     def update_metadata(
@@ -642,11 +600,8 @@ class AsyncContractsResource(AsyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> ContractRetrieveResponse:
-        """Get detailed information about a specific contract.
-
-        Requires authentication.
-
-        User must be a member of the contract's organization.
+        """
+        Get the definition of a specific type used in a contract.
 
         Args:
           extra_headers: Send extra headers
@@ -659,16 +614,19 @@ class AsyncContractsResource(AsyncAPIResource):
         """
         if not contract_id:
             raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
-        return await self._get(
-            f"/api/v1/contracts/{contract_id}",
-            options=make_request_options(
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                security={"bearer_auth": True},
+        return cast(
+            ContractRetrieveResponse,
+            await self._get(
+                f"/api/v1/contracts/{contract_id}",
+                options=make_request_options(
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                    security={"http_bearer": True, "api_key_header": True},
+                ),
+                cast_to=cast(Any, ContractRetrieveResponse),
             ),
-            cast_to=ContractRetrieveResponse,
         )
 
     async def list(
@@ -725,7 +683,7 @@ class AsyncContractsResource(AsyncAPIResource):
                     },
                     contract_list_params.ContractListParams,
                 ),
-                security={"bearer_auth": True},
+                security={"http_bearer": True, "api_key_header": True},
             ),
             cast_to=ContractListResponse,
         )
@@ -809,7 +767,7 @@ class AsyncContractsResource(AsyncAPIResource):
             cast_to=ContractExportResponse,
         )
 
-    async def get_computations(
+    async def retrieve_computations(
         self,
         contract_id: str,
         *,
@@ -819,7 +777,7 @@ class AsyncContractsResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ContractGetComputationsResponse:
+    ) -> ContractRetrieveComputationsResponse:
         """
         Get all runnable computations for a contract.
 
@@ -839,10 +797,10 @@ class AsyncContractsResource(AsyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=ContractGetComputationsResponse,
+            cast_to=ContractRetrieveComputationsResponse,
         )
 
-    async def get_dependencies(
+    async def retrieve_dependencies(
         self,
         contract_id: str,
         *,
@@ -852,7 +810,7 @@ class AsyncContractsResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ContractGetDependenciesResponse:
+    ) -> ContractRetrieveDependenciesResponse:
         """
         Get the dependency graph showing how variables and scopes connect.
 
@@ -872,10 +830,10 @@ class AsyncContractsResource(AsyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=ContractGetDependenciesResponse,
+            cast_to=ContractRetrieveDependenciesResponse,
         )
 
-    async def get_schema(
+    async def retrieve_schema(
         self,
         contract_id: str,
         *,
@@ -885,7 +843,7 @@ class AsyncContractsResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ContractGetSchemaResponse:
+    ) -> ContractRetrieveSchemaResponse:
         """
         Get the complete schema for a contract including all scopes and types.
 
@@ -905,48 +863,7 @@ class AsyncContractsResource(AsyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=ContractGetSchemaResponse,
-        )
-
-    async def get_type_definition(
-        self,
-        type_name: str,
-        *,
-        contract_id: str,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ContractGetTypeDefinitionResponse:
-        """
-        Get the definition of a specific type used in a contract.
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not contract_id:
-            raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
-        if not type_name:
-            raise ValueError(f"Expected a non-empty value for `type_name` but received {type_name!r}")
-        return cast(
-            ContractGetTypeDefinitionResponse,
-            await self._get(
-                f"/api/v1/contracts/{contract_id}/types/{type_name}",
-                options=make_request_options(
-                    extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-                ),
-                cast_to=cast(
-                    Any, ContractGetTypeDefinitionResponse
-                ),  # Union types cannot be passed in as arguments in the type system
-            ),
+            cast_to=ContractRetrieveSchemaResponse,
         )
 
     async def update_metadata(
@@ -1019,17 +936,14 @@ class ContractsResourceWithRawResponse:
         self.export = to_raw_response_wrapper(
             contracts.export,
         )
-        self.get_computations = to_raw_response_wrapper(
-            contracts.get_computations,
+        self.retrieve_computations = to_raw_response_wrapper(
+            contracts.retrieve_computations,
         )
-        self.get_dependencies = to_raw_response_wrapper(
-            contracts.get_dependencies,
+        self.retrieve_dependencies = to_raw_response_wrapper(
+            contracts.retrieve_dependencies,
         )
-        self.get_schema = to_raw_response_wrapper(
-            contracts.get_schema,
-        )
-        self.get_type_definition = to_raw_response_wrapper(
-            contracts.get_type_definition,
+        self.retrieve_schema = to_raw_response_wrapper(
+            contracts.retrieve_schema,
         )
         self.update_metadata = to_raw_response_wrapper(
             contracts.update_metadata,
@@ -1076,17 +990,14 @@ class AsyncContractsResourceWithRawResponse:
         self.export = async_to_raw_response_wrapper(
             contracts.export,
         )
-        self.get_computations = async_to_raw_response_wrapper(
-            contracts.get_computations,
+        self.retrieve_computations = async_to_raw_response_wrapper(
+            contracts.retrieve_computations,
         )
-        self.get_dependencies = async_to_raw_response_wrapper(
-            contracts.get_dependencies,
+        self.retrieve_dependencies = async_to_raw_response_wrapper(
+            contracts.retrieve_dependencies,
         )
-        self.get_schema = async_to_raw_response_wrapper(
-            contracts.get_schema,
-        )
-        self.get_type_definition = async_to_raw_response_wrapper(
-            contracts.get_type_definition,
+        self.retrieve_schema = async_to_raw_response_wrapper(
+            contracts.retrieve_schema,
         )
         self.update_metadata = async_to_raw_response_wrapper(
             contracts.update_metadata,
@@ -1133,17 +1044,14 @@ class ContractsResourceWithStreamingResponse:
         self.export = to_streamed_response_wrapper(
             contracts.export,
         )
-        self.get_computations = to_streamed_response_wrapper(
-            contracts.get_computations,
+        self.retrieve_computations = to_streamed_response_wrapper(
+            contracts.retrieve_computations,
         )
-        self.get_dependencies = to_streamed_response_wrapper(
-            contracts.get_dependencies,
+        self.retrieve_dependencies = to_streamed_response_wrapper(
+            contracts.retrieve_dependencies,
         )
-        self.get_schema = to_streamed_response_wrapper(
-            contracts.get_schema,
-        )
-        self.get_type_definition = to_streamed_response_wrapper(
-            contracts.get_type_definition,
+        self.retrieve_schema = to_streamed_response_wrapper(
+            contracts.retrieve_schema,
         )
         self.update_metadata = to_streamed_response_wrapper(
             contracts.update_metadata,
@@ -1190,17 +1098,14 @@ class AsyncContractsResourceWithStreamingResponse:
         self.export = async_to_streamed_response_wrapper(
             contracts.export,
         )
-        self.get_computations = async_to_streamed_response_wrapper(
-            contracts.get_computations,
+        self.retrieve_computations = async_to_streamed_response_wrapper(
+            contracts.retrieve_computations,
         )
-        self.get_dependencies = async_to_streamed_response_wrapper(
-            contracts.get_dependencies,
+        self.retrieve_dependencies = async_to_streamed_response_wrapper(
+            contracts.retrieve_dependencies,
         )
-        self.get_schema = async_to_streamed_response_wrapper(
-            contracts.get_schema,
-        )
-        self.get_type_definition = async_to_streamed_response_wrapper(
-            contracts.get_type_definition,
+        self.retrieve_schema = async_to_streamed_response_wrapper(
+            contracts.retrieve_schema,
         )
         self.update_metadata = async_to_streamed_response_wrapper(
             contracts.update_metadata,

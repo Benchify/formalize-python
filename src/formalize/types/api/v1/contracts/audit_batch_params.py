@@ -5,10 +5,10 @@ from __future__ import annotations
 from typing import Dict, Iterable, Optional
 from typing_extensions import Required, TypedDict
 
-__all__ = ["AuditRunBatchParams"]
+__all__ = ["AuditBatchParams"]
 
 
-class AuditRunBatchParams(TypedDict, total=False):
+class AuditBatchParams(TypedDict, total=False):
     scenarios: Required[Iterable[Dict[str, object]]]
     """List of input scenarios to evaluate"""
 

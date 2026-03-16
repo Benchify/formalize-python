@@ -5,7 +5,7 @@ from typing import List, Optional
 from ...._models import BaseModel
 from .field_info import FieldInfo
 
-__all__ = ["ContractGetComputationsResponse", "Computation"]
+__all__ = ["ContractRetrieveComputationsResponse", "Computation"]
 
 
 class Computation(BaseModel):
@@ -27,7 +27,7 @@ class Computation(BaseModel):
     """The scope name that performs this computation"""
 
 
-class ContractGetComputationsResponse(BaseModel):
+class ContractRetrieveComputationsResponse(BaseModel):
     """Response listing all computations available for a contract."""
 
     computations: List[Computation]
