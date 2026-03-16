@@ -2,11 +2,9 @@
 
 from __future__ import annotations
 
-from typing import Optional
-
 import httpx
 
-from ....._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
+from ....._types import Body, Query, Headers, NotGiven, not_given
 from ....._utils import maybe_transform, async_maybe_transform
 from ....._compat import cached_property
 from ....._resource import SyncAPIResource, AsyncAPIResource
@@ -17,125 +15,40 @@ from ....._response import (
     async_to_streamed_response_wrapper,
 )
 from ....._base_client import make_request_options
-from .....types.api.v1.contracts import docx_create_params
-from .....types.api.v1.contracts.docx_list_response import DocxListResponse
-from .....types.api.v1.contracts.docx_create_response import DocxCreateResponse
+from .....types.api.v1.organizations import api_key_api_keys_params
+from .....types.api.v1.organizations.api_key_api_keys_response import APIKeyAPIKeysResponse
+from .....types.api.v1.organizations.api_key_retrieve_api_keys_response import APIKeyRetrieveAPIKeysResponse
 
-__all__ = ["DocxResource", "AsyncDocxResource"]
+__all__ = ["APIKeysResource", "AsyncAPIKeysResource"]
 
 
-class DocxResource(SyncAPIResource):
-    """
-    Contract document management - upload, view, delete, and manage contract documents
-    """
+class APIKeysResource(SyncAPIResource):
+    """User profile management - create, read, update user accounts"""
 
     @cached_property
-    def with_raw_response(self) -> DocxResourceWithRawResponse:
+    def with_raw_response(self) -> APIKeysResourceWithRawResponse:
         """
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
         For more information, see https://www.github.com/Benchify/formalize-python#accessing-raw-response-data-eg-headers
         """
-        return DocxResourceWithRawResponse(self)
+        return APIKeysResourceWithRawResponse(self)
 
     @cached_property
-    def with_streaming_response(self) -> DocxResourceWithStreamingResponse:
+    def with_streaming_response(self) -> APIKeysResourceWithStreamingResponse:
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
         For more information, see https://www.github.com/Benchify/formalize-python#with_streaming_response
         """
-        return DocxResourceWithStreamingResponse(self)
+        return APIKeysResourceWithStreamingResponse(self)
 
-    def create(
+    def delete(
         self,
-        contract_id: str,
+        key_id: str,
         *,
-        docx_base64: str,
-        document_title: Optional[str] | Omit = omit,
-        filename: Optional[str] | Omit = omit,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> DocxCreateResponse:
-        """
-        Update the original DOCX document for a contract.
-
-        Args:
-          docx_base64: Base64-encoded content of the DOCX file
-
-          document_title: Human-readable title for the document. If not provided, keeps existing or
-              extracts from DOCX.
-
-          filename: New filename for the document. If not provided, keeps the existing filename.
-
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not contract_id:
-            raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
-        return self._put(
-            f"/api/v1/contracts/{contract_id}/docx",
-            body=maybe_transform(
-                {
-                    "docx_base64": docx_base64,
-                    "document_title": document_title,
-                    "filename": filename,
-                },
-                docx_create_params.DocxCreateParams,
-            ),
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=DocxCreateResponse,
-        )
-
-    def list(
-        self,
-        contract_id: str,
-        *,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> DocxListResponse:
-        """
-        Get information about the original DOCX document for a contract.
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not contract_id:
-            raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
-        return self._get(
-            f"/api/v1/contracts/{contract_id}/docx",
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=DocxListResponse,
-        )
-
-    def retrieve_download(
-        self,
-        contract_id: str,
-        *,
+        org_id: str,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -143,8 +56,9 @@ class DocxResource(SyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> object:
-        """
-        Download the original DOCX document for a contract.
+        """Revoke an API key.
+
+        Requires admin role.
 
         Args:
           extra_headers: Send extra headers
@@ -155,129 +69,116 @@ class DocxResource(SyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        if not contract_id:
-            raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
-        return self._get(
-            f"/api/v1/contracts/{contract_id}/docx/download",
+        if not org_id:
+            raise ValueError(f"Expected a non-empty value for `org_id` but received {org_id!r}")
+        if not key_id:
+            raise ValueError(f"Expected a non-empty value for `key_id` but received {key_id!r}")
+        return self._delete(
+            f"/api/v1/organizations/{org_id}/api-keys/{key_id}",
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
             cast_to=object,
         )
 
+    def api_keys(
+        self,
+        org_id: str,
+        *,
+        name: str,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> APIKeyAPIKeysResponse:
+        """Create a new API key.
 
-class AsyncDocxResource(AsyncAPIResource):
-    """
-    Contract document management - upload, view, delete, and manage contract documents
-    """
+        Requires admin role. The key is only returned once!
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not org_id:
+            raise ValueError(f"Expected a non-empty value for `org_id` but received {org_id!r}")
+        return self._post(
+            f"/api/v1/organizations/{org_id}/api-keys",
+            body=maybe_transform({"name": name}, api_key_api_keys_params.APIKeyAPIKeysParams),
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=APIKeyAPIKeysResponse,
+        )
+
+    def retrieve_api_keys(
+        self,
+        org_id: str,
+        *,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> APIKeyRetrieveAPIKeysResponse:
+        """List all API keys for an organization.
+
+        Requires admin role.
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not org_id:
+            raise ValueError(f"Expected a non-empty value for `org_id` but received {org_id!r}")
+        return self._get(
+            f"/api/v1/organizations/{org_id}/api-keys",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=APIKeyRetrieveAPIKeysResponse,
+        )
+
+
+class AsyncAPIKeysResource(AsyncAPIResource):
+    """User profile management - create, read, update user accounts"""
 
     @cached_property
-    def with_raw_response(self) -> AsyncDocxResourceWithRawResponse:
+    def with_raw_response(self) -> AsyncAPIKeysResourceWithRawResponse:
         """
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
         For more information, see https://www.github.com/Benchify/formalize-python#accessing-raw-response-data-eg-headers
         """
-        return AsyncDocxResourceWithRawResponse(self)
+        return AsyncAPIKeysResourceWithRawResponse(self)
 
     @cached_property
-    def with_streaming_response(self) -> AsyncDocxResourceWithStreamingResponse:
+    def with_streaming_response(self) -> AsyncAPIKeysResourceWithStreamingResponse:
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
         For more information, see https://www.github.com/Benchify/formalize-python#with_streaming_response
         """
-        return AsyncDocxResourceWithStreamingResponse(self)
+        return AsyncAPIKeysResourceWithStreamingResponse(self)
 
-    async def create(
+    async def delete(
         self,
-        contract_id: str,
+        key_id: str,
         *,
-        docx_base64: str,
-        document_title: Optional[str] | Omit = omit,
-        filename: Optional[str] | Omit = omit,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> DocxCreateResponse:
-        """
-        Update the original DOCX document for a contract.
-
-        Args:
-          docx_base64: Base64-encoded content of the DOCX file
-
-          document_title: Human-readable title for the document. If not provided, keeps existing or
-              extracts from DOCX.
-
-          filename: New filename for the document. If not provided, keeps the existing filename.
-
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not contract_id:
-            raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
-        return await self._put(
-            f"/api/v1/contracts/{contract_id}/docx",
-            body=await async_maybe_transform(
-                {
-                    "docx_base64": docx_base64,
-                    "document_title": document_title,
-                    "filename": filename,
-                },
-                docx_create_params.DocxCreateParams,
-            ),
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=DocxCreateResponse,
-        )
-
-    async def list(
-        self,
-        contract_id: str,
-        *,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> DocxListResponse:
-        """
-        Get information about the original DOCX document for a contract.
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not contract_id:
-            raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
-        return await self._get(
-            f"/api/v1/contracts/{contract_id}/docx",
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=DocxListResponse,
-        )
-
-    async def retrieve_download(
-        self,
-        contract_id: str,
-        *,
+        org_id: str,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -285,8 +186,9 @@ class AsyncDocxResource(AsyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> object:
-        """
-        Download the original DOCX document for a contract.
+        """Revoke an API key.
+
+        Requires admin role.
 
         Args:
           extra_headers: Send extra headers
@@ -297,72 +199,144 @@ class AsyncDocxResource(AsyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        if not contract_id:
-            raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
-        return await self._get(
-            f"/api/v1/contracts/{contract_id}/docx/download",
+        if not org_id:
+            raise ValueError(f"Expected a non-empty value for `org_id` but received {org_id!r}")
+        if not key_id:
+            raise ValueError(f"Expected a non-empty value for `key_id` but received {key_id!r}")
+        return await self._delete(
+            f"/api/v1/organizations/{org_id}/api-keys/{key_id}",
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
             cast_to=object,
         )
 
+    async def api_keys(
+        self,
+        org_id: str,
+        *,
+        name: str,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> APIKeyAPIKeysResponse:
+        """Create a new API key.
 
-class DocxResourceWithRawResponse:
-    def __init__(self, docx: DocxResource) -> None:
-        self._docx = docx
+        Requires admin role. The key is only returned once!
 
-        self.create = to_raw_response_wrapper(
-            docx.create,
-        )
-        self.list = to_raw_response_wrapper(
-            docx.list,
-        )
-        self.retrieve_download = to_raw_response_wrapper(
-            docx.retrieve_download,
-        )
+        Args:
+          extra_headers: Send extra headers
 
+          extra_query: Add additional query parameters to the request
 
-class AsyncDocxResourceWithRawResponse:
-    def __init__(self, docx: AsyncDocxResource) -> None:
-        self._docx = docx
+          extra_body: Add additional JSON properties to the request
 
-        self.create = async_to_raw_response_wrapper(
-            docx.create,
-        )
-        self.list = async_to_raw_response_wrapper(
-            docx.list,
-        )
-        self.retrieve_download = async_to_raw_response_wrapper(
-            docx.retrieve_download,
-        )
-
-
-class DocxResourceWithStreamingResponse:
-    def __init__(self, docx: DocxResource) -> None:
-        self._docx = docx
-
-        self.create = to_streamed_response_wrapper(
-            docx.create,
-        )
-        self.list = to_streamed_response_wrapper(
-            docx.list,
-        )
-        self.retrieve_download = to_streamed_response_wrapper(
-            docx.retrieve_download,
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not org_id:
+            raise ValueError(f"Expected a non-empty value for `org_id` but received {org_id!r}")
+        return await self._post(
+            f"/api/v1/organizations/{org_id}/api-keys",
+            body=await async_maybe_transform({"name": name}, api_key_api_keys_params.APIKeyAPIKeysParams),
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=APIKeyAPIKeysResponse,
         )
 
+    async def retrieve_api_keys(
+        self,
+        org_id: str,
+        *,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = not_given,
+    ) -> APIKeyRetrieveAPIKeysResponse:
+        """List all API keys for an organization.
 
-class AsyncDocxResourceWithStreamingResponse:
-    def __init__(self, docx: AsyncDocxResource) -> None:
-        self._docx = docx
+        Requires admin role.
 
-        self.create = async_to_streamed_response_wrapper(
-            docx.create,
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not org_id:
+            raise ValueError(f"Expected a non-empty value for `org_id` but received {org_id!r}")
+        return await self._get(
+            f"/api/v1/organizations/{org_id}/api-keys",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=APIKeyRetrieveAPIKeysResponse,
         )
-        self.list = async_to_streamed_response_wrapper(
-            docx.list,
+
+
+class APIKeysResourceWithRawResponse:
+    def __init__(self, api_keys: APIKeysResource) -> None:
+        self._api_keys = api_keys
+
+        self.delete = to_raw_response_wrapper(
+            api_keys.delete,
         )
-        self.retrieve_download = async_to_streamed_response_wrapper(
-            docx.retrieve_download,
+        self.api_keys = to_raw_response_wrapper(
+            api_keys.api_keys,
+        )
+        self.retrieve_api_keys = to_raw_response_wrapper(
+            api_keys.retrieve_api_keys,
+        )
+
+
+class AsyncAPIKeysResourceWithRawResponse:
+    def __init__(self, api_keys: AsyncAPIKeysResource) -> None:
+        self._api_keys = api_keys
+
+        self.delete = async_to_raw_response_wrapper(
+            api_keys.delete,
+        )
+        self.api_keys = async_to_raw_response_wrapper(
+            api_keys.api_keys,
+        )
+        self.retrieve_api_keys = async_to_raw_response_wrapper(
+            api_keys.retrieve_api_keys,
+        )
+
+
+class APIKeysResourceWithStreamingResponse:
+    def __init__(self, api_keys: APIKeysResource) -> None:
+        self._api_keys = api_keys
+
+        self.delete = to_streamed_response_wrapper(
+            api_keys.delete,
+        )
+        self.api_keys = to_streamed_response_wrapper(
+            api_keys.api_keys,
+        )
+        self.retrieve_api_keys = to_streamed_response_wrapper(
+            api_keys.retrieve_api_keys,
+        )
+
+
+class AsyncAPIKeysResourceWithStreamingResponse:
+    def __init__(self, api_keys: AsyncAPIKeysResource) -> None:
+        self._api_keys = api_keys
+
+        self.delete = async_to_streamed_response_wrapper(
+            api_keys.delete,
+        )
+        self.api_keys = async_to_streamed_response_wrapper(
+            api_keys.api_keys,
+        )
+        self.retrieve_api_keys = async_to_streamed_response_wrapper(
+            api_keys.retrieve_api_keys,
         )

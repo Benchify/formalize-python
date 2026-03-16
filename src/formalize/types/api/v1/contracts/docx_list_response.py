@@ -4,10 +4,10 @@ from typing import Optional
 
 from ....._models import BaseModel
 
-__all__ = ["DocxGetInfoResponse"]
+__all__ = ["DocxListResponse"]
 
 
-class DocxGetInfoResponse(BaseModel):
+class DocxListResponse(BaseModel):
     """Response containing the DOCX document metadata and download info."""
 
     contract_id: str

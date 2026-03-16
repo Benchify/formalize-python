@@ -5,10 +5,10 @@ from datetime import datetime
 
 from ....._models import BaseModel
 
-__all__ = ["SpecUpdateResponse"]
+__all__ = ["SpecCreateResponse"]
 
 
-class SpecUpdateResponse(BaseModel):
+class SpecCreateResponse(BaseModel):
     """Response after updating the formal specification."""
 
     contract_id: str

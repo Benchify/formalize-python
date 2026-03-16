@@ -4,10 +4,10 @@ from __future__ import annotations
 
 from typing_extensions import Required, TypedDict
 
-__all__ = ["SpecUpdateParams"]
+__all__ = ["SpecCreateParams"]
 
 
-class SpecUpdateParams(TypedDict, total=False):
+class SpecCreateParams(TypedDict, total=False):
     model_code: Required[str]
     """The complete specification source code for the contract.
 
