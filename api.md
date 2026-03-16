@@ -4,7 +4,7 @@
 
 Methods:
 
-- <code title="get /api/v1/health">client.api.v1.<a href="./src/formalize/resources/api/v1/v1.py">health_check</a>() -> object</code>
+- <code title="get /api/v1/health">client.api.v1.<a href="./src/formalize/resources/api/v1/v1.py">retrieve_health</a>() -> object</code>
 
 ### Contracts
 

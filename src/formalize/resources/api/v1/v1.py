@@ -79,7 +79,7 @@ class V1Resource(SyncAPIResource):
         """
         return V1ResourceWithStreamingResponse(self)
 
-    def health_check(
+    def retrieve_health(
         self,
         *,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -136,7 +136,7 @@ class AsyncV1Resource(AsyncAPIResource):
         """
         return AsyncV1ResourceWithStreamingResponse(self)
 
-    async def health_check(
+    async def retrieve_health(
         self,
         *,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -160,8 +160,8 @@ class V1ResourceWithRawResponse:
     def __init__(self, v1: V1Resource) -> None:
         self._v1 = v1
 
-        self.health_check = to_raw_response_wrapper(
-            v1.health_check,
+        self.retrieve_health = to_raw_response_wrapper(
+            v1.retrieve_health,
         )
 
     @cached_property
@@ -186,8 +186,8 @@ class AsyncV1ResourceWithRawResponse:
     def __init__(self, v1: AsyncV1Resource) -> None:
         self._v1 = v1
 
-        self.health_check = async_to_raw_response_wrapper(
-            v1.health_check,
+        self.retrieve_health = async_to_raw_response_wrapper(
+            v1.retrieve_health,
         )
 
     @cached_property
@@ -212,8 +212,8 @@ class V1ResourceWithStreamingResponse:
     def __init__(self, v1: V1Resource) -> None:
         self._v1 = v1
 
-        self.health_check = to_streamed_response_wrapper(
-            v1.health_check,
+        self.retrieve_health = to_streamed_response_wrapper(
+            v1.retrieve_health,
         )
 
     @cached_property
@@ -238,8 +238,8 @@ class AsyncV1ResourceWithStreamingResponse:
     def __init__(self, v1: AsyncV1Resource) -> None:
         self._v1 = v1
 
-        self.health_check = async_to_streamed_response_wrapper(
-            v1.health_check,
+        self.retrieve_health = async_to_streamed_response_wrapper(
+            v1.retrieve_health,
         )
 
     @cached_property
