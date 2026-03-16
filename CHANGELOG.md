@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.2.0 (2026-03-16)
+
+Full Changelog: [v1.1.0...v1.2.0](https://github.com/Benchify/formalize-python/compare/v1.1.0...v1.2.0)
+
+### Features
+
+* **api:** manual updates ([f6cccf6](https://github.com/Benchify/formalize-python/commit/f6cccf6388d8b3b25837d2386704c65478336c72))
+* **api:** manual updates ([5fbadc3](https://github.com/Benchify/formalize-python/commit/5fbadc3a1e2496fad356aee31e48568eaf8433b8))
+
+
+### Chores
+
+* **ci:** skip uploading artifacts on stainless-internal branches ([b2a03bc](https://github.com/Benchify/formalize-python/commit/b2a03bcfe6b3091bb71a5a7c8d26a15649022b2c))
+* update placeholder string ([6b55582](https://github.com/Benchify/formalize-python/commit/6b555821785b082a042906593fcc8e984623b0de))
+
 ## 1.1.0 (2026-03-06)
 
 Full Changelog: [v1.0.0...v1.1.0](https://github.com/Benchify/formalize-python/compare/v1.0.0...v1.1.0)
