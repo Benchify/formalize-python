@@ -163,9 +163,8 @@ class ContractsResource(SyncAPIResource):
 
     def retrieve(
         self,
-        type_name: str,
-        *,
         contract_id: str,
+        *,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -187,14 +186,18 @@ class ContractsResource(SyncAPIResource):
         """
         if not contract_id:
             raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
-        return self._get(
-            f"/api/v1/contracts/{contract_id}",
-            options=make_request_options(
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                security={"bearer_auth": True},
+        return cast(
+            ContractRetrieveResponse,
+            self._get(
+                f"/api/v1/contracts/{contract_id}",
+                options=make_request_options(
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                    security={"http_bearer": True, "api_key_header": True},
+                ),
+                cast_to=cast(Any, ContractRetrieveResponse),
             ),
         )
 
@@ -252,7 +255,7 @@ class ContractsResource(SyncAPIResource):
                     },
                     contract_list_params.ContractListParams,
                 ),
-                security={"bearer_auth": True},
+                security={"http_bearer": True, "api_key_header": True},
             ),
             cast_to=ContractListResponse,
         )
@@ -588,9 +591,8 @@ class AsyncContractsResource(AsyncAPIResource):
 
     async def retrieve(
         self,
-        type_name: str,
-        *,
         contract_id: str,
+        *,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -612,14 +614,18 @@ class AsyncContractsResource(AsyncAPIResource):
         """
         if not contract_id:
             raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
-        return await self._get(
-            f"/api/v1/contracts/{contract_id}",
-            options=make_request_options(
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                security={"bearer_auth": True},
+        return cast(
+            ContractRetrieveResponse,
+            await self._get(
+                f"/api/v1/contracts/{contract_id}",
+                options=make_request_options(
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                    security={"http_bearer": True, "api_key_header": True},
+                ),
+                cast_to=cast(Any, ContractRetrieveResponse),
             ),
         )
 
@@ -677,7 +683,7 @@ class AsyncContractsResource(AsyncAPIResource):
                     },
                     contract_list_params.ContractListParams,
                 ),
-                security={"bearer_auth": True},
+                security={"http_bearer": True, "api_key_header": True},
             ),
             cast_to=ContractListResponse,
         )

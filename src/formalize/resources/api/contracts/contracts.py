@@ -702,7 +702,7 @@ class ContractsResource(SyncAPIResource):
             cast_to=object,
         )
 
-    def retrieve(
+    def list(
         self,
         *,
         limit: int | Omit = omit,
@@ -1218,7 +1218,7 @@ class ContractsResource(SyncAPIResource):
                     },
                     contract_upload_and_formalize_params.ContractUploadAndFormalizeParams,
                 ),
-                security={"bearer_auth": True},
+                security={"http_bearer": True, "api_key_header": True},
             ),
             cast_to=ContractUploadAndFormalizeResponse,
         )
@@ -1874,7 +1874,7 @@ class AsyncContractsResource(AsyncAPIResource):
             cast_to=object,
         )
 
-    async def retrieve(
+    async def list(
         self,
         *,
         limit: int | Omit = omit,
@@ -2394,7 +2394,7 @@ class AsyncContractsResource(AsyncAPIResource):
                     },
                     contract_upload_and_formalize_params.ContractUploadAndFormalizeParams,
                 ),
-                security={"bearer_auth": True},
+                security={"http_bearer": True, "api_key_header": True},
             ),
             cast_to=ContractUploadAndFormalizeResponse,
         )
@@ -2518,8 +2518,8 @@ class ContractsResourceWithRawResponse:
         self.refresh_scope_metadata = to_raw_response_wrapper(
             contracts.refresh_scope_metadata,
         )
-        self.retrieve = to_raw_response_wrapper(
-            contracts.retrieve,
+        self.list = to_raw_response_wrapper(
+            contracts.list,
         )
         self.retrieve_docx = to_raw_response_wrapper(
             contracts.retrieve_docx,
@@ -2648,8 +2648,8 @@ class AsyncContractsResourceWithRawResponse:
         self.refresh_scope_metadata = async_to_raw_response_wrapper(
             contracts.refresh_scope_metadata,
         )
-        self.retrieve = async_to_raw_response_wrapper(
-            contracts.retrieve,
+        self.list = async_to_raw_response_wrapper(
+            contracts.list,
         )
         self.retrieve_docx = async_to_raw_response_wrapper(
             contracts.retrieve_docx,
@@ -2778,8 +2778,8 @@ class ContractsResourceWithStreamingResponse:
         self.refresh_scope_metadata = to_streamed_response_wrapper(
             contracts.refresh_scope_metadata,
         )
-        self.retrieve = to_streamed_response_wrapper(
-            contracts.retrieve,
+        self.list = to_streamed_response_wrapper(
+            contracts.list,
         )
         self.retrieve_docx = to_streamed_response_wrapper(
             contracts.retrieve_docx,
@@ -2908,8 +2908,8 @@ class AsyncContractsResourceWithStreamingResponse:
         self.refresh_scope_metadata = async_to_streamed_response_wrapper(
             contracts.refresh_scope_metadata,
         )
-        self.retrieve = async_to_streamed_response_wrapper(
-            contracts.retrieve,
+        self.list = async_to_streamed_response_wrapper(
+            contracts.list,
         )
         self.retrieve_docx = async_to_streamed_response_wrapper(
             contracts.retrieve_docx,

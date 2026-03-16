@@ -20,6 +20,7 @@ from ....._base_client import make_request_options
 from .....types.api.v1.contracts import docx_create_params
 from .....types.api.v1.contracts.docx_list_response import DocxListResponse
 from .....types.api.v1.contracts.docx_create_response import DocxCreateResponse
+from .....types.api.v1.contracts.docx_get_info_response import DocxGetInfoResponse
 
 __all__ = ["DocxResource", "AsyncDocxResource"]
 
@@ -164,7 +165,7 @@ class DocxResource(SyncAPIResource):
                 extra_query=extra_query,
                 extra_body=extra_body,
                 timeout=timeout,
-                security={"bearer_auth": True},
+                security={"http_bearer": True, "api_key_header": True},
             ),
             cast_to=object,
         )
@@ -201,7 +202,7 @@ class DocxResource(SyncAPIResource):
                 extra_query=extra_query,
                 extra_body=extra_body,
                 timeout=timeout,
-                security={"bearer_auth": True},
+                security={"http_bearer": True, "api_key_header": True},
             ),
             cast_to=DocxGetInfoResponse,
         )
@@ -347,7 +348,7 @@ class AsyncDocxResource(AsyncAPIResource):
                 extra_query=extra_query,
                 extra_body=extra_body,
                 timeout=timeout,
-                security={"bearer_auth": True},
+                security={"http_bearer": True, "api_key_header": True},
             ),
             cast_to=object,
         )
@@ -384,7 +385,7 @@ class AsyncDocxResource(AsyncAPIResource):
                 extra_query=extra_query,
                 extra_body=extra_body,
                 timeout=timeout,
-                security={"bearer_auth": True},
+                security={"http_bearer": True, "api_key_header": True},
             ),
             cast_to=DocxGetInfoResponse,
         )

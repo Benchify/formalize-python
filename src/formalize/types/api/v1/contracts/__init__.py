@@ -12,3 +12,4 @@ from .audit_batch_response import AuditBatchResponse as AuditBatchResponse
 from .docx_create_response import DocxCreateResponse as DocxCreateResponse
 from .spec_create_response import SpecCreateResponse as SpecCreateResponse
 from .audit_create_response import AuditCreateResponse as AuditCreateResponse
+from .docx_get_info_response import DocxGetInfoResponse as DocxGetInfoResponse

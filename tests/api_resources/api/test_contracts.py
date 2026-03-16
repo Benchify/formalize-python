@@ -603,14 +603,14 @@ class TestContracts:
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
-    def test_method_retrieve(self, client: Formalize) -> None:
-        contract = client.api.contracts.retrieve()
+    def test_method_list(self, client: Formalize) -> None:
+        contract = client.api.contracts.list()
         assert_matches_type(ContractRetrieveResponse, contract, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
-    def test_method_retrieve_with_all_params(self, client: Formalize) -> None:
-        contract = client.api.contracts.retrieve(
+    def test_method_list_with_all_params(self, client: Formalize) -> None:
+        contract = client.api.contracts.list(
             limit=0,
             org_id="org_id",
             skip=0,
@@ -619,8 +619,8 @@ class TestContracts:
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
-    def test_raw_response_retrieve(self, client: Formalize) -> None:
-        response = client.api.contracts.with_raw_response.retrieve()
+    def test_raw_response_list(self, client: Formalize) -> None:
+        response = client.api.contracts.with_raw_response.list()
 
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -629,8 +629,8 @@ class TestContracts:
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
-    def test_streaming_response_retrieve(self, client: Formalize) -> None:
-        with client.api.contracts.with_streaming_response.retrieve() as response:
+    def test_streaming_response_list(self, client: Formalize) -> None:
+        with client.api.contracts.with_streaming_response.list() as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
@@ -1792,14 +1792,14 @@ class TestAsyncContracts:
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
-    async def test_method_retrieve(self, async_client: AsyncFormalize) -> None:
-        contract = await async_client.api.contracts.retrieve()
+    async def test_method_list(self, async_client: AsyncFormalize) -> None:
+        contract = await async_client.api.contracts.list()
         assert_matches_type(ContractRetrieveResponse, contract, path=["response"])
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
-    async def test_method_retrieve_with_all_params(self, async_client: AsyncFormalize) -> None:
-        contract = await async_client.api.contracts.retrieve(
+    async def test_method_list_with_all_params(self, async_client: AsyncFormalize) -> None:
+        contract = await async_client.api.contracts.list(
             limit=0,
             org_id="org_id",
             skip=0,
@@ -1808,8 +1808,8 @@ class TestAsyncContracts:
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
-    async def test_raw_response_retrieve(self, async_client: AsyncFormalize) -> None:
-        response = await async_client.api.contracts.with_raw_response.retrieve()
+    async def test_raw_response_list(self, async_client: AsyncFormalize) -> None:
+        response = await async_client.api.contracts.with_raw_response.list()
 
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -1818,8 +1818,8 @@ class TestAsyncContracts:
 
     @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
-    async def test_streaming_response_retrieve(self, async_client: AsyncFormalize) -> None:
-        async with async_client.api.contracts.with_streaming_response.retrieve() as response:
+    async def test_streaming_response_list(self, async_client: AsyncFormalize) -> None:
+        async with async_client.api.contracts.with_streaming_response.list() as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
