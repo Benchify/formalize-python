@@ -1,21 +1,5 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from .docx import (
-    DocxResource,
-    AsyncDocxResource,
-    DocxResourceWithRawResponse,
-    AsyncDocxResourceWithRawResponse,
-    DocxResourceWithStreamingResponse,
-    AsyncDocxResourceWithStreamingResponse,
-)
-from .spec import (
-    SpecResource,
-    AsyncSpecResource,
-    SpecResourceWithRawResponse,
-    AsyncSpecResourceWithRawResponse,
-    SpecResourceWithStreamingResponse,
-    AsyncSpecResourceWithStreamingResponse,
-)
 from .audit import (
     AuditResource,
     AsyncAuditResource,
@@ -40,18 +24,6 @@ __all__ = [
     "AsyncAuditResourceWithRawResponse",
     "AuditResourceWithStreamingResponse",
     "AsyncAuditResourceWithStreamingResponse",
-    "SpecResource",
-    "AsyncSpecResource",
-    "SpecResourceWithRawResponse",
-    "AsyncSpecResourceWithRawResponse",
-    "SpecResourceWithStreamingResponse",
-    "AsyncSpecResourceWithStreamingResponse",
-    "DocxResource",
-    "AsyncDocxResource",
-    "DocxResourceWithRawResponse",
-    "AsyncDocxResourceWithRawResponse",
-    "DocxResourceWithStreamingResponse",
-    "AsyncDocxResourceWithStreamingResponse",
     "ContractsResource",
     "AsyncContractsResource",
     "ContractsResourceWithRawResponse",
