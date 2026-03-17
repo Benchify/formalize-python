@@ -1,22 +1,3 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 from __future__ import annotations
-
-from .change_type import ChangeType as ChangeType
-from .redline_status import RedlineStatus as RedlineStatus
-from .redline_response import RedlineResponse as RedlineResponse
-from .dataset_create_params import DatasetCreateParams as DatasetCreateParams
-from .dataset_update_params import DatasetUpdateParams as DatasetUpdateParams
-from .redline_create_params import RedlineCreateParams as RedlineCreateParams
-from .redline_list_response import RedlineListResponse as RedlineListResponse
-from .redline_update_params import RedlineUpdateParams as RedlineUpdateParams
-from .coverage_create_params import CoverageCreateParams as CoverageCreateParams
-from .formalize_create_params import FormalizeCreateParams as FormalizeCreateParams
-from .formalize_create_response import FormalizeCreateResponse as FormalizeCreateResponse
-from .test_data_test_data_params import TestDataTestDataParams as TestDataTestDataParams
-from .persona_update_selected_params import PersonaUpdateSelectedParams as PersonaUpdateSelectedParams
-from .dataset_generate_columns_params import DatasetGenerateColumnsParams as DatasetGenerateColumnsParams
-from .test_data_retrieve_test_data_params import TestDataRetrieveTestDataParams as TestDataRetrieveTestDataParams
-from .output_config_update_output_configs_params import (
-    OutputConfigUpdateOutputConfigsParams as OutputConfigUpdateOutputConfigsParams,
-)

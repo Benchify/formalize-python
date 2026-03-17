@@ -32,8 +32,14 @@ client = Formalize(
     bearer_token=os.environ.get("FORMALIZE_BEARER_TOKEN"),  # This is the default and can be omitted
 )
 
-contracts = client.api.v1.contracts.list()
-print(contracts.contracts)
+audit = client.api.v1.contracts.audit.create(
+    contract_id="contract_id",
+    inputs={
+        "claim": "bar",
+        "contract_terms": "bar",
+    },
+)
+print(audit.contract_id)
 ```
 
 While you can provide a `bearer_token` keyword argument,
@@ -56,8 +62,14 @@ client = AsyncFormalize(
 
 
 async def main() -> None:
-    contracts = await client.api.v1.contracts.list()
-    print(contracts.contracts)
+    audit = await client.api.v1.contracts.audit.create(
+        contract_id="contract_id",
+        inputs={
+            "claim": "bar",
+            "contract_terms": "bar",
+        },
+    )
+    print(audit.contract_id)
 
 
 asyncio.run(main())
@@ -92,8 +104,14 @@ async def main() -> None:
         ),  # This is the default and can be omitted
         http_client=DefaultAioHttpClient(),
     ) as client:
-        contracts = await client.api.v1.contracts.list()
-        print(contracts.contracts)
+        audit = await client.api.v1.contracts.audit.create(
+            contract_id="contract_id",
+            inputs={
+                "claim": "bar",
+                "contract_terms": "bar",
+            },
+        )
+        print(audit.contract_id)
 
 
 asyncio.run(main())
@@ -107,24 +125,6 @@ Nested request parameters are [TypedDicts](https://docs.python.org/3/library/typ
 - Converting to a dictionary, `model.to_dict()`
 
 Typed requests and responses provide autocomplete and documentation within your editor. If you would like to see type errors in VS Code to help catch bugs earlier, set `python.analysis.typeCheckingMode` to `basic`.
-
-## File uploads
-
-Request parameters that correspond to file uploads can be passed as `bytes`, or a [`PathLike`](https://docs.python.org/3/library/os.html#os.PathLike) instance or a tuple of `(filename, contents, media type)`.
-
-```python
-from pathlib import Path
-from formalize import Formalize
-
-client = Formalize()
-
-client.api.contracts.diff_docx(
-    contract_id="contract_id",
-    file=Path("/path/to/file"),
-)
-```
-
-The async client uses the exact same interface. If you pass a [`PathLike`](https://docs.python.org/3/library/os.html#os.PathLike) instance, the file contents will be read asynchronously automatically.
 
 ## Handling errors
 
@@ -142,7 +142,13 @@ from formalize import Formalize
 client = Formalize()
 
 try:
-    client.api.v1.contracts.list()
+    client.api.v1.contracts.audit.create(
+        contract_id="contract_id",
+        inputs={
+            "claim": "bar",
+            "contract_terms": "bar",
+        },
+    )
 except formalize.APIConnectionError as e:
     print("The server could not be reached")
     print(e.__cause__)  # an underlying Exception, likely raised within httpx.
@@ -185,7 +191,13 @@ client = Formalize(
 )
 
 # Or, configure per-request:
-client.with_options(max_retries=5).api.v1.contracts.list()
+client.with_options(max_retries=5).api.v1.contracts.audit.create(
+    contract_id="contract_id",
+    inputs={
+        "claim": "bar",
+        "contract_terms": "bar",
+    },
+)
 ```
 
 ### Timeouts
@@ -208,7 +220,13 @@ client = Formalize(
 )
 
 # Override per-request:
-client.with_options(timeout=5.0).api.v1.contracts.list()
+client.with_options(timeout=5.0).api.v1.contracts.audit.create(
+    contract_id="contract_id",
+    inputs={
+        "claim": "bar",
+        "contract_terms": "bar",
+    },
+)
 ```
 
 On timeout, an `APITimeoutError` is thrown.
@@ -249,11 +267,17 @@ The "raw" Response object can be accessed by prefixing `.with_raw_response.` to 
 from formalize import Formalize
 
 client = Formalize()
-response = client.api.v1.contracts.with_raw_response.list()
+response = client.api.v1.contracts.audit.with_raw_response.create(
+    contract_id="contract_id",
+    inputs={
+        "claim": "bar",
+        "contract_terms": "bar",
+    },
+)
 print(response.headers.get('X-My-Header'))
 
-contract = response.parse()  # get the object that `api.v1.contracts.list()` would have returned
-print(contract.contracts)
+audit = response.parse()  # get the object that `api.v1.contracts.audit.create()` would have returned
+print(audit.contract_id)
 ```
 
 These methods return an [`APIResponse`](https://github.com/Benchify/formalize-python/tree/main/src/formalize/_response.py) object.
@@ -267,7 +291,13 @@ The above interface eagerly reads the full response body when you make the reque
 To stream the response body, use `.with_streaming_response` instead, which requires a context manager and only reads the response body once you call `.read()`, `.text()`, `.json()`, `.iter_bytes()`, `.iter_text()`, `.iter_lines()` or `.parse()`. In the async client, these are async methods.
 
 ```python
-with client.api.v1.contracts.with_streaming_response.list() as response:
+with client.api.v1.contracts.audit.with_streaming_response.create(
+    contract_id="contract_id",
+    inputs={
+        "claim": "bar",
+        "contract_terms": "bar",
+    },
+) as response:
     print(response.headers.get("X-My-Header"))
 
     for line in response.iter_lines():
