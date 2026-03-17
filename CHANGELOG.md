@@ -1,5 +1,24 @@
 # Changelog
 
+## 1.3.0 (2026-03-17)
+
+Full Changelog: [v1.2.0...v1.3.0](https://github.com/Benchify/formalize-python/compare/v1.2.0...v1.3.0)
+
+### Features
+
+* **api:** api update ([ae84d36](https://github.com/Benchify/formalize-python/commit/ae84d362d47748dab900d9593210843ff8bfee17))
+
+
+### Bug Fixes
+
+* **deps:** bump minimum typing-extensions version ([79b5f12](https://github.com/Benchify/formalize-python/commit/79b5f1214c8b556d252340414befaac56c439e9d))
+* **pydantic:** do not pass `by_alias` unless set ([6de4065](https://github.com/Benchify/formalize-python/commit/6de4065d83cec7638c0bff30ee895852e2145960))
+
+
+### Chores
+
+* **internal:** tweak CI branches ([409c07e](https://github.com/Benchify/formalize-python/commit/409c07eb5296d05266be5e9fc24c6d794b0e60bf))
+
 ## 1.2.0 (2026-03-16)
 
 Full Changelog: [v1.1.0...v1.2.0](https://github.com/Benchify/formalize-python/compare/v1.1.0...v1.2.0)

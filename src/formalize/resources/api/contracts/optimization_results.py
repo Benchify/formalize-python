@@ -40,46 +40,6 @@ class OptimizationResultsResource(SyncAPIResource):
         """
         return OptimizationResultsResourceWithStreamingResponse(self)
 
-    def delete_optimization_results(
-        self,
-        contract_id: str,
-        *,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> object:
-        """
-        Delete AI-generated redlines and clear optimization results.
-
-        This clears:
-
-        - All AI-generated redlines
-        - Contract optimization_results
-        - optimization_context and explanation from opposing redlines (so they get
-          re-analyzed)
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not contract_id:
-            raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
-        return self._delete(
-            f"/api/contracts/{contract_id}/optimization-results",
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=object,
-        )
-
     def retrieve_optimization_results(
         self,
         contract_id: str,
@@ -136,46 +96,6 @@ class AsyncOptimizationResultsResource(AsyncAPIResource):
         """
         return AsyncOptimizationResultsResourceWithStreamingResponse(self)
 
-    async def delete_optimization_results(
-        self,
-        contract_id: str,
-        *,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> object:
-        """
-        Delete AI-generated redlines and clear optimization results.
-
-        This clears:
-
-        - All AI-generated redlines
-        - Contract optimization_results
-        - optimization_context and explanation from opposing redlines (so they get
-          re-analyzed)
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not contract_id:
-            raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
-        return await self._delete(
-            f"/api/contracts/{contract_id}/optimization-results",
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=object,
-        )
-
     async def retrieve_optimization_results(
         self,
         contract_id: str,
@@ -214,9 +134,6 @@ class OptimizationResultsResourceWithRawResponse:
     def __init__(self, optimization_results: OptimizationResultsResource) -> None:
         self._optimization_results = optimization_results
 
-        self.delete_optimization_results = to_raw_response_wrapper(
-            optimization_results.delete_optimization_results,
-        )
         self.retrieve_optimization_results = to_raw_response_wrapper(
             optimization_results.retrieve_optimization_results,
         )
@@ -226,9 +143,6 @@ class AsyncOptimizationResultsResourceWithRawResponse:
     def __init__(self, optimization_results: AsyncOptimizationResultsResource) -> None:
         self._optimization_results = optimization_results
 
-        self.delete_optimization_results = async_to_raw_response_wrapper(
-            optimization_results.delete_optimization_results,
-        )
         self.retrieve_optimization_results = async_to_raw_response_wrapper(
             optimization_results.retrieve_optimization_results,
         )
@@ -238,9 +152,6 @@ class OptimizationResultsResourceWithStreamingResponse:
     def __init__(self, optimization_results: OptimizationResultsResource) -> None:
         self._optimization_results = optimization_results
 
-        self.delete_optimization_results = to_streamed_response_wrapper(
-            optimization_results.delete_optimization_results,
-        )
         self.retrieve_optimization_results = to_streamed_response_wrapper(
             optimization_results.retrieve_optimization_results,
         )
@@ -250,9 +161,6 @@ class AsyncOptimizationResultsResourceWithStreamingResponse:
     def __init__(self, optimization_results: AsyncOptimizationResultsResource) -> None:
         self._optimization_results = optimization_results
 
-        self.delete_optimization_results = async_to_streamed_response_wrapper(
-            optimization_results.delete_optimization_results,
-        )
         self.retrieve_optimization_results = async_to_streamed_response_wrapper(
             optimization_results.retrieve_optimization_results,
         )

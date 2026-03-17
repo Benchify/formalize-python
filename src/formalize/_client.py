@@ -33,8 +33,7 @@ from ._base_client import (
 )
 
 if TYPE_CHECKING:
-    from .resources import api, health
-    from .resources.health import HealthResource, AsyncHealthResource
+    from .resources import api
     from .resources.api.api import APIResource, AsyncAPIResource
 
 __all__ = [
@@ -113,12 +112,6 @@ class Formalize(SyncAPIClient):
         from .resources.api import APIResource
 
         return APIResource(self)
-
-    @cached_property
-    def health(self) -> HealthResource:
-        from .resources.health import HealthResource
-
-        return HealthResource(self)
 
     @cached_property
     def with_raw_response(self) -> FormalizeWithRawResponse:
@@ -328,12 +321,6 @@ class AsyncFormalize(AsyncAPIClient):
         return AsyncAPIResource(self)
 
     @cached_property
-    def health(self) -> AsyncHealthResource:
-        from .resources.health import AsyncHealthResource
-
-        return AsyncHealthResource(self)
-
-    @cached_property
     def with_raw_response(self) -> AsyncFormalizeWithRawResponse:
         return AsyncFormalizeWithRawResponse(self)
 
@@ -487,12 +474,6 @@ class FormalizeWithRawResponse:
 
         return APIResourceWithRawResponse(self._client.api)
 
-    @cached_property
-    def health(self) -> health.HealthResourceWithRawResponse:
-        from .resources.health import HealthResourceWithRawResponse
-
-        return HealthResourceWithRawResponse(self._client.health)
-
 
 class AsyncFormalizeWithRawResponse:
     _client: AsyncFormalize
@@ -505,12 +486,6 @@ class AsyncFormalizeWithRawResponse:
         from .resources.api import AsyncAPIResourceWithRawResponse
 
         return AsyncAPIResourceWithRawResponse(self._client.api)
-
-    @cached_property
-    def health(self) -> health.AsyncHealthResourceWithRawResponse:
-        from .resources.health import AsyncHealthResourceWithRawResponse
-
-        return AsyncHealthResourceWithRawResponse(self._client.health)
 
 
 class FormalizeWithStreamedResponse:
@@ -525,12 +500,6 @@ class FormalizeWithStreamedResponse:
 
         return APIResourceWithStreamingResponse(self._client.api)
 
-    @cached_property
-    def health(self) -> health.HealthResourceWithStreamingResponse:
-        from .resources.health import HealthResourceWithStreamingResponse
-
-        return HealthResourceWithStreamingResponse(self._client.health)
-
 
 class AsyncFormalizeWithStreamedResponse:
     _client: AsyncFormalize
@@ -543,12 +512,6 @@ class AsyncFormalizeWithStreamedResponse:
         from .resources.api import AsyncAPIResourceWithStreamingResponse
 
         return AsyncAPIResourceWithStreamingResponse(self._client.api)
-
-    @cached_property
-    def health(self) -> health.AsyncHealthResourceWithStreamingResponse:
-        from .resources.health import AsyncHealthResourceWithStreamingResponse
-
-        return AsyncHealthResourceWithStreamingResponse(self._client.health)
 
 
 Client = Formalize

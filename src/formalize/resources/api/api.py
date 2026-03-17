@@ -31,6 +31,7 @@ class APIResource(_resource.SyncAPIResource):
 
     @cached_property
     def contracts(self) -> ContractsResource:
+        """Contract optimization and AI-powered redline generation"""
         return ContractsResource(self._client)
 
     @cached_property
@@ -60,6 +61,7 @@ class AsyncAPIResource(_resource.AsyncAPIResource):
 
     @cached_property
     def contracts(self) -> AsyncContractsResource:
+        """Contract optimization and AI-powered redline generation"""
         return AsyncContractsResource(self._client)
 
     @cached_property
@@ -92,6 +94,7 @@ class APIResourceWithRawResponse:
 
     @cached_property
     def contracts(self) -> ContractsResourceWithRawResponse:
+        """Contract optimization and AI-powered redline generation"""
         return ContractsResourceWithRawResponse(self._api.contracts)
 
 
@@ -105,6 +108,7 @@ class AsyncAPIResourceWithRawResponse:
 
     @cached_property
     def contracts(self) -> AsyncContractsResourceWithRawResponse:
+        """Contract optimization and AI-powered redline generation"""
         return AsyncContractsResourceWithRawResponse(self._api.contracts)
 
 
@@ -118,6 +122,7 @@ class APIResourceWithStreamingResponse:
 
     @cached_property
     def contracts(self) -> ContractsResourceWithStreamingResponse:
+        """Contract optimization and AI-powered redline generation"""
         return ContractsResourceWithStreamingResponse(self._api.contracts)
 
 
@@ -131,4 +136,5 @@ class AsyncAPIResourceWithStreamingResponse:
 
     @cached_property
     def contracts(self) -> AsyncContractsResourceWithStreamingResponse:
+        """Contract optimization and AI-powered redline generation"""
         return AsyncContractsResourceWithStreamingResponse(self._api.contracts)
