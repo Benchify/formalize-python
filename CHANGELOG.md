@@ -1,5 +1,36 @@
 # Changelog
 
+## 1.4.0 (2026-05-01)
+
+Full Changelog: [v1.3.0...v1.4.0](https://github.com/Benchify/formalize-python/compare/v1.3.0...v1.4.0)
+
+### Features
+
+* get rid of legacy routes ([5da5279](https://github.com/Benchify/formalize-python/commit/5da527973b1d2d994bf3dfeccd5e69bc65aa12f5))
+* **internal:** implement indices array format for query and form serialization ([563c58c](https://github.com/Benchify/formalize-python/commit/563c58cb935ec2baf52614b9a2b8f7f2ac4178e7))
+* support setting headers via env ([799fdc0](https://github.com/Benchify/formalize-python/commit/799fdc05dfafc29f30f553861ec6ee524410b20a))
+
+
+### Bug Fixes
+
+* **client:** preserve hardcoded query params when merging with user params ([cb1116e](https://github.com/Benchify/formalize-python/commit/cb1116e13d34679fa2cd73fe17cbf3bfa74c106b))
+* ensure file data are only sent as 1 parameter ([f2e61d8](https://github.com/Benchify/formalize-python/commit/f2e61d8e07e220de2b785c0b9985e403bf97fca1))
+* sanitize endpoint path params ([f9b35f6](https://github.com/Benchify/formalize-python/commit/f9b35f6d04184131168dde207f7d8dac47a7ecd7))
+* use correct field name format for multipart file arrays ([6630691](https://github.com/Benchify/formalize-python/commit/66306915b66d66bc80074de143ce101ba7f3c3c0))
+
+
+### Performance Improvements
+
+* **client:** optimize file structure copying in multipart requests ([aa8ebe4](https://github.com/Benchify/formalize-python/commit/aa8ebe4e973bdabed6e614b86ea7662918925955))
+
+
+### Chores
+
+* **ci:** skip lint on metadata-only changes ([f3ad8e3](https://github.com/Benchify/formalize-python/commit/f3ad8e3e3f5a4f4a49bad8f60ff3202d5e487152))
+* **internal:** more robust bootstrap script ([f3e33d5](https://github.com/Benchify/formalize-python/commit/f3e33d5e7b7652b0764ae2f39ca186aaba690a4c))
+* **internal:** reformat pyproject.toml ([cc326cf](https://github.com/Benchify/formalize-python/commit/cc326cfca752a635b78a66cc326fae8b58f62ad4))
+* **internal:** update gitignore ([05eef18](https://github.com/Benchify/formalize-python/commit/05eef18b272c2be5047fa6c51504fc1e49aca1cb))
+
 ## 1.3.0 (2026-03-17)
 
 Full Changelog: [v1.2.0...v1.3.0](https://github.com/Benchify/formalize-python/compare/v1.2.0...v1.3.0)
