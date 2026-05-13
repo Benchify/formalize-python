@@ -12,14 +12,6 @@ from .v1.v1 import (
     AsyncV1ResourceWithStreamingResponse,
 )
 from ..._compat import cached_property
-from .contracts.contracts import (
-    ContractsResource,
-    AsyncContractsResource,
-    ContractsResourceWithRawResponse,
-    AsyncContractsResourceWithRawResponse,
-    ContractsResourceWithStreamingResponse,
-    AsyncContractsResourceWithStreamingResponse,
-)
 
 __all__ = ["APIResource", "AsyncAPIResource"]
 
@@ -28,11 +20,6 @@ class APIResource(_resource.SyncAPIResource):
     @cached_property
     def v1(self) -> V1Resource:
         return V1Resource(self._client)
-
-    @cached_property
-    def contracts(self) -> ContractsResource:
-        """Contract optimization and AI-powered redline generation"""
-        return ContractsResource(self._client)
 
     @cached_property
     def with_raw_response(self) -> APIResourceWithRawResponse:
@@ -58,11 +45,6 @@ class AsyncAPIResource(_resource.AsyncAPIResource):
     @cached_property
     def v1(self) -> AsyncV1Resource:
         return AsyncV1Resource(self._client)
-
-    @cached_property
-    def contracts(self) -> AsyncContractsResource:
-        """Contract optimization and AI-powered redline generation"""
-        return AsyncContractsResource(self._client)
 
     @cached_property
     def with_raw_response(self) -> AsyncAPIResourceWithRawResponse:
@@ -92,11 +74,6 @@ class APIResourceWithRawResponse:
     def v1(self) -> V1ResourceWithRawResponse:
         return V1ResourceWithRawResponse(self._api.v1)
 
-    @cached_property
-    def contracts(self) -> ContractsResourceWithRawResponse:
-        """Contract optimization and AI-powered redline generation"""
-        return ContractsResourceWithRawResponse(self._api.contracts)
-
 
 class AsyncAPIResourceWithRawResponse:
     def __init__(self, api: AsyncAPIResource) -> None:
@@ -105,11 +82,6 @@ class AsyncAPIResourceWithRawResponse:
     @cached_property
     def v1(self) -> AsyncV1ResourceWithRawResponse:
         return AsyncV1ResourceWithRawResponse(self._api.v1)
-
-    @cached_property
-    def contracts(self) -> AsyncContractsResourceWithRawResponse:
-        """Contract optimization and AI-powered redline generation"""
-        return AsyncContractsResourceWithRawResponse(self._api.contracts)
 
 
 class APIResourceWithStreamingResponse:
@@ -120,11 +92,6 @@ class APIResourceWithStreamingResponse:
     def v1(self) -> V1ResourceWithStreamingResponse:
         return V1ResourceWithStreamingResponse(self._api.v1)
 
-    @cached_property
-    def contracts(self) -> ContractsResourceWithStreamingResponse:
-        """Contract optimization and AI-powered redline generation"""
-        return ContractsResourceWithStreamingResponse(self._api.contracts)
-
 
 class AsyncAPIResourceWithStreamingResponse:
     def __init__(self, api: AsyncAPIResource) -> None:
@@ -133,8 +100,3 @@ class AsyncAPIResourceWithStreamingResponse:
     @cached_property
     def v1(self) -> AsyncV1ResourceWithStreamingResponse:
         return AsyncV1ResourceWithStreamingResponse(self._api.v1)
-
-    @cached_property
-    def contracts(self) -> AsyncContractsResourceWithStreamingResponse:
-        """Contract optimization and AI-powered redline generation"""
-        return AsyncContractsResourceWithStreamingResponse(self._api.contracts)
