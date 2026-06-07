@@ -54,6 +54,7 @@ class AuditResource(SyncAPIResource):
         *,
         inputs: Dict[str, object],
         scope_name: Optional[str] | Omit = omit,
+        unknown_scope_values: Optional[Dict[str, Dict[str, object]]] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -69,6 +70,8 @@ class AuditResource(SyncAPIResource):
               expected types.
 
           scope_name: The scope to execute. If not provided, uses the contract's main scope.
+
+          unknown_scope_values: Output values for UnknownScopes, keyed by scope name then output field name.
 
           extra_headers: Send extra headers
 
@@ -86,6 +89,7 @@ class AuditResource(SyncAPIResource):
                 {
                     "inputs": inputs,
                     "scope_name": scope_name,
+                    "unknown_scope_values": unknown_scope_values,
                 },
                 audit_create_params.AuditCreateParams,
             ),
@@ -172,6 +176,7 @@ class AsyncAuditResource(AsyncAPIResource):
         *,
         inputs: Dict[str, object],
         scope_name: Optional[str] | Omit = omit,
+        unknown_scope_values: Optional[Dict[str, Dict[str, object]]] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -187,6 +192,8 @@ class AsyncAuditResource(AsyncAPIResource):
               expected types.
 
           scope_name: The scope to execute. If not provided, uses the contract's main scope.
+
+          unknown_scope_values: Output values for UnknownScopes, keyed by scope name then output field name.
 
           extra_headers: Send extra headers
 
@@ -204,6 +211,7 @@ class AsyncAuditResource(AsyncAPIResource):
                 {
                     "inputs": inputs,
                     "scope_name": scope_name,
+                    "unknown_scope_values": unknown_scope_values,
                 },
                 audit_create_params.AuditCreateParams,
             ),
