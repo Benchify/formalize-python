@@ -20,7 +20,11 @@ from ._types import (
     RequestOptions,
     not_given,
 )
-from ._utils import is_given, get_async_library
+from ._utils import (
+    is_given,
+    is_mapping_t,
+    get_async_library,
+)
 from ._compat import cached_property
 from ._models import SecurityOptions
 from ._version import __version__
@@ -96,6 +100,15 @@ class Formalize(SyncAPIClient):
         if base_url is None:
             base_url = f"https://api.example.com"
 
+        custom_headers_env = os.environ.get("FORMALIZE_CUSTOM_HEADERS")
+        if custom_headers_env is not None:
+            parsed: dict[str, str] = {}
+            for line in custom_headers_env.split("\n"):
+                colon = line.find(":")
+                if colon >= 0:
+                    parsed[line[:colon].strip()] = line[colon + 1 :].strip()
+            default_headers = {**parsed, **(default_headers if is_mapping_t(default_headers) else {})}
+
         super().__init__(
             version=__version__,
             base_url=base_url,
@@ -128,10 +141,14 @@ class Formalize(SyncAPIClient):
 
     @override
     def _auth_headers(self, security: SecurityOptions) -> dict[str, str]:
-        return {
-            **(self._http_bearer if security.get("http_bearer", False) else {}),
-            **(self._api_key_header if security.get("api_key_header", False) else {}),
-        }
+        headers: dict[str, str] = {}
+        if security.get("http_bearer", False):
+            for key, value in self._http_bearer.items():
+                headers.setdefault(key, value)
+        if security.get("api_key_header", False):
+            for key, value in self._api_key_header.items():
+                headers.setdefault(key, value)
+        return headers
 
     @property
     def _http_bearer(self) -> dict[str, str]:
@@ -303,6 +320,15 @@ class AsyncFormalize(AsyncAPIClient):
         if base_url is None:
             base_url = f"https://api.example.com"
 
+        custom_headers_env = os.environ.get("FORMALIZE_CUSTOM_HEADERS")
+        if custom_headers_env is not None:
+            parsed: dict[str, str] = {}
+            for line in custom_headers_env.split("\n"):
+                colon = line.find(":")
+                if colon >= 0:
+                    parsed[line[:colon].strip()] = line[colon + 1 :].strip()
+            default_headers = {**parsed, **(default_headers if is_mapping_t(default_headers) else {})}
+
         super().__init__(
             version=__version__,
             base_url=base_url,
@@ -335,10 +361,14 @@ class AsyncFormalize(AsyncAPIClient):
 
     @override
     def _auth_headers(self, security: SecurityOptions) -> dict[str, str]:
-        return {
-            **(self._http_bearer if security.get("http_bearer", False) else {}),
-            **(self._api_key_header if security.get("api_key_header", False) else {}),
-        }
+        headers: dict[str, str] = {}
+        if security.get("http_bearer", False):
+            for key, value in self._http_bearer.items():
+                headers.setdefault(key, value)
+        if security.get("api_key_header", False):
+            for key, value in self._api_key_header.items():
+                headers.setdefault(key, value)
+        return headers
 
     @property
     def _http_bearer(self) -> dict[str, str]:

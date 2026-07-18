@@ -16,14 +16,6 @@ from .api import (
     APIResourceWithStreamingResponse,
     AsyncAPIResourceWithStreamingResponse,
 )
-from .contracts import (
-    ContractsResource,
-    AsyncContractsResource,
-    ContractsResourceWithRawResponse,
-    AsyncContractsResourceWithRawResponse,
-    ContractsResourceWithStreamingResponse,
-    AsyncContractsResourceWithStreamingResponse,
-)
 
 __all__ = [
     "V1Resource",
@@ -32,12 +24,6 @@ __all__ = [
     "AsyncV1ResourceWithRawResponse",
     "V1ResourceWithStreamingResponse",
     "AsyncV1ResourceWithStreamingResponse",
-    "ContractsResource",
-    "AsyncContractsResource",
-    "ContractsResourceWithRawResponse",
-    "AsyncContractsResourceWithRawResponse",
-    "ContractsResourceWithStreamingResponse",
-    "AsyncContractsResourceWithStreamingResponse",
     "APIResource",
     "AsyncAPIResource",
     "APIResourceWithRawResponse",

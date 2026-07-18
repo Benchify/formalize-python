@@ -17,3 +17,6 @@ class AuditCreateParams(TypedDict, total=False):
 
     scope_name: Optional[str]
     """The scope to execute. If not provided, uses the contract's main scope."""
+
+    unknown_scope_values: Optional[Dict[str, Dict[str, object]]]
+    """Output values for UnknownScopes, keyed by scope name then output field name."""

@@ -42,6 +42,7 @@ class TestAudit:
                 "contract_terms": "bar",
             },
             scope_name="RebateCalculation",
+            unknown_scope_values={"foo": {"foo": "bar"}},
         )
         assert_matches_type(AuditCreateResponse, audit, path=["response"])
 
@@ -175,6 +176,7 @@ class TestAsyncAudit:
                 "contract_terms": "bar",
             },
             scope_name="RebateCalculation",
+            unknown_scope_values={"foo": {"foo": "bar"}},
         )
         assert_matches_type(AuditCreateResponse, audit, path=["response"])
 

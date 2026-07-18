@@ -7,7 +7,7 @@ from typing import Dict, Iterable, Optional
 import httpx
 
 from ....._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
-from ....._utils import maybe_transform, async_maybe_transform
+from ....._utils import path_template, maybe_transform, async_maybe_transform
 from ....._compat import cached_property
 from ....._resource import SyncAPIResource, AsyncAPIResource
 from ....._response import (
@@ -54,6 +54,7 @@ class AuditResource(SyncAPIResource):
         *,
         inputs: Dict[str, object],
         scope_name: Optional[str] | Omit = omit,
+        unknown_scope_values: Optional[Dict[str, Dict[str, object]]] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -70,6 +71,8 @@ class AuditResource(SyncAPIResource):
 
           scope_name: The scope to execute. If not provided, uses the contract's main scope.
 
+          unknown_scope_values: Output values for UnknownScopes, keyed by scope name then output field name.
+
           extra_headers: Send extra headers
 
           extra_query: Add additional query parameters to the request
@@ -81,11 +84,12 @@ class AuditResource(SyncAPIResource):
         if not contract_id:
             raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
         return self._post(
-            f"/api/v1/contracts/{contract_id}/audit",
+            path_template("/api/v1/contracts/{contract_id}/audit", contract_id=contract_id),
             body=maybe_transform(
                 {
                     "inputs": inputs,
                     "scope_name": scope_name,
+                    "unknown_scope_values": unknown_scope_values,
                 },
                 audit_create_params.AuditCreateParams,
             ),
@@ -127,7 +131,7 @@ class AuditResource(SyncAPIResource):
         if not contract_id:
             raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
         return self._post(
-            f"/api/v1/contracts/{contract_id}/audit/batch",
+            path_template("/api/v1/contracts/{contract_id}/audit/batch", contract_id=contract_id),
             body=maybe_transform(
                 {
                     "scenarios": scenarios,
@@ -172,6 +176,7 @@ class AsyncAuditResource(AsyncAPIResource):
         *,
         inputs: Dict[str, object],
         scope_name: Optional[str] | Omit = omit,
+        unknown_scope_values: Optional[Dict[str, Dict[str, object]]] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -188,6 +193,8 @@ class AsyncAuditResource(AsyncAPIResource):
 
           scope_name: The scope to execute. If not provided, uses the contract's main scope.
 
+          unknown_scope_values: Output values for UnknownScopes, keyed by scope name then output field name.
+
           extra_headers: Send extra headers
 
           extra_query: Add additional query parameters to the request
@@ -199,11 +206,12 @@ class AsyncAuditResource(AsyncAPIResource):
         if not contract_id:
             raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
         return await self._post(
-            f"/api/v1/contracts/{contract_id}/audit",
+            path_template("/api/v1/contracts/{contract_id}/audit", contract_id=contract_id),
             body=await async_maybe_transform(
                 {
                     "inputs": inputs,
                     "scope_name": scope_name,
+                    "unknown_scope_values": unknown_scope_values,
                 },
                 audit_create_params.AuditCreateParams,
             ),
@@ -245,7 +253,7 @@ class AsyncAuditResource(AsyncAPIResource):
         if not contract_id:
             raise ValueError(f"Expected a non-empty value for `contract_id` but received {contract_id!r}")
         return await self._post(
-            f"/api/v1/contracts/{contract_id}/audit/batch",
+            path_template("/api/v1/contracts/{contract_id}/audit/batch", contract_id=contract_id),
             body=await async_maybe_transform(
                 {
                     "scenarios": scenarios,
